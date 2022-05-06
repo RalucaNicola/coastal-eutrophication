@@ -1,0 +1,35 @@
+{
+  "name": "coastal-eutrophication",
+  "version": "1.0.0",
+  "description": "A web application that visualizes global coastal eutrophication trends by country and region from 2005 until 2021",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/RalucaNicola/arcgis-template.git"
+  },
+  "keywords": [
+    "arcgis-js",
+    "calcite",
+    "react",
+    "vite"
+  ],
+  "author": "Raluca Nicola",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RalucaNicola/coastal-eutrophication/issues"
+  },
+  "homepage": "https://github.com/RalucaNicola/coastal-eutrophication#readme",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.1.4",
+    "vite": "^2.7.13"
+  },
+  "dependencies": {
+    "@arcgis/core": "^4.22.2",
+    "@esri/calcite-components-react": "^0.16.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  }
+}
