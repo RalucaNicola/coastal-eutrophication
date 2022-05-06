@@ -1,12 +1,18 @@
 import * as styles from './App.module.css';
-import '@esri/calcite-components/dist/components/calcite-shell';
-import { CalciteShell } from '@esri/calcite-components-react';
-import { Map } from '../components';
+import { useState } from 'react';
+import { Map, BottomPanel, InfoModal } from '../components';
 
 export const App = () => {
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const setModal = (value) => {
+    setIsInfoModalOpen(value);
+    console.log(isInfoModalOpen);
+  };
   return (
     <>
       <Map></Map>
+      <BottomPanel setModal={setModal}></BottomPanel>
+      <InfoModal isOpen={isInfoModalOpen} onClose={() => setModal(false)} />
     </>
   );
 };

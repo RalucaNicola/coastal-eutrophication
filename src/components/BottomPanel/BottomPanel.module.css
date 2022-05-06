@@ -1,0 +1,40 @@
+.container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(255 255 255 / 100%);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 0px 5px rgb(0 0 0 / 50%);
+  padding: 10px;
+}
+
+.mainTitle {
+  text-transform: uppercase;
+  color: var(--calcite-ui-brand);
+  margin-right: 10px;
+  font-size: medium;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header > h1 {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+
+.actionsContainer {
+  display: inline-flex;
+}
+
+.borderLeft {
+  border-left: 1px solid gray;
+}

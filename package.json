@@ -29,6 +29,7 @@
   "dependencies": {
     "@arcgis/core": "^4.22.2",
     "@esri/calcite-components-react": "^0.16.0",
+    "@esri/calcite-ui-icons": "^3.19.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   }
