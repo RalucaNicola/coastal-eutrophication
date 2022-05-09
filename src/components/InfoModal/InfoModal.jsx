@@ -24,3 +24,5 @@ const InfoModal = ({ isOpen, onClose }) => {
 };
 
 export default InfoModal;
+
+// can't repro onCalciteModalClose bug: https://codesandbox.io/s/sleepy-mopsa-6hk60l?file=/src/App.js

@@ -11,7 +11,7 @@ export const App = () => {
   return (
     <>
       <Map></Map>
-      <BottomPanel setModal={setModal}></BottomPanel>
+      <BottomPanel setModal={() => setModal(true)}></BottomPanel>
       <InfoModal isOpen={isInfoModalOpen} onClose={() => setModal(false)} />
     </>
   );

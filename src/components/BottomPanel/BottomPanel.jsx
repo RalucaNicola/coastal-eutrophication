@@ -15,7 +15,7 @@ const BottomPanel = ({ children, setModal }) => {
           within Exclusive Economic Zones
         </h1>
         <div className={styles.actionsContainer}>
-          <CalciteAction icon='information' scale='s' onClick={() => setModal(true)}></CalciteAction>
+          <CalciteAction icon='information' scale='s' onClick={setModal}></CalciteAction>
           <CalciteAction icon='dataMagnifyingGlass' scale='s' onClick={openEsriOceansPortal}></CalciteAction>
           <CalciteAction icon='link' scale='s' disabled></CalciteAction>
           <div className={styles.borderLeft}>
