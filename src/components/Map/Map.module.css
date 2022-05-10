@@ -12,6 +12,8 @@
   left: 0;
   bottom: 0;
   right: 0;
+  /* fixes a bug where the gradient would be in front of UI on map focus */
+  z-index: 0 !important;
   pointer-events: none;
   background: radial-gradient(ellipse at center, transparent 70%, rgba(0, 0, 0, 0.7) 100%);
 }
