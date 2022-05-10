@@ -1,0 +1,16 @@
+.container {
+  height: 250px;
+  margin-top: 20px;
+  display: flex;
+}
+
+.countrySelection {
+  flex: 1;
+  border-right: 1px solid #ddd;
+  padding: 0 20px;
+  overflow: auto;
+}
+
+.countryChart {
+  flex: 2;
+}
