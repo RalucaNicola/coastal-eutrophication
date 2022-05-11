@@ -1,6 +1,6 @@
 import * as styles from './App.module.css';
 import { useState } from 'react';
-import { Map, BottomPanel, InfoModal, CountryDetails } from '../components';
+import { Map, BottomPanel, InfoModal, CountryDetails, EEZLayer } from '../components';
 
 import useEutrophicationData from '../hooks/useEutrophicationData';
 import { CalciteLoader } from '@esri/calcite-components-react';
@@ -17,9 +17,7 @@ export const App = () => {
       return (
         <CountryDetails
           data={dataResponse.countryData}
-          setCountry={(country) => {
-            setSelectedCountry(country);
-          }}
+          setCountry={setSelectedCountry}
           selectedCountry={selectedCountry}
         ></CountryDetails>
       );
@@ -28,7 +26,9 @@ export const App = () => {
   };
   return (
     <>
-      <Map></Map>
+      <Map>
+        <EEZLayer selectedCountry={selectedCountry} setCountry={setSelectedCountry}></EEZLayer>
+      </Map>
       <BottomPanel setModal={() => setIsInfoModalOpen(true)}>{showCountryDetails()}</BottomPanel>
       <InfoModal isOpen={isInfoModalOpen} onClose={() => setIsInfoModalOpen(false)} />
     </>
