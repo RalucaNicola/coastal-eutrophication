@@ -4,18 +4,22 @@ import '@esri/calcite-components/dist/components/calcite-option';
 import '@esri/calcite-components/dist/components/calcite-label';
 import '@esri/calcite-components/dist/components/calcite-radio-button-group';
 import '@esri/calcite-components/dist/components/calcite-radio-button';
+import '@esri/calcite-components/dist/components/calcite-switch';
 import {
   CalciteSelect,
   CalciteOption,
   CalciteLabel,
   CalciteRadioButtonGroup,
-  CalciteRadioButton
+  CalciteRadioButton,
+  CalciteSwitch
 } from '@esri/calcite-components-react';
 import { useState } from 'react';
 
-const CountryDetails = ({ data, setCountry, selectedCountry }) => {
+const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode }) => {
   const [selectedRegion, setSelectedRegion] = useState(0);
-
+  const toggleMode = (event) => {
+    setMonthlyMode(event.target.checked);
+  };
   const showRegionSelection = () => {
     if (!selectedCountry) {
       return null;
@@ -75,7 +79,14 @@ const CountryDetails = ({ data, setCountry, selectedCountry }) => {
         </CalciteLabel>
         {showRegionSelection()}
       </div>
-      <div className={styles.countryChart}></div>
+      <div className={styles.countryChart}>
+        <div className={styles.headerChart}>
+          <CalciteLabel layout='inline' alignment='start'>
+            <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
+            Monthly average view
+          </CalciteLabel>
+        </div>
+      </div>
     </div>
   );
 };
