@@ -18,7 +18,7 @@ const useEutrophicationData = () => {
 
       const eutrophicationResponse = await fetch('./data/impact_data_total.csv');
       const eutrophicationText = await eutrophicationResponse.text();
-      const eutrophicationData = Papa.parse(eutrophicationText, { delimiter: ',', dynamicaTyping: true }).data;
+      const eutrophicationData = Papa.parse(eutrophicationText, { delimiter: ',', dynamicaTyping: true }).data.slice(1);
 
       setResponse({
         countryData,

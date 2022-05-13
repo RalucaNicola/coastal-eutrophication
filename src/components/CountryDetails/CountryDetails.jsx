@@ -15,7 +15,7 @@ import {
 } from '@esri/calcite-components-react';
 import { useState } from 'react';
 
-const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode }) => {
+const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, children }) => {
   const [selectedRegion, setSelectedRegion] = useState(0);
   const toggleMode = (event) => {
     setMonthlyMode(event.target.checked);
@@ -86,6 +86,7 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode }) =
             Monthly average view
           </CalciteLabel>
         </div>
+        {children}
       </div>
     </div>
   );
