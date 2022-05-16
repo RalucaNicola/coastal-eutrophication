@@ -1,3 +1,16 @@
 .chartContainer {
   flex: 1;
 }
+
+:global .tooltip {
+  position: absolute;
+  font-size: 11px;
+}
+
+:global .country {
+  font-weight: bold;
+}
+
+:global .emphasized {
+  color: green;
+}

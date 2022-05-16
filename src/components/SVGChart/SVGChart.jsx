@@ -2,15 +2,17 @@ import * as styles from './SVGChart.module.css';
 
 import { useEffect, useRef, useState } from 'react';
 import {
-  select,
-  extent,
-  scaleUtc,
+  area,
   axisBottom,
+  extent,
+  pointer,
   scaleLinear,
   scaleOrdinal,
+  scaleUtc,
+  select,
+  selectAll,
   stack,
-  stackOffsetSilhouette,
-  area
+  stackOffsetSilhouette
 } from 'd3';
 
 import { regionNames } from '../../config';
@@ -78,8 +80,29 @@ const drawChart = ({ svg, size, data, selection }) => {
           .x((d) => xScale(new Date(d.data.date)))
           .y0((d) => yScale(d[0]))
           .y1((d) => yScale(d[1]))
-      );
+      )
+      .on('mouseover', mouseover)
+      .on('mousemove', (event, d) => {
+        mousemove(event, d, size);
+      });
   }
+};
+
+const mouseover = function () {
+  select('.tooltip').style('opacity', 1);
+  selectAll('.myArea').style('opacity', 0.2);
+  select(this).style('opacity', 1);
+};
+
+const mousemove = function (event, d, size) {
+  const x = pointer(event)[0];
+  const timeSlice = Math.floor((x - margin.left) / ((size.width - margin.right - margin.left) / 204));
+  const date = new Date(d[timeSlice].data.date);
+  const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+  const htmlText = `<span class='country'>${d.key}</span> ${month}, ${date.getFullYear()}</br> ${
+    d[timeSlice].data[d.key]
+  } <span class='emphasized'> eutrophication-impacted</span> area `;
+  select('.tooltip').html(htmlText);
 };
 
 const SVGChart = ({ data, selectedFeature, regionIndex }) => {
@@ -134,6 +157,13 @@ const SVGChart = ({ data, selectedFeature, regionIndex }) => {
         .attr('width', '100%')
         .attr('height', chartRef.current.offsetHeight);
       svgContainer.append('g').classed('xAxis', true);
+      svgContainer
+        .append('g')
+        .classed('tooltip', true)
+        .attr('x', 0)
+        .attr('y', 35)
+        .style('opacity', 1)
+        .style('font-size', 11);
       svg.current = svgContainer;
 
       return () => {
@@ -143,9 +173,12 @@ const SVGChart = ({ data, selectedFeature, regionIndex }) => {
   }, [chartRef.current]);
 
   return (
-    <div ref={chartRef} className={styles.chartContainer}>
-      <svg></svg>
-    </div>
+    <>
+      <div className='tooltip'></div>
+      <div ref={chartRef} className={styles.chartContainer}>
+        <svg></svg>
+      </div>
+    </>
   );
 };
 
