@@ -13,23 +13,34 @@ import {
   CalciteRadioButton,
   CalciteSwitch
 } from '@esri/calcite-components-react';
-import { useState } from 'react';
+import { SVGChart } from '../index';
+import { useEffect, useState } from 'react';
+import { regionNames } from '../../config';
 
-const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, children }) => {
-  const [selectedRegion, setSelectedRegion] = useState(0);
+const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode }) => {
+  const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
+  const [selectedFeature, setSelectedFeature] = useState();
   const toggleMode = (event) => {
     setMonthlyMode(event.target.checked);
   };
-  const showRegionSelection = () => {
+
+  useEffect(() => {
     if (!selectedCountry) {
+      setSelectedFeature(null);
+    } else {
+      const feature = data.countryData.filter((feature) => {
+        return feature.country === selectedCountry;
+      })[0];
+      setSelectedFeature(feature);
+    }
+  }, [selectedCountry]);
+
+  const showRegionSelection = () => {
+    if (!selectedFeature) {
       return null;
     }
 
-    const selectedFeature = data.filter((feature) => {
-      return feature.country === selectedCountry;
-    })[0];
-
-    const regions = [selectedFeature.country, selectedFeature.region, selectedFeature.level1, selectedFeature.level2];
+    const regions = regionNames.map((name) => selectedFeature[name]);
 
     return (
       <CalciteLabel>
@@ -38,11 +49,11 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, chi
           name='region-group'
           layout='vertical'
           onCalciteRadioButtonChange={(event) => {
-            setSelectedRegion(event.target.value);
+            setSelectedRegionIndex(event.target.value);
           }}
         >
           {regions.map((region, index) => {
-            const checked = selectedRegion === index ? { checked: true } : undefined;
+            const checked = selectedRegionIndex === index ? { checked: true } : undefined;
             return (
               <CalciteLabel key={index} layout='inline'>
                 <CalciteRadioButton value={index} {...checked}></CalciteRadioButton>
@@ -71,7 +82,7 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, chi
               }
             }}
           >
-            {data.map((feature, index) => (
+            {data.countryData.map((feature, index) => (
               <CalciteOption key={index} selected={selectedCountry === feature.country ? true : null}>
                 {feature.country}
               </CalciteOption>
@@ -88,7 +99,7 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, chi
             Monthly average view
           </CalciteLabel>
         </div>
-        {children}
+        <SVGChart data={data} selectedFeature={selectedFeature} regionIndex={selectedRegionIndex}></SVGChart>
       </div>
     </div>
   );

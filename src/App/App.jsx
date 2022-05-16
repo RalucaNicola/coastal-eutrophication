@@ -1,6 +1,6 @@
 import * as styles from './App.module.css';
 import { useState } from 'react';
-import { Map, BottomPanel, InfoModal, CountryDetails, RasterLayer, SVGChart } from '../components';
+import { Map, BottomPanel, InfoModal, CountryDetails, RasterLayer } from '../components';
 
 import useEutrophicationData from '../hooks/useEutrophicationData';
 import { CalciteLoader } from '@esri/calcite-components-react';
@@ -25,13 +25,11 @@ export const App = () => {
     if (dataResponse) {
       return (
         <CountryDetails
-          data={dataResponse.countryData}
+          data={dataResponse}
           setCountry={setSelectedCountry}
           selectedCountry={selectedCountry}
           setMonthlyMode={setMonthlyMode}
-        >
-          <SVGChart data={dataResponse.eutrophicationData}></SVGChart>
-        </CountryDetails>
+        ></CountryDetails>
       );
     }
   };

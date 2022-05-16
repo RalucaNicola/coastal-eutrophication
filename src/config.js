@@ -6,3 +6,5 @@ export const mapConfig = {
   'monthly-layer':
     'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_monthly_frequency/ImageServer'
 };
+
+export const regionNames = ['country', 'level2', 'level1', 'region'];
