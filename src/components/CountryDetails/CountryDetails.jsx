@@ -25,9 +25,11 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, chi
       return null;
     }
 
-    const regions = data.filter((country) => {
-      return country[0] === selectedCountry;
+    const selectedFeature = data.filter((feature) => {
+      return feature.country === selectedCountry;
     })[0];
+
+    const regions = [selectedFeature.country, selectedFeature.region, selectedFeature.level1, selectedFeature.level2];
 
     return (
       <CalciteLabel>
@@ -69,9 +71,9 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, chi
               }
             }}
           >
-            {data.map((country, index) => (
-              <CalciteOption key={index} selected={selectedCountry === country[0] ? true : null}>
-                {country[0]}
+            {data.map((feature, index) => (
+              <CalciteOption key={index} selected={selectedCountry === feature.country ? true : null}>
+                {feature.country}
               </CalciteOption>
             ))}
             <CalciteOption selected={selectedCountry ? null : true}>None</CalciteOption>

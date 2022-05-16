@@ -1,4 +1,4 @@
-import Papa from 'papaparse';
+import { csv } from 'd3';
 import { useState, useEffect } from 'react';
 
 const useEutrophicationData = () => {
@@ -12,13 +12,8 @@ const useEutrophicationData = () => {
     setIsFailed(false);
     setIsLoading(true);
     try {
-      const countryResponse = await fetch('./data/country_regions.csv');
-      const countryText = await countryResponse.text();
-      const countryData = Papa.parse(countryText, { delimiter: ',', dynamicaTyping: true }).data.slice(1);
-
-      const eutrophicationResponse = await fetch('./data/impact_data_total.csv');
-      const eutrophicationText = await eutrophicationResponse.text();
-      const eutrophicationData = Papa.parse(eutrophicationText, { delimiter: ',', dynamicaTyping: true }).data.slice(1);
+      const countryData = await csv('./data/country_regions.csv');
+      const eutrophicationData = await csv('./data/impact_data_total.csv');
 
       setResponse({
         countryData,

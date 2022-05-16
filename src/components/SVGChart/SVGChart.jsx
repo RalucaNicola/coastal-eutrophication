@@ -14,6 +14,7 @@ const SVGChart = ({ data }) => {
   const chartRef = useRef();
   const svg = useRef();
   const [size, setSize] = useState();
+  console.log(data);
   // data is not in the right format...
 
   useEffect(() => {
