@@ -93,12 +93,12 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode }) =
         {showRegionSelection()}
       </div>
       <div className={styles.countryChart}>
-        <div className={styles.headerChart}>
+        {/* <div className={styles.headerChart}>
           <CalciteLabel layout='inline' alignment='start'>
             <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
             Monthly average view
           </CalciteLabel>
-        </div>
+        </div> */}
         <SVGChart data={data} selectedFeature={selectedFeature} regionIndex={selectedRegionIndex}></SVGChart>
       </div>
     </div>

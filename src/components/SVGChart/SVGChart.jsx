@@ -31,13 +31,16 @@ const drawChart = ({ svg, size, data, selection }) => {
     extent(data, (d) => new Date(d.date)),
     xRange
   );
-  const xAxis = axisBottom(xScale).ticks(10);
+  const xAxis = axisBottom(xScale).ticks(Math.round(size.width / 50));
   svg
     .select('.xAxis')
     .attr('transform', `translate(0,${size.height - margin.bottom})`)
     .call(xAxis);
 
   svg.selectAll('.myArea').remove();
+  const country = selection ? data.selectedFeature.country : null;
+
+  resetTooltip(country);
   if (selection) {
     // build impact percentage scale
     let domainHeight;
@@ -84,12 +87,22 @@ const drawChart = ({ svg, size, data, selection }) => {
       .on('mouseover', mouseover)
       .on('mousemove', (event, d) => {
         mousemove(event, d, size);
+      })
+      .on('mouseleave', () => {
+        mouseleave(data.selectedFeature.country);
       });
   }
 };
 
+const resetTooltip = (selectedCountry) => {
+  let htmlText = `<span>Select a country to see the evolution of eutrophication anomalies.</span>`;
+  if (selectedCountry) {
+    htmlText = `<span>Eutrophication impact area (%) for ${selectedCountry}</span>`;
+  }
+  select('.tooltip').html(htmlText);
+};
+
 const mouseover = function () {
-  select('.tooltip').style('opacity', 1);
   selectAll('.myArea').style('opacity', 0.2);
   select(this).style('opacity', 1);
 };
@@ -99,10 +112,15 @@ const mousemove = function (event, d, size) {
   const timeSlice = Math.floor((x - margin.left) / ((size.width - margin.right - margin.left) / 204));
   const date = new Date(d[timeSlice].data.date);
   const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
-  const htmlText = `<span class='country'>${d.key}</span> ${month}, ${date.getFullYear()}</br> ${
-    d[timeSlice].data[d.key]
-  } <span class='emphasized'> eutrophication-impacted</span> area `;
+  const value = parseFloat(d[timeSlice].data[d.key]);
+  const htmlText = `<span class='country'>${d.key}</span> ${month}, ${date.getFullYear()}</br> ${value.toFixed(
+    2
+  )}% <span class='emphasized'> eutrophication-impacted</span> area `;
   select('.tooltip').html(htmlText);
+};
+
+const mouseleave = function () {
+  selectAll('.myArea').style('opacity', 1);
 };
 
 const SVGChart = ({ data, selectedFeature, regionIndex }) => {
@@ -137,8 +155,14 @@ const SVGChart = ({ data, selectedFeature, regionIndex }) => {
     if (size && svg.current) {
       if (selectedData) {
         drawChart({ svg: svg.current, size, data: selectedData, selection: true });
+        svg.current.on('mouseleave', () => {
+          resetTooltip(selectedData.selectedFeature.country);
+        });
       } else {
         drawChart({ svg: svg.current, size, data: data.eutrophicationData, selection: false });
+        svg.current.on('mouseleave', () => {
+          resetTooltip(null);
+        });
       }
     }
   }, [size, svg.current, selectedData]);
@@ -157,13 +181,7 @@ const SVGChart = ({ data, selectedFeature, regionIndex }) => {
         .attr('width', '100%')
         .attr('height', chartRef.current.offsetHeight);
       svgContainer.append('g').classed('xAxis', true);
-      svgContainer
-        .append('g')
-        .classed('tooltip', true)
-        .attr('x', 0)
-        .attr('y', 35)
-        .style('opacity', 1)
-        .style('font-size', 11);
+      svgContainer.append('g').classed('tooltip', true).attr('x', 0).attr('y', 35);
       svg.current = svgContainer;
 
       return () => {
