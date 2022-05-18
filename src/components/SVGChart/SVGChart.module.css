@@ -32,7 +32,14 @@ svg {
 }
 
 :global .tick {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--calcite-ui-text-2);
   font-family: var(--calcite-sans-family);
+}
+
+:global .mouse-indicator {
+  stroke: var(--calcite-ui-text-2);
+  stroke-width: 1;
+  stroke-dasharray: 4;
+  opacity: 0;
 }

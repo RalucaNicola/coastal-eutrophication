@@ -65,6 +65,14 @@ const Map = ({ selectedCountry, setCountry, setIdentifyPoint, paddingBottom, chi
     });
   };
 
+  useEffect(() => {
+    if (mapView) {
+      mapView.padding = {
+        bottom: paddingBottom
+      };
+    }
+  }, [paddingBottom]);
+
   // initialize effect
   useEffect(() => {
     let view = null;

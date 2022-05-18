@@ -11,6 +11,7 @@ export const App = () => {
   const [identifyPoint, setIdentifyPoint] = useState(null);
   const [monthlyMode, setMonthlyMode] = useState(false);
   const [timeSlice, setTimeSlice] = useState(0);
+  const [paddingBottom, setPaddingBottom] = useState(350);
 
   const { dataResponse, isLoading, isFailed } = useEutrophicationData();
 
@@ -46,11 +47,13 @@ export const App = () => {
         setCountry={setSelectedCountry}
         selectedCountry={selectedCountry}
         setIdentifyPoint={setIdentifyPoint}
-        paddingBottom={350}
+        paddingBottom={paddingBottom}
       >
         <RasterLayer identifyPoint={identifyPoint} monthlyMode={monthlyMode} timeSlice={timeSlice}></RasterLayer>
       </Map>
-      <BottomPanel setModal={() => setIsInfoModalOpen(true)}>{showCountryDetails()}</BottomPanel>
+      <BottomPanel setPaddingBottom={setPaddingBottom} setModal={() => setIsInfoModalOpen(true)}>
+        {showCountryDetails()}
+      </BottomPanel>
       <InfoModal isOpen={isInfoModalOpen} onClose={() => setIsInfoModalOpen(false)} />
     </>
   );
