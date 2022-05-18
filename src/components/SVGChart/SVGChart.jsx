@@ -25,6 +25,28 @@ const margin = {
   left: 20
 };
 
+const setThumbText = ({ xThumb, date, width }) => {
+  const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+  const text = `Show ${month}, ${date.getFullYear()}`;
+  if (xThumb > width / 2) {
+    select('.thumb-date')
+      .attr('x', xThumb - 10)
+      .style('text-anchor', 'end')
+      .text(text);
+    select('.thumb-info')
+      .attr('x', xThumb - 10)
+      .style('text-anchor', 'end');
+  } else {
+    select('.thumb-date')
+      .attr('x', xThumb + 10)
+      .style('text-anchor', 'start')
+      .text(text);
+    select('.thumb-info')
+      .attr('x', xThumb + 10)
+      .style('text-anchor', 'start');
+  }
+};
+
 const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDefinition, setCountry }) => {
   const timeValues = timeDefinition[0].values;
   // build time scale
@@ -41,14 +63,16 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 
   const country = selection ? data.selectedFeature.country : null;
   resetTooltip(country);
-
+  const date = new Date(timeValues[timeSlice]);
+  const xThumb = xScale(date);
+  const yThumb = size.height - margin.bottom;
+  select('.thumb-date').attr('y', yThumb - 30);
+  select('.thumb-info').attr('y', yThumb - 10);
+  setThumbText({ xThumb, date, width: size.width });
+  select('.thumb-indicator').attr('x1', xThumb).attr('x2', xThumb).attr('y1', yThumb).attr('y2', 0);
   select('.thumb')
-    .attr('cx', xScale(new Date(timeDefinition[0].values[timeSlice])))
-    .attr('cy', size.height - margin.bottom)
-    .attr('r', 7)
-    .attr('fill', 'white')
-    .attr('stroke', '#4a4a4a')
-    .attr('stroke-width', 2)
+    .attr('cx', xThumb)
+    .attr('cy', yThumb)
     .call(
       drag()
         .on('start', function () {
@@ -56,16 +80,28 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
         })
         .on('drag', function (event) {
           const x = Math.min(Math.max(event.x, margin.left), size.width - margin.right);
-          select(this)
-            .attr('cx', x)
-            .attr('cy', size.height - margin.bottom);
+
+          const timeSlice = Math.round(
+            (x - margin.left) / ((size.width - margin.right - margin.left) / (data.length - 1))
+          );
+          const date = new Date(timeValues[timeSlice]);
+
+          select(this).attr('cx', x);
+          select('.thumb-indicator').attr('x1', x).attr('x2', x);
+          setThumbText({ xThumb: x, date, width: size.width });
         })
         .on('end', function (event) {
           select(this).attr('stroke-width', 2);
           const x = Math.min(Math.max(event.x, margin.left), size.width - margin.right);
-          const timeSlice = Math.floor(
+          const timeSlice = Math.round(
             (x - margin.left) / ((size.width - margin.right - margin.left) / (data.length - 1))
           );
+          const date = new Date(timeValues[timeSlice]);
+          const xThumb = xScale(date);
+
+          select(this).attr('cx', xThumb);
+          select('.thumb-indicator').attr('x1', xThumb).attr('x2', xThumb);
+          setThumbText({ xThumb, date, width: size.width });
           setTimeSlice(timeSlice);
         })
     );
@@ -73,9 +109,8 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
   if (selection) {
     // build impact percentage scale
     let domainHeight;
-    console.log(data.columns);
     if (data.columns.length > 30) {
-      domainHeight = 700;
+      domainHeight = 600;
     } else if (data.columns.length === 1) {
       domainHeight = 50;
     } else {
@@ -129,9 +164,9 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 };
 
 const resetTooltip = (selectedCountry) => {
-  let htmlText = `<span>Select a country to see the evolution of eutrophication anomalies.</span>`;
+  let htmlText = `<span>Select a zone to see the evolution of eutrophication impacted areas.</span>`;
   if (selectedCountry) {
-    htmlText = `<span>Eutrophication impact area (%) for ${selectedCountry}</span>`;
+    htmlText = `<span>Eutrophication impacted area (%) for ${selectedCountry}</span>`;
   }
   select('.tooltip').html(htmlText);
 };
@@ -232,10 +267,6 @@ const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice,
         .select('svg')
         .attr('width', '100%')
         .attr('height', chartRef.current.offsetHeight);
-      svgContainer.append('g').classed('chartArea', true);
-      svgContainer.append('g').classed('xAxis', true);
-      svgContainer.append('g').classed('tooltip', true).attr('x', 0).attr('y', 35);
-      svgContainer.append('circle').classed('thumb', true);
       svg.current = svgContainer;
 
       return () => {
@@ -248,7 +279,17 @@ const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice,
     <>
       <div className='tooltip'></div>
       <div ref={chartRef} className={styles.chartContainer}>
-        <svg></svg>
+        <svg>
+          <g className='chartArea'></g>
+          <g className='xAxis'></g>
+          <g className='tooltip' x={0} y={35}></g>
+          <g className='indicator'>
+            <line className='thumb-indicator'></line>
+            <circle className='thumb' strokeWidth={2} r={7}></circle>
+            <text className='thumb-date'></text>
+            <text className='thumb-info'>Eutrophication rates on map</text>
+          </g>
+        </svg>
       </div>
     </>
   );

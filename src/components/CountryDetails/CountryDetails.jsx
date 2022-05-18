@@ -55,7 +55,7 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, tim
           {regions.map((region, index) => {
             const checked = selectedRegionIndex === index ? { checked: true } : undefined;
             return (
-              <CalciteLabel key={index} layout='inline'>
+              <CalciteLabel key={index} layout='inline' className={styles.label}>
                 <CalciteRadioButton value={index} {...checked}></CalciteRadioButton>
                 {index === 0 ? `None, show only ${region}` : region}
               </CalciteLabel>
@@ -71,7 +71,7 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, tim
       <div className={styles.countrySelection}>
         <CalciteLabel>
           {' '}
-          Select a country:
+          Select a zone:
           <CalciteSelect
             onCalciteSelectChange={(event) => {
               const country = event.target.selectedOption.value;
@@ -95,7 +95,7 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, tim
       <div className={styles.countryChart}>
         <div className={styles.headerChart}>
           {/* <CalciteLabel layout='inline' alignment='start'>
-            <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
+            <CalciteSwitch onCalciteSwitchChange={toggleMode} disabled></CalciteSwitch>
             Monthly average view
           </CalciteLabel> */}
         </div>

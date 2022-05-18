@@ -1,5 +1,5 @@
 import * as styles from './App.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Map, BottomPanel, InfoModal, CountryDetails, RasterLayer } from '../components';
 
 import useEutrophicationData from '../hooks/useEutrophicationData';
@@ -13,6 +13,10 @@ export const App = () => {
   const [timeSlice, setTimeSlice] = useState(0);
 
   const { dataResponse, isLoading, isFailed } = useEutrophicationData();
+
+  useEffect(() => {
+    setIdentifyPoint(null);
+  }, [selectedCountry, timeSlice]);
 
   const showCountryDetails = () => {
     if (!isLoading && !dataResponse) {

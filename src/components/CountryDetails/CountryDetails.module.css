@@ -22,5 +22,9 @@
 .headerChart {
   display: flex;
   justify-content: flex-end;
-  min-height: 20px;
+  min-height: 40px;
+}
+
+.label {
+  cursor: pointer;
 }

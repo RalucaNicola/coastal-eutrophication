@@ -14,3 +14,25 @@
 :global .emphasized {
   color: green;
 }
+
+:global .thumb-indicator {
+  stroke: var(--calcite-ui-text-2);
+}
+
+:global .thumb {
+  fill: white;
+  stroke: var(--calcite-ui-text-2);
+  cursor: pointer;
+}
+
+svg {
+  font-size: 14px;
+  color: var(--calcite-ui-text-2);
+  font-family: var(--calcite-sans-family);
+}
+
+:global .tick {
+  font-size: 14px;
+  color: var(--calcite-ui-text-2);
+  font-family: var(--calcite-sans-family);
+}
