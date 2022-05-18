@@ -17,7 +17,7 @@ import { SVGChart } from '../index';
 import { useEffect, useState } from 'react';
 import { regionNames } from '../../config';
 
-const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode }) => {
+const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, timeSlice, setTimeSlice }) => {
   const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
   const [selectedFeature, setSelectedFeature] = useState();
   const toggleMode = (event) => {
@@ -93,13 +93,19 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode }) =
         {showRegionSelection()}
       </div>
       <div className={styles.countryChart}>
-        {/* <div className={styles.headerChart}>
-          <CalciteLabel layout='inline' alignment='start'>
+        <div className={styles.headerChart}>
+          {/* <CalciteLabel layout='inline' alignment='start'>
             <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
             Monthly average view
-          </CalciteLabel>
-        </div> */}
-        <SVGChart data={data} selectedFeature={selectedFeature} regionIndex={selectedRegionIndex}></SVGChart>
+          </CalciteLabel> */}
+        </div>
+        <SVGChart
+          data={data}
+          selectedFeature={selectedFeature}
+          regionIndex={selectedRegionIndex}
+          timeSlice={timeSlice}
+          setTimeSlice={setTimeSlice}
+        ></SVGChart>
       </div>
     </div>
   );

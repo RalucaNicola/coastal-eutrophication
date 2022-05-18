@@ -1,10 +1,10 @@
 import * as styles from './SVGChart.module.css';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import {
   area,
   axisBottom,
-  extent,
+  drag,
   pointer,
   scaleLinear,
   scaleOrdinal,
@@ -16,6 +16,7 @@ import {
 } from 'd3';
 
 import { regionNames } from '../../config';
+import { AppContext } from '../../contexts/AppContextProvider';
 
 const margin = {
   top: 20,
@@ -24,13 +25,12 @@ const margin = {
   left: 20
 };
 
-const drawChart = ({ svg, size, data, selection }) => {
+const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDefinition }) => {
+  const timeValues = timeDefinition[0].values;
   // build time scale
   const xRange = [margin.left, size.width - margin.right];
-  const xScale = scaleUtc(
-    extent(data, (d) => new Date(d.date)),
-    xRange
-  );
+  const timeExtent = [new Date(timeValues[0]), new Date(timeValues[timeValues.length - 1])];
+  const xScale = scaleUtc(timeExtent, xRange);
   const xAxis = axisBottom(xScale).ticks(Math.round(size.width / 50));
   svg
     .select('.xAxis')
@@ -38,9 +38,38 @@ const drawChart = ({ svg, size, data, selection }) => {
     .call(xAxis);
 
   svg.selectAll('.myArea').remove();
-  const country = selection ? data.selectedFeature.country : null;
 
+  const country = selection ? data.selectedFeature.country : null;
   resetTooltip(country);
+
+  select('.thumb')
+    .attr('cx', xScale(new Date(timeDefinition[0].values[timeSlice])))
+    .attr('cy', size.height - margin.bottom)
+    .attr('r', 7)
+    .attr('fill', 'white')
+    .attr('stroke', '#4a4a4a')
+    .attr('stroke-width', 2)
+    .call(
+      drag()
+        .on('start', function () {
+          select(this).raise().attr('stroke-width', 4);
+        })
+        .on('drag', function (event) {
+          const x = Math.min(Math.max(event.x, margin.left), size.width - margin.right);
+          select(this)
+            .attr('cx', x)
+            .attr('cy', size.height - margin.bottom);
+        })
+        .on('end', function (event) {
+          select(this).attr('stroke-width', 2);
+          const x = Math.min(Math.max(event.x, margin.left), size.width - margin.right);
+          const timeSlice = Math.floor(
+            (x - margin.left) / ((size.width - margin.right - margin.left) / (data.length - 1))
+          );
+          setTimeSlice(timeSlice);
+        })
+    );
+
   if (selection) {
     // build impact percentage scale
     let domainHeight;
@@ -123,11 +152,12 @@ const mouseleave = function () {
   selectAll('.myArea').style('opacity', 1);
 };
 
-const SVGChart = ({ data, selectedFeature, regionIndex }) => {
+const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice }) => {
   const chartRef = useRef();
   const svg = useRef();
   const [size, setSize] = useState();
   const [selectedData, setSelectedData] = useState(null);
+  const { timeDefinition } = useContext(AppContext);
 
   // recalculate streamgraph data when region or selected country changes
   useEffect(() => {
@@ -152,20 +182,36 @@ const SVGChart = ({ data, selectedFeature, regionIndex }) => {
 
   // redraw chart when size, container or selected data changes
   useEffect(() => {
-    if (size && svg.current) {
+    if (size && svg.current && timeDefinition) {
       if (selectedData) {
-        drawChart({ svg: svg.current, size, data: selectedData, selection: true });
+        drawChart({
+          svg: svg.current,
+          size,
+          data: selectedData,
+          selection: true,
+          timeSlice,
+          setTimeSlice,
+          timeDefinition
+        });
         svg.current.on('mouseleave', () => {
           resetTooltip(selectedData.selectedFeature.country);
         });
       } else {
-        drawChart({ svg: svg.current, size, data: data.eutrophicationData, selection: false });
+        drawChart({
+          svg: svg.current,
+          size,
+          data: data.eutrophicationData,
+          selection: false,
+          timeSlice,
+          setTimeSlice,
+          timeDefinition
+        });
         svg.current.on('mouseleave', () => {
           resetTooltip(null);
         });
       }
     }
-  }, [size, svg.current, selectedData]);
+  }, [size, svg, selectedData, timeDefinition]);
 
   // initialization
   useEffect(() => {
@@ -182,13 +228,14 @@ const SVGChart = ({ data, selectedFeature, regionIndex }) => {
         .attr('height', chartRef.current.offsetHeight);
       svgContainer.append('g').classed('xAxis', true);
       svgContainer.append('g').classed('tooltip', true).attr('x', 0).attr('y', 35);
+      svgContainer.append('circle').classed('thumb', true);
       svg.current = svgContainer;
 
       return () => {
         resizeObserver.disconnect();
       };
     }
-  }, [chartRef.current]);
+  }, [chartRef]);
 
   return (
     <>

@@ -22,4 +22,5 @@
 .headerChart {
   display: flex;
   justify-content: flex-end;
+  min-height: 20px;
 }

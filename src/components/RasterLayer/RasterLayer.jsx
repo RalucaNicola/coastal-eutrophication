@@ -1,7 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
+import { getTimeDefinition } from '../../utils';
 import { mapConfig } from '../../config';
 import ImageryTileLayer from '@arcgis/core/layers/ImageryTileLayer';
 import RasterStretchRenderer from '@arcgis/core/renderers/RasterStretchRenderer';
+import DimensionalDefinition from '@arcgis/core/layers/support/DimensionalDefinition';
+
+import { AppContext } from '../../contexts/AppContextProvider';
+
 const symbol = {
   type: 'simple-marker',
   style: 'square',
@@ -33,20 +38,6 @@ const renderer = new RasterStretchRenderer({
   }
 });
 
-const getTimeDefinition = async (url) => {
-  const definitionUrl = url + '/multiDimensionalInfo?f=json';
-  const response = await fetch(definitionUrl);
-  const result = await response.json();
-  const data = result.multidimensionalInfo;
-  return [
-    {
-      variableName: data.variables[0].name,
-      dimensionName: data.variables[0].dimensions[0].name,
-      values: data.variables[0].dimensions[0].values
-    }
-  ];
-};
-
 const initImageryTileLayer = async ({ url, visible }) => {
   const multidimensionalDefinition = await getTimeDefinition(url);
   return new ImageryTileLayer({
@@ -59,9 +50,22 @@ const initImageryTileLayer = async ({ url, visible }) => {
   });
 };
 
-const RasterLayer = ({ identifyPoint, monthlyMode, mapView = null }) => {
+const RasterLayer = ({ identifyPoint, monthlyMode, timeSlice, mapView = null }) => {
   const totalLayerRef = useRef();
   const monthlyLayerRef = useRef();
+  const { timeDefinition } = useContext(AppContext);
+
+  useEffect(() => {
+    if (timeDefinition && totalLayerRef.current) {
+      totalLayerRef.current.multidimensionalDefinition = [
+        new DimensionalDefinition({
+          ...timeDefinition[0],
+          values: [timeDefinition[0].values[timeSlice]],
+          isSlice: true
+        })
+      ];
+    }
+  }, [timeSlice, timeDefinition, totalLayerRef]);
 
   useEffect(() => {
     const initLayers = async () => {
