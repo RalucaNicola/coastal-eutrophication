@@ -9,7 +9,7 @@ import { AppContext } from '../../contexts/AppContextProvider';
 
 const symbol = {
   type: 'simple-marker',
-  style: 'square',
+  style: 'circle',
   color: [0, 0, 0, 0],
   size: 10,
   outline: {
@@ -19,7 +19,6 @@ const symbol = {
 };
 
 const renderer = new RasterStretchRenderer({
-  computeGamma: true,
   stretchType: 'min-max',
   colorRamp: {
     type: 'multipart',
