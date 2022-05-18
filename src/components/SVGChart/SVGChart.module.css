@@ -44,7 +44,7 @@ svg {
   opacity: 0;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
   svg {
     font-size: var(--mobile-chart-font-size);
   }

@@ -18,7 +18,7 @@ export const App = () => {
 
   useLayoutEffect(() => {
     const updateMobile = () => {
-      if (window.innerWidth < 500) {
+      if (window.innerWidth < 551) {
         setIsMobile(true);
       } else {
         setIsMobile(false);

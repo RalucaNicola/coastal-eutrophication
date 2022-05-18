@@ -65,7 +65,6 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, tim
       </CalciteLabel>
     );
   };
-
   return (
     <div className={styles.container}>
       <div className={styles.countrySelection}>

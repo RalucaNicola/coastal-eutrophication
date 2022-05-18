@@ -19,7 +19,7 @@ const BottomPanel = ({ setPaddingBottom, children, setModal, setLegend, isMobile
       <header>
         <h1>
           <span className={styles.mainTitle}>Coastal eutrophication</span>{' '}
-          {`Potential eutrophication, through time, within Exclusive Economic Zones` && !isMobile}
+          {isMobile ? null : `Potential eutrophication, through time, within Exclusive Economic Zones`}
         </h1>
         <div className={styles.actionsContainer}>
           <CalciteAction icon='information' scale='s' onClick={setModal}></CalciteAction>
