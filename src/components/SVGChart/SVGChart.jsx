@@ -100,6 +100,7 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 
     const stackedData = stack().offset(stackOffsetSilhouette).keys(keys)(data);
     svg
+      .select('.chartArea')
       .selectAll('.myArea')
       .data(stackedData)
       .join('path')
@@ -231,6 +232,7 @@ const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice,
         .select('svg')
         .attr('width', '100%')
         .attr('height', chartRef.current.offsetHeight);
+      svgContainer.append('g').classed('chartArea', true);
       svgContainer.append('g').classed('xAxis', true);
       svgContainer.append('g').classed('tooltip', true).attr('x', 0).attr('y', 35);
       svgContainer.append('circle').classed('thumb', true);
