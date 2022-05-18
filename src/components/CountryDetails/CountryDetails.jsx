@@ -17,7 +17,7 @@ import { SVGChart } from '../index';
 import { useEffect, useState } from 'react';
 import { regionNames } from '../../config';
 
-const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, timeSlice, setTimeSlice }) => {
+const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, timeSlice, setTimeSlice, isMobile }) => {
   const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
   const [selectedFeature, setSelectedFeature] = useState();
   const toggleMode = (event) => {
@@ -69,10 +69,11 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, tim
   return (
     <div className={styles.container}>
       <div className={styles.countrySelection}>
-        <CalciteLabel>
+        <CalciteLabel scale={isMobile ? 's' : 'm'}>
           {' '}
           Select a zone:
           <CalciteSelect
+            scale={isMobile ? 's' : 'm'}
             onCalciteSelectChange={(event) => {
               const country = event.target.selectedOption.value;
               if (country === 'None') {
@@ -90,7 +91,7 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, tim
             <CalciteOption selected={selectedCountry ? null : true}>None</CalciteOption>
           </CalciteSelect>
         </CalciteLabel>
-        {showRegionSelection()}
+        {isMobile ? null : showRegionSelection()}
       </div>
       <div className={styles.countryChart}>
         <div className={styles.headerChart}>

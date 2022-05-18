@@ -28,3 +28,13 @@
 .label {
   cursor: pointer;
 }
+
+@media (max-width: 500px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .countrySelection {
+    border-right: none;
+  }
+}

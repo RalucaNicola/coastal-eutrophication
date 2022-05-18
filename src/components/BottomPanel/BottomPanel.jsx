@@ -7,7 +7,7 @@ const openEsriOceansPortal = () => {
   window.open('https://esrioceans.maps.arcgis.com/home/index.html', '_blank');
 };
 
-const BottomPanel = ({ setPaddingBottom, children, setModal }) => {
+const BottomPanel = ({ setPaddingBottom, children, setModal, setLegend, isMobile }) => {
   const [visible, setVisible] = useState(true);
   const togglePanel = () => {
     setVisible(!visible);
@@ -18,13 +18,13 @@ const BottomPanel = ({ setPaddingBottom, children, setModal }) => {
     <div className={styles.container}>
       <header>
         <h1>
-          <span className={styles.mainTitle}>Coastal eutrophication</span> Potential eutrophication, through time,
-          within Exclusive Economic Zones
+          <span className={styles.mainTitle}>Coastal eutrophication</span>{' '}
+          {`Potential eutrophication, through time, within Exclusive Economic Zones` && !isMobile}
         </h1>
         <div className={styles.actionsContainer}>
           <CalciteAction icon='information' scale='s' onClick={setModal}></CalciteAction>
-          <CalciteAction icon='dataMagnifyingGlass' scale='s' onClick={openEsriOceansPortal}></CalciteAction>
-          <CalciteAction icon='link' scale='s' disabled></CalciteAction>
+          <CalciteAction icon='legend' scale='s' onClick={setLegend}></CalciteAction>
+          <CalciteAction icon='link' scale='s' onClick={openEsriOceansPortal}></CalciteAction>
           <div className={styles.borderLeft}>
             <CalciteAction icon={visible ? 'chevronDown' : 'chevronUp'} scale='s' onClick={togglePanel}></CalciteAction>
           </div>

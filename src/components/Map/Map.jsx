@@ -6,7 +6,6 @@ import { mapConfig } from '../../config';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Graphic from '@arcgis/core/Graphic';
-import Legend from '@arcgis/core/widgets/Legend';
 
 const world = new Graphic({
   geometry: {
@@ -109,14 +108,6 @@ const Map = ({ selectedCountry, setCountry, setIdentifyPoint, paddingBottom, chi
         eezLayerRef.current = eezLayer;
         view.map.add(groupLayer);
 
-        const legend = new Legend({
-          view: view,
-          style: {
-            layout: 'stack'
-          }
-        });
-
-        view.ui.add(legend, 'bottom-right');
         addEventHandler(view);
         window.view = view;
       });

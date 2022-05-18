@@ -4,3 +4,4 @@ export { default as InfoModal } from './InfoModal/InfoModal';
 export { default as CountryDetails } from './CountryDetails/CountryDetails';
 export { default as RasterLayer } from './RasterLayer/RasterLayer';
 export { default as SVGChart } from './SVGChart/SVGChart';
+export { default as LegendComponent } from './Legend/Legend';

@@ -4,7 +4,7 @@
 
 :global .tooltip {
   position: absolute;
-  font-size: 14px;
+  font-size: var(--chart-font-size);
 }
 
 :global .country {
@@ -26,13 +26,13 @@
 }
 
 svg {
-  font-size: 14px;
+  font-size: var(--chart-font-size);
   color: var(--calcite-ui-text-2);
   font-family: var(--calcite-sans-family);
 }
 
 :global .tick {
-  font-size: 12px;
+  font-size: var(--mobile-chart-font-size);
   color: var(--calcite-ui-text-2);
   font-family: var(--calcite-sans-family);
 }
@@ -42,4 +42,18 @@ svg {
   stroke-width: 1;
   stroke-dasharray: 4;
   opacity: 0;
+}
+
+@media (max-width: 500px) {
+  svg {
+    font-size: var(--mobile-chart-font-size);
+  }
+  :global .tooltip {
+    position: absolute;
+    font-size: var(--mobile-chart-font-size);
+  }
+
+  :global .tick {
+    font-size: 11px;
+  }
 }

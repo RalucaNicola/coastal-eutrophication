@@ -263,10 +263,7 @@ const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice,
       });
       resizeObserver.observe(chartRef.current);
 
-      const svgContainer = select(chartRef.current)
-        .select('svg')
-        .attr('width', '100%')
-        .attr('height', chartRef.current.offsetHeight);
+      const svgContainer = select(chartRef.current).select('svg').attr('width', '100%').attr('height', '100%');
       svg.current = svgContainer;
 
       return () => {

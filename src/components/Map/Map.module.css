@@ -27,3 +27,7 @@
 :global .esri-legend {
   border-radius: var(--border-radius);
 }
+
+:global .esri-legend {
+  width: unset !important;
+}
