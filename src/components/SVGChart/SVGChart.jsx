@@ -73,7 +73,8 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
   if (selection) {
     // build impact percentage scale
     let domainHeight;
-    if (data.columns.length > 40) {
+    console.log(data.columns);
+    if (data.columns.length > 30) {
       domainHeight = 700;
     } else if (data.columns.length === 1) {
       domainHeight = 50;

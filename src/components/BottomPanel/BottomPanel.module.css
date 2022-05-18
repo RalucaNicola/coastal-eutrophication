@@ -1,14 +1,14 @@
 .container {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
+  bottom: var(--margin);
+  left: var(--margin);
+  right: var(--margin);
   background: rgba(255 255 255 / 100%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  padding: 10px;
+  padding: 15px;
 }
 
 .mainTitle {

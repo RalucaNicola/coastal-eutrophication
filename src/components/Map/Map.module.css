@@ -23,6 +23,7 @@
   display: none !important;
 }
 
-:global .esri-popup__main-container {
+:global .esri-popup__main-container,
+:global .esri-legend {
   border-radius: var(--border-radius);
 }

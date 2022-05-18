@@ -20,8 +20,6 @@ const symbol = {
 
 const renderer = new RasterStretchRenderer({
   computeGamma: true,
-  gamma: [2],
-  useGamma: true,
   stretchType: 'min-max',
   colorRamp: {
     type: 'multipart',
@@ -42,6 +40,7 @@ const initImageryTileLayer = async ({ url, visible }) => {
   const multidimensionalDefinition = await getTimeDefinition(url);
   return new ImageryTileLayer({
     url,
+    title: 'Local eutrophication rates',
     visible,
     useViewTime: false,
     multidimensionalDefinition,
