@@ -25,7 +25,7 @@ const margin = {
   left: 20
 };
 
-const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDefinition }) => {
+const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDefinition, setCountry }) => {
   const timeValues = timeDefinition[0].values;
   // build time scale
   const xRange = [margin.left, size.width - margin.right];
@@ -119,6 +119,9 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
       })
       .on('mouseleave', () => {
         mouseleave(data.selectedFeature.country);
+      })
+      .on('click', (event, d) => {
+        setCountry(d.key);
       });
   }
 };
@@ -152,7 +155,7 @@ const mouseleave = function () {
   selectAll('.myArea').style('opacity', 1);
 };
 
-const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice }) => {
+const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice, setCountry }) => {
   const chartRef = useRef();
   const svg = useRef();
   const [size, setSize] = useState();
@@ -191,7 +194,8 @@ const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice 
           selection: true,
           timeSlice,
           setTimeSlice,
-          timeDefinition
+          timeDefinition,
+          setCountry
         });
         svg.current.on('mouseleave', () => {
           resetTooltip(selectedData.selectedFeature.country);

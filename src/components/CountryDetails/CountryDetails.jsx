@@ -105,6 +105,7 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, tim
           regionIndex={selectedRegionIndex}
           timeSlice={timeSlice}
           setTimeSlice={setTimeSlice}
+          setCountry={setCountry}
         ></SVGChart>
       </div>
     </div>
