@@ -8,7 +8,7 @@ const openEsriOceansPortal = () => {
 };
 
 const BottomPanel = ({ setPaddingBottom, children, setModal, setLegend, isMobile }) => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const togglePanel = () => {
     setVisible(!visible);
     const padding = visible ? 80 : 350;
