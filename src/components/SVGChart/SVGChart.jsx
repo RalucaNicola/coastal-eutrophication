@@ -5,6 +5,7 @@ import {
   area,
   axisBottom,
   drag,
+  max,
   pointer,
   scaleLinear,
   scaleOrdinal,
@@ -108,16 +109,21 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 
   if (selection) {
     // build impact percentage scale
-    let domainHeight;
-    if (data.columns.length > 30) {
-      domainHeight = 600;
-    } else if (data.columns.length === 1) {
-      domainHeight = 50;
-    } else {
-      domainHeight = 150;
+    let domainHeight = 50;
+    if (data.columns.length !== 1) {
+      const sumPercentages = data.map((d) => {
+        let sum = 0;
+        Object.keys(d).forEach((key) => {
+          if (key !== 'date') {
+            sum += parseFloat(d[key]);
+          }
+        });
+        return sum;
+      });
+      domainHeight = max(sumPercentages);
     }
     const yScale = scaleLinear()
-      .domain([-domainHeight, domainHeight])
+      .domain([-domainHeight / 2, domainHeight / 2])
       .range([size.height - margin.bottom, 0]);
 
     const keys = data.columns;
