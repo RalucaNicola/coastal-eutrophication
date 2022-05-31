@@ -133,7 +133,7 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
       if (key === data.selectedFeature.country) {
         return '#00D96D';
       } else {
-        return '#eee';
+        return '#888';
       }
     });
 
@@ -147,8 +147,8 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
       .join('path')
       .attr('class', 'myArea')
       .style('fill', (d) => color(d.key))
-      .style('stroke', '#ccc')
-      .style('stroke-width', 0.5)
+      .style('stroke', '#eee')
+      .style('stroke-width', 0.25)
       .attr(
         'd',
         area()

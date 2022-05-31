@@ -44,7 +44,7 @@ const initImageryTileLayer = async ({ url, visible }) => {
     useViewTime: false,
     multidimensionalDefinition,
     renderer,
-    effect: 'saturate(300%)'
+    effect: 'bloom(50%, 0.5px, 0.1)'
   });
 };
 

@@ -1,4 +1,4 @@
-@import 'https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/light/main.css';
+@import 'https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/dark/main.css';
 
 html,
 body,
@@ -8,16 +8,18 @@ body,
   height: 100%;
   width: 100%;
   font-family: var(--calcite-sans-family);
-  color: var(--calcite-ui-text-2);
+  color: var(--calcite-ui-text-1);
 }
 
+.calcite-theme-dark,
 :root {
-  --calcite-ui-brand: #08a657;
+  --calcite-ui-brand: #00d96d;
   --calcite-ui-brand-hover: #04532c;
   --border-radius: 10px;
-  --box-shadow: 0 1px 4px rgb(0 0 0 / 80%);
+  --box-shadow: 0 0 12px rgb(0 0 0 / 100%);
   --margin: 15px;
 
   --mobile-chart-font-size: 12px;
   --chart-font-size: 14px;
+  --calcite-ui-text-3: rgb(230, 230, 230);
 }

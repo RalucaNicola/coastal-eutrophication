@@ -17,7 +17,7 @@ const world = new Graphic({
   },
   symbol: {
     type: 'simple-fill',
-    color: 'rgba(0, 0, 0, 0.3)',
+    color: 'rgba(0, 0, 0, 0.4)',
     outline: null
   }
 });
@@ -25,19 +25,33 @@ const world = new Graphic({
 const lowlightLayer = new GraphicsLayer({ opacity: 0 });
 lowlightLayer.graphics.add(world);
 
+const greenShadowLayer = new GraphicsLayer({
+  effect:
+    'drop-shadow(0, 0, 10px, rgb(40, 40, 40)) drop-shadow(0, 0, 5px, rgb(40, 40, 40)) drop-shadow(0, 0, 5px, rgb(40, 40, 40))'
+});
+
 const highlightLayer = new GraphicsLayer({
   title: 'Highlight layer',
-  blendMode: 'destination-out',
-  effect: 'drop-shadow(0, 0px, 25px) drop-shadow(0, 0px, 5px)'
+  blendMode: 'destination-out'
+  // effect: 'drop-shadow(0, 0, 25px) drop-shadow(0, 0, 5px)'
 });
 
 const groupLayer = new GroupLayer({
-  layers: [lowlightLayer, highlightLayer]
+  layers: [lowlightLayer, greenShadowLayer, highlightLayer]
 });
-const symbol = {
+const maskSymbol = {
   type: 'simple-fill',
   color: 'black',
   outline: null
+};
+
+const symbol = {
+  type: 'simple-fill',
+  color: [0, 0, 0, 0],
+  outline: {
+    color: 'rgb(40, 40, 40)',
+    width: 2
+  }
 };
 
 const Map = ({ selectedCountry, setCountry, setIdentifyPoint, paddingBottom, children }) => {
@@ -132,9 +146,13 @@ const Map = ({ selectedCountry, setCountry, setIdentifyPoint, paddingBottom, chi
         returnGeometry: true
       });
       if (feature) {
-        highlightLayer.graphics.removeAll();
-        feature.symbol = symbol;
-        highlightLayer.graphics.add(feature);
+        highlightLayer.removeAll();
+        greenShadowLayer.removeAll();
+        feature.symbol = maskSymbol;
+        const greenShadowFeature = feature.clone();
+        greenShadowFeature.symbol = symbol;
+        highlightLayer.add(feature);
+        greenShadowLayer.add(greenShadowFeature);
         lowlightLayer.opacity = 1;
         mapView.goTo(
           {
@@ -151,7 +169,8 @@ const Map = ({ selectedCountry, setCountry, setIdentifyPoint, paddingBottom, chi
   };
 
   const removeHighlight = () => {
-    highlightLayer.graphics.removeAll();
+    highlightLayer.removeAll();
+    greenShadowLayer.removeAll();
     lowlightLayer.opacity = 0;
     mapView.goTo(mapView.map.initialViewProperties.viewpoint);
   };

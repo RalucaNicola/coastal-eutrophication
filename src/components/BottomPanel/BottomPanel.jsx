@@ -22,11 +22,16 @@ const BottomPanel = ({ setPaddingBottom, children, setModal, setLegend, isMobile
           {isMobile ? null : `Potential eutrophication, through time, within Exclusive Economic Zones`}
         </h1>
         <div className={styles.actionsContainer}>
-          <CalciteAction icon='information' scale='s' onClick={setModal}></CalciteAction>
-          <CalciteAction icon='legend' scale='s' onClick={setLegend}></CalciteAction>
-          <CalciteAction icon='link' scale='s' onClick={openEsriOceansPortal}></CalciteAction>
+          <CalciteAction icon='information' scale='s' appearance='clear' onClick={setModal}></CalciteAction>
+          <CalciteAction icon='legend' scale='s' appearance='clear' onClick={setLegend}></CalciteAction>
+          <CalciteAction icon='link' scale='s' appearance='clear' onClick={openEsriOceansPortal}></CalciteAction>
           <div className={styles.borderLeft}>
-            <CalciteAction icon={visible ? 'chevronDown' : 'chevronUp'} scale='s' onClick={togglePanel}></CalciteAction>
+            <CalciteAction
+              icon={visible ? 'chevronDown' : 'chevronUp'}
+              scale='s'
+              appearance='clear'
+              onClick={togglePanel}
+            ></CalciteAction>
           </div>
         </div>
       </header>
