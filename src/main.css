@@ -23,3 +23,12 @@ body,
   --chart-font-size: 14px;
   --calcite-ui-text-3: rgb(230, 230, 230);
 }
+
+.esri-legend.esri-widget {
+  background: rgba(0 0 0 / 30%);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid rgba(255 255 255 / 20%);
+}

@@ -3,7 +3,7 @@
   bottom: var(--margin);
   left: var(--margin);
   right: var(--margin);
-  background: rgba(0 0 0 / 20%);
+  background: rgba(0 0 0 / 30%);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border-radius: var(--border-radius);

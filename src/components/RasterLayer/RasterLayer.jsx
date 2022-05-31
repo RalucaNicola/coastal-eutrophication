@@ -20,6 +20,8 @@ const symbol = {
 
 const renderer = new RasterStretchRenderer({
   stretchType: 'min-max',
+  gamma: 3,
+  useGamma: true,
   colorRamp: {
     type: 'multipart',
     colorRamps: [
@@ -44,7 +46,8 @@ const initImageryTileLayer = async ({ url, visible }) => {
     useViewTime: false,
     multidimensionalDefinition,
     renderer,
-    effect: 'bloom(50%, 0.5px, 0.1)'
+    //effect: 'bloom(50%, 0.5px, 0.1)'
+    effect: 'saturate(300%)'
   });
 };
 

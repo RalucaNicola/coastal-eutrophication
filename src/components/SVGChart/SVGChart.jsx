@@ -109,18 +109,19 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 
   if (selection) {
     // build impact percentage scale
-    let domainHeight = 50;
-    if (data.columns.length !== 1) {
-      const sumPercentages = data.map((d) => {
-        let sum = 0;
-        Object.keys(d).forEach((key) => {
-          if (key !== 'date') {
-            sum += parseFloat(d[key]);
-          }
-        });
-        return sum;
+
+    const sumPercentages = data.map((d) => {
+      let sum = 0;
+      Object.keys(d).forEach((key) => {
+        if (key !== 'date') {
+          sum += parseFloat(d[key]);
+        }
       });
-      domainHeight = max(sumPercentages);
+      return sum;
+    });
+    let domainHeight = max(sumPercentages);
+    if (data.columns.length === 1) {
+      domainHeight = domainHeight * 2;
     }
     const yScale = scaleLinear()
       .domain([-domainHeight / 2, domainHeight / 2])
