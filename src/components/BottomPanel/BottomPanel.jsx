@@ -1,21 +1,34 @@
 import * as styles from './BottomPanel.module.css';
 import '@esri/calcite-components/dist/components/calcite-action';
 import { CalciteAction } from '@esri/calcite-components-react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const openEsriOceansPortal = () => {
   window.open('https://esrioceans.maps.arcgis.com/home/index.html', '_blank');
 };
 
 const BottomPanel = ({ setPaddingBottom, children, setModal, setLegend, isMobile }) => {
+  const containerRef = useRef();
   const [visible, setVisible] = useState(false);
   const togglePanel = () => {
     setVisible(!visible);
-    const padding = visible ? 80 : 350;
-    setPaddingBottom(padding);
   };
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const resizeObserver = new ResizeObserver((elements) => {
+        const padding = elements[0].contentRect.height + 50;
+        setPaddingBottom(padding);
+      });
+      resizeObserver.observe(containerRef.current);
+
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+  }, [containerRef]);
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       <header>
         <h1>
           <span className={styles.mainTitle}>Coastal eutrophication</span>{' '}
