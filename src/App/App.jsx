@@ -13,6 +13,7 @@ export const App = () => {
   const [paddingBottom, setPaddingBottom] = useState(80);
   const [isMobile, setIsMobile] = useState();
   const [isLegendOpen, setIsLegendOpen] = useState(false);
+  const [fromMap, setFromMap] = useState(false);
 
   const { dataResponse, isLoading, isFailed } = useEutrophicationData();
 
@@ -47,6 +48,7 @@ export const App = () => {
         <CountryDetails
           data={dataResponse}
           setCountry={setSelectedCountry}
+          setFromMap={setFromMap}
           selectedCountry={selectedCountry}
           setMonthlyMode={setMonthlyMode}
           timeSlice={timeSlice}
@@ -63,6 +65,8 @@ export const App = () => {
         selectedCountry={selectedCountry}
         setIdentifyPoint={setIdentifyPoint}
         paddingBottom={paddingBottom}
+        setFromMap={setFromMap}
+        fromMap={fromMap}
       >
         <RasterLayer identifyPoint={identifyPoint} monthlyMode={monthlyMode} timeSlice={timeSlice}></RasterLayer>
         <LegendComponent isLegendOpen={isLegendOpen}></LegendComponent>
@@ -72,6 +76,7 @@ export const App = () => {
         setModal={() => setIsInfoModalOpen(true)}
         isMobile={isMobile}
         setLegend={() => setIsLegendOpen(!isLegendOpen)}
+        selectedCountry={selectedCountry}
       >
         {showCountryDetails()}
       </BottomPanel>

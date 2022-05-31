@@ -16,7 +16,8 @@
 }
 
 :global .thumb-indicator {
-  stroke: var(--calcite-ui-text-1);
+  stroke: rgba(255 255 255 / 70%);
+  stroke-dasharray: 6 2;
 }
 
 :global .thumb {
@@ -46,6 +47,10 @@ text {
   stroke-width: 1;
   stroke-dasharray: 4;
   opacity: 0;
+}
+
+:global .chartArea {
+  filter: drop-shadow(0 0 12px black);
 }
 
 @media (max-width: 550px) {

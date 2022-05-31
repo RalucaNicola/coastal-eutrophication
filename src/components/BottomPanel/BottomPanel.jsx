@@ -7,12 +7,18 @@ const openEsriOceansPortal = () => {
   window.open('https://esrioceans.maps.arcgis.com/home/index.html', '_blank');
 };
 
-const BottomPanel = ({ setPaddingBottom, children, setModal, setLegend, isMobile }) => {
+const BottomPanel = ({ setPaddingBottom, children, setModal, setLegend, isMobile, selectedCountry }) => {
   const containerRef = useRef();
   const [visible, setVisible] = useState(false);
   const togglePanel = () => {
     setVisible(!visible);
   };
+
+  useEffect(() => {
+    if (selectedCountry) {
+      setVisible(true);
+    }
+  }, [selectedCountry]);
 
   useEffect(() => {
     if (containerRef.current) {
