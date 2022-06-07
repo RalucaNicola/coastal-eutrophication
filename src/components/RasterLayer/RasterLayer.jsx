@@ -1,6 +1,5 @@
-import { useEffect, useRef, useContext } from 'react';
-import { getTimeDefinition } from '../../utils';
-import { mapConfig } from '../../config';
+import { useEffect, useRef, useContext, useState } from 'react';
+import { mapConfig, queryLayersInfo } from '../../config';
 import ImageryTileLayer from '@arcgis/core/layers/ImageryTileLayer';
 import RasterStretchRenderer from '@arcgis/core/renderers/RasterStretchRenderer';
 import DimensionalDefinition from '@arcgis/core/layers/support/DimensionalDefinition';
@@ -37,16 +36,14 @@ const renderer = new RasterStretchRenderer({
   }
 });
 
-const initImageryTileLayer = async ({ url, visible }) => {
-  const multidimensionalDefinition = await getTimeDefinition(url);
+const initImageryTileLayer = ({ url, visible, multidimensionalDefinition, title }) => {
   return new ImageryTileLayer({
     url,
-    title: 'Local eutrophication rates',
+    title,
     visible,
     useViewTime: false,
     multidimensionalDefinition,
     renderer,
-    //effect: 'bloom(50%, 0.5px, 0.1)'
     effect: 'saturate(300%)'
   });
 };
@@ -55,7 +52,8 @@ const setTimeDefinition = (layer, timeDef, timeSlice) => {
   if (timeDef && layer) {
     layer.multidimensionalDefinition = [
       new DimensionalDefinition({
-        ...timeDef[0],
+        dimensionName: layer.multidimensionalDefinition[0].dimensionName,
+        variableName: layer.multidimensionalDefinition[0].variableName,
         values: [timeDef[0].values[timeSlice]],
         isSlice: true
       })
@@ -66,25 +64,39 @@ const setTimeDefinition = (layer, timeDef, timeSlice) => {
 const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeSlice, mapView = null }) => {
   const yearlyLayerRef = useRef();
   const monthlyLayerRef = useRef();
+  const [queryLayers, setQueryLayers] = useState(null);
   const { yearlyTimeDefinition, monthlyTimeDefinition } = useContext(AppContext);
 
   useEffect(() => {
-    setTimeDefinition(monthlyLayerRef.current, monthlyTimeDefinition, monthlyTimeSlice);
-  }, [monthlyTimeSlice, monthlyTimeDefinition, monthlyLayerRef]);
-
-  useEffect(() => {
-    setTimeDefinition(yearlyLayerRef.current, yearlyTimeDefinition, yearlyTimeSlice);
-  }, [yearlyTimeSlice, yearlyTimeDefinition, yearlyLayerRef]);
-
-  useEffect(() => {
     const initLayers = async () => {
-      const yearlyLayer = await initImageryTileLayer({ url: mapConfig['yearly-layer'], visible: true });
+      const yearlyLayer = initImageryTileLayer({
+        url: mapConfig['yearly-layer'],
+        visible: true,
+        multidimensionalDefinition: yearlyTimeDefinition,
+        title: 'Local eutrophication rates'
+      });
       yearlyLayerRef.current = yearlyLayer;
-      const monthlyLayer = await initImageryTileLayer({ url: mapConfig['monthly-layer'], visible: false });
+      const monthlyLayer = initImageryTileLayer({
+        url: mapConfig['monthly-layer'],
+        visible: false,
+        multidimensionalDefinition: monthlyTimeDefinition,
+        title: 'Monthly average eutrophication rates'
+      });
       monthlyLayerRef.current = monthlyLayer;
       mapView.map.addMany([yearlyLayer, monthlyLayer], 0);
+
+      const queryLayers = queryLayersInfo.map((layerInfo) => {
+        return initImageryTileLayer({
+          url: layerInfo.url,
+          visible: false,
+          multidimensionalDefinition: [{ ...yearlyTimeDefinition[0], variableName: layerInfo.variableName }],
+          title: layerInfo.title
+        });
+      });
+      mapView.map.addMany(queryLayers);
+      setQueryLayers(queryLayers);
     };
-    if (mapView) {
+    if (mapView && yearlyTimeDefinition && monthlyTimeDefinition) {
       initLayers();
       mapView.popup.watch('visible', (value) => {
         if (!value) {
@@ -92,7 +104,18 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
         }
       });
     }
-  }, [mapView]);
+  }, [mapView, yearlyTimeDefinition, monthlyTimeDefinition]);
+
+  useEffect(() => {
+    setTimeDefinition(monthlyLayerRef.current, monthlyTimeDefinition, monthlyTimeSlice);
+  }, [monthlyTimeSlice, monthlyTimeDefinition, monthlyLayerRef]);
+
+  useEffect(() => {
+    setTimeDefinition(yearlyLayerRef.current, yearlyTimeDefinition, yearlyTimeSlice);
+    if (queryLayers) {
+      queryLayers.forEach((layer) => setTimeDefinition(layer, yearlyTimeDefinition, yearlyTimeSlice));
+    }
+  }, [yearlyTimeSlice, yearlyLayerRef, yearlyTimeDefinition, queryLayers]);
 
   // on mode change
   useEffect(() => {
@@ -107,11 +130,25 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
     const showPixelValue = async () => {
       mapView.graphics.removeAll();
       mapView.popup.close();
-      const layer = monthlyMode ? monthlyLayerRef.current : yearlyLayerRef.current;
-      const pixelResult = await layer.identify(identifyPoint);
-      mapView.graphics.add({ symbol, geometry: pixelResult.location });
-      const value = pixelResult.value ? `Value: ${pixelResult.value[0]}` : 'No value found.';
-      mapView.popup.open({ title: value, location: identifyPoint });
+
+      let content = '';
+      let title = 'Eutrophication values';
+
+      if (monthlyMode) {
+        const pixelResult = await monthlyLayerRef.current.identify(identifyPoint);
+        content = pixelResult.value ? `${pixelResult.value[0]}` : 'No value found.';
+        title = 'Monthly average value';
+      } else {
+        const queryLayerPromises = queryLayers.map((layer) => {
+          return layer.identify(identifyPoint);
+        });
+        const results = await Promise.all(queryLayerPromises);
+        results.forEach((result, index) => {
+          content += `<p>${queryLayersInfo[index].title}: ${result.value ? result.value[0] : 'no value found.'}</p>`;
+        });
+      }
+      mapView.graphics.add({ symbol, geometry: identifyPoint });
+      mapView.popup.open({ title, content, location: identifyPoint });
     };
 
     if (mapView) {

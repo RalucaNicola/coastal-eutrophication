@@ -23,7 +23,7 @@
 .headerChart {
   display: flex;
   justify-content: flex-end;
-  min-height: 40px;
+  min-height: 60px;
 }
 
 .label {

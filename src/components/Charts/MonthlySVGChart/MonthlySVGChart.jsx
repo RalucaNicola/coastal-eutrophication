@@ -138,7 +138,7 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
     });
     let domainHeight = max(sumPercentages);
     if (data.columns.length === 1) {
-      domainHeight = domainHeight * 2;
+      domainHeight = domainHeight * 4;
     }
     const yScale = scaleLinear()
       .domain([-domainHeight / 2, domainHeight / 2])

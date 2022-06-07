@@ -32,7 +32,7 @@ body,
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-  .esri-legend.esri-widget {
+  .esri-widget {
     background: rgba(0 0 0 / 30%);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);

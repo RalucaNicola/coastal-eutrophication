@@ -5,6 +5,7 @@
 :global .tooltip {
   position: absolute;
   font-size: var(--chart-font-size);
+  max-width: 70%;
 }
 
 :global .country {
@@ -58,8 +59,8 @@ text {
     font-size: var(--mobile-chart-font-size);
   }
   :global .tooltip {
-    position: absolute;
     font-size: var(--mobile-chart-font-size);
+    display: none;
   }
 
   :global .tick {

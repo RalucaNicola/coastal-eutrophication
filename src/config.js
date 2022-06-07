@@ -4,13 +4,30 @@ export const mapConfig = {
   'yearly-layer':
     'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_chlor_a/ImageServer',
   'monthly-layer':
-    'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_monthly_frequency_v2/ImageServer',
-  '90-percentile':
-    'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_p90/ImageServer',
-  'baseline':
-    'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_baseline/ImageServer',
-  'percent_difference':
-    'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_percent_difference/ImageServer'
+    'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_monthly_frequency_v2/ImageServer'
 };
+
+export const queryLayersInfo = [
+  {
+    variableName: 'anomaly_chlor_a_value',
+    url: 'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_chlor_a/ImageServer',
+    title: 'Chlorophill-a'
+  },
+  {
+    variableName: 'p90',
+    url: 'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_p90/ImageServer',
+    title: '90th percentile'
+  },
+  {
+    variableName: 'baseline',
+    url: 'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_baseline/ImageServer',
+    title: 'Baseline value'
+  },
+  {
+    variableName: 'percent_difference',
+    url: 'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_percent_difference/ImageServer',
+    title: 'Percent difference'
+  }
+];
 
 export const regionNames = ['country', 'level2', 'level1', 'region'];
