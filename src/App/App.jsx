@@ -9,11 +9,11 @@ export const App = () => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [identifyPoint, setIdentifyPoint] = useState(null);
   const [monthlyMode, setMonthlyMode] = useState(false);
-  const [timeSlice, setTimeSlice] = useState(0);
+  const [monthlyTimeSlice, setMonthlyTimeSlice] = useState(0);
+  const [yearlyTimeSlice, setYearlyTimeSlice] = useState(0);
   const [paddingBottom, setPaddingBottom] = useState(80);
   const [isMobile, setIsMobile] = useState();
   const [isLegendOpen, setIsLegendOpen] = useState(false);
-  const [fromMap, setFromMap] = useState(false);
 
   const { dataResponse, isLoading, isFailed } = useEutrophicationData();
 
@@ -32,7 +32,7 @@ export const App = () => {
 
   useEffect(() => {
     setIdentifyPoint(null);
-  }, [selectedCountry, timeSlice]);
+  }, [selectedCountry, monthlyTimeSlice, yearlyTimeSlice, monthlyMode]);
 
   const showCountryDetails = () => {
     if (!isLoading && !dataResponse) {
@@ -48,11 +48,13 @@ export const App = () => {
         <CountryDetails
           data={dataResponse}
           setCountry={setSelectedCountry}
-          setFromMap={setFromMap}
           selectedCountry={selectedCountry}
+          monthlyMode={monthlyMode}
           setMonthlyMode={setMonthlyMode}
-          timeSlice={timeSlice}
-          setTimeSlice={setTimeSlice}
+          monthlyTimeSlice={monthlyTimeSlice}
+          setMonthlyTimeSlice={setMonthlyTimeSlice}
+          yearlyTimeSlice={yearlyTimeSlice}
+          setYearlyTimeSlice={setYearlyTimeSlice}
           isMobile={isMobile}
         ></CountryDetails>
       );
@@ -65,10 +67,13 @@ export const App = () => {
         selectedCountry={selectedCountry}
         setIdentifyPoint={setIdentifyPoint}
         paddingBottom={paddingBottom}
-        setFromMap={setFromMap}
-        fromMap={fromMap}
       >
-        <RasterLayer identifyPoint={identifyPoint} monthlyMode={monthlyMode} timeSlice={timeSlice}></RasterLayer>
+        <RasterLayer
+          identifyPoint={identifyPoint}
+          monthlyMode={monthlyMode}
+          monthlyTimeSlice={monthlyTimeSlice}
+          yearlyTimeSlice={yearlyTimeSlice}
+        ></RasterLayer>
         <LegendComponent isLegendOpen={isLegendOpen}></LegendComponent>
       </Map>
       <BottomPanel

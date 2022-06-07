@@ -13,11 +13,13 @@ const useEutrophicationData = () => {
     setIsLoading(true);
     try {
       const countryData = await csv('./data/country_regions.csv');
-      const eutrophicationData = await csv('./data/impact_data_total.csv');
+      const eutrophicationDataYearly = await csv('./data/impact_data_total.csv');
+      const eutrophicationDataMonthly = await csv('./data/impact_data_monthly.csv');
 
       setResponse({
         countryData,
-        eutrophicationData
+        eutrophicationDataYearly,
+        eutrophicationDataMonthly
       });
     } catch (err) {
       setIsFailed(true);

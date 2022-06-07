@@ -13,11 +13,22 @@ import {
   CalciteRadioButton,
   CalciteSwitch
 } from '@esri/calcite-components-react';
-import { SVGChart } from '../index';
+import { YearlySVGChart, MonthlySVGChart } from '../index';
 import { useEffect, useState } from 'react';
 import { regionNames } from '../../config';
 
-const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, timeSlice, setTimeSlice, isMobile }) => {
+const CountryDetails = ({
+  data,
+  setCountry,
+  selectedCountry,
+  monthlyMode,
+  setMonthlyMode,
+  monthlyTimeSlice,
+  setMonthlyTimeSlice,
+  yearlyTimeSlice,
+  setYearlyTimeSlice,
+  isMobile
+}) => {
   const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
   const [selectedFeature, setSelectedFeature] = useState();
   const toggleMode = (event) => {
@@ -94,19 +105,30 @@ const CountryDetails = ({ data, setCountry, selectedCountry, setMonthlyMode, tim
       </div>
       <div className={styles.countryChart}>
         <div className={styles.headerChart}>
-          {/* <CalciteLabel layout='inline' alignment='start'>
-            <CalciteSwitch onCalciteSwitchChange={toggleMode} disabled></CalciteSwitch>
+          <CalciteLabel layout='inline' alignment='start'>
+            <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
             Monthly average view
-          </CalciteLabel> */}
+          </CalciteLabel>
         </div>
-        <SVGChart
-          data={data}
-          selectedFeature={selectedFeature}
-          regionIndex={selectedRegionIndex}
-          timeSlice={timeSlice}
-          setTimeSlice={setTimeSlice}
-          setCountry={setCountry}
-        ></SVGChart>
+        {monthlyMode ? (
+          <MonthlySVGChart
+            data={data}
+            selectedFeature={selectedFeature}
+            regionIndex={selectedRegionIndex}
+            timeSlice={monthlyTimeSlice}
+            setTimeSlice={setMonthlyTimeSlice}
+            setCountry={setCountry}
+          ></MonthlySVGChart>
+        ) : (
+          <YearlySVGChart
+            data={data}
+            selectedFeature={selectedFeature}
+            regionIndex={selectedRegionIndex}
+            timeSlice={yearlyTimeSlice}
+            setTimeSlice={setYearlyTimeSlice}
+            setCountry={setCountry}
+          ></YearlySVGChart>
+        )}
       </div>
     </div>
   );

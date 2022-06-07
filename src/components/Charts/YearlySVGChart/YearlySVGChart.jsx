@@ -1,4 +1,4 @@
-import * as styles from './SVGChart.module.css';
+import * as styles from '../SVGChart.module.css';
 
 import { useEffect, useRef, useState, useContext } from 'react';
 import {
@@ -16,8 +16,8 @@ import {
   stackOffsetSilhouette
 } from 'd3';
 
-import { regionNames } from '../../config';
-import { AppContext } from '../../contexts/AppContextProvider';
+import { regionNames } from '../../../config';
+import { AppContext } from '../../../contexts/AppContextProvider';
 
 const margin = {
   top: 20,
@@ -59,7 +59,6 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
     .select('.xAxis')
     .attr('transform', `translate(0,${size.height - margin.bottom})`)
     .call(xAxis);
-
   svg.selectAll('.myArea').remove();
 
   const country = selection ? data.selectedFeature.country : null;
@@ -199,19 +198,18 @@ const mouseleave = function () {
   selectAll('.myArea').style('opacity', 1);
 };
 
-const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice, setCountry }) => {
+const YearlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice, setCountry }) => {
   const chartRef = useRef();
   const svg = useRef();
   const [size, setSize] = useState();
   const [selectedData, setSelectedData] = useState(null);
-  const { timeDefinition } = useContext(AppContext);
-
+  const { yearlyTimeDefinition: timeDefinition } = useContext(AppContext);
   // recalculate streamgraph data when region or selected country changes
   useEffect(() => {
     if (selectedFeature) {
       const region = regionNames[regionIndex];
       const countries = data.countryData.filter((c) => c[region] === selectedFeature[region]).map((c) => c.country);
-      const selectedData = data.eutrophicationData.map((dataSlice) => {
+      const selectedData = data.eutrophicationDataYearly.map((dataSlice) => {
         let slice = {
           date: dataSlice.date
         };
@@ -248,7 +246,7 @@ const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice,
         drawChart({
           svg: svg.current,
           size,
-          data: data.eutrophicationData,
+          data: data.eutrophicationDataYearly,
           selection: false,
           timeSlice,
           setTimeSlice,
@@ -299,4 +297,4 @@ const SVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice,
   );
 };
 
-export default SVGChart;
+export default YearlySVGChart;

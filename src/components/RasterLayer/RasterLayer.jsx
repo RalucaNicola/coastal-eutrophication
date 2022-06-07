@@ -51,30 +51,38 @@ const initImageryTileLayer = async ({ url, visible }) => {
   });
 };
 
-const RasterLayer = ({ identifyPoint, monthlyMode, timeSlice, mapView = null }) => {
-  const totalLayerRef = useRef();
+const setTimeDefinition = (layer, timeDef, timeSlice) => {
+  if (timeDef && layer) {
+    layer.multidimensionalDefinition = [
+      new DimensionalDefinition({
+        ...timeDef[0],
+        values: [timeDef[0].values[timeSlice]],
+        isSlice: true
+      })
+    ];
+  }
+};
+
+const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeSlice, mapView = null }) => {
+  const yearlyLayerRef = useRef();
   const monthlyLayerRef = useRef();
-  const { timeDefinition } = useContext(AppContext);
+  const { yearlyTimeDefinition, monthlyTimeDefinition } = useContext(AppContext);
 
   useEffect(() => {
-    if (timeDefinition && totalLayerRef.current) {
-      totalLayerRef.current.multidimensionalDefinition = [
-        new DimensionalDefinition({
-          ...timeDefinition[0],
-          values: [timeDefinition[0].values[timeSlice]],
-          isSlice: true
-        })
-      ];
-    }
-  }, [timeSlice, timeDefinition, totalLayerRef]);
+    setTimeDefinition(monthlyLayerRef.current, monthlyTimeDefinition, monthlyTimeSlice);
+  }, [monthlyTimeSlice, monthlyTimeDefinition, monthlyLayerRef]);
+
+  useEffect(() => {
+    setTimeDefinition(yearlyLayerRef.current, yearlyTimeDefinition, yearlyTimeSlice);
+  }, [yearlyTimeSlice, yearlyTimeDefinition, yearlyLayerRef]);
 
   useEffect(() => {
     const initLayers = async () => {
-      const totalLayer = await initImageryTileLayer({ url: mapConfig['total-layer'], visible: true });
-      totalLayerRef.current = totalLayer;
+      const yearlyLayer = await initImageryTileLayer({ url: mapConfig['yearly-layer'], visible: true });
+      yearlyLayerRef.current = yearlyLayer;
       const monthlyLayer = await initImageryTileLayer({ url: mapConfig['monthly-layer'], visible: false });
       monthlyLayerRef.current = monthlyLayer;
-      mapView.map.addMany([totalLayer, monthlyLayer], 0);
+      mapView.map.addMany([yearlyLayer, monthlyLayer], 0);
     };
     if (mapView) {
       initLayers();
@@ -88,8 +96,8 @@ const RasterLayer = ({ identifyPoint, monthlyMode, timeSlice, mapView = null }) 
 
   // on mode change
   useEffect(() => {
-    if (totalLayerRef.current && monthlyLayerRef) {
-      totalLayerRef.current.visible = !monthlyMode;
+    if (yearlyLayerRef.current && monthlyLayerRef.current) {
+      yearlyLayerRef.current.visible = !monthlyMode;
       monthlyLayerRef.current.visible = monthlyMode;
     }
   }, [monthlyMode]);
@@ -99,7 +107,7 @@ const RasterLayer = ({ identifyPoint, monthlyMode, timeSlice, mapView = null }) 
     const showPixelValue = async () => {
       mapView.graphics.removeAll();
       mapView.popup.close();
-      const layer = monthlyMode ? monthlyLayerRef.current : totalLayerRef.current;
+      const layer = monthlyMode ? monthlyLayerRef.current : yearlyLayerRef.current;
       const pixelResult = await layer.identify(identifyPoint);
       mapView.graphics.add({ symbol, geometry: pixelResult.location });
       const value = pixelResult.value ? `Value: ${pixelResult.value[0]}` : 'No value found.';
