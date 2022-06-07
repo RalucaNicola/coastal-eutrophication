@@ -2,7 +2,8 @@ import * as styles from './Map.module.css';
 import { useRef, useEffect, useState, Children, cloneElement } from 'react';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
-import { mapConfig } from '../../config';
+import { mapConfig, regionNames } from '../../config';
+import { getSelectionRenderer, getSimpleRenderer } from '../../utils';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Graphic from '@arcgis/core/Graphic';
@@ -54,7 +55,7 @@ const symbol = {
   }
 };
 
-const Map = ({ selectedCountry, setCountry, setIdentifyPoint, paddingBottom, children }) => {
+const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBottom, selectedRegionIndex, children }) => {
   const mapDivRef = useRef();
   const [mapView, setMapView] = useState(null);
   const selectedCountryRef = useRef(selectedCountry);
@@ -85,6 +86,22 @@ const Map = ({ selectedCountry, setCountry, setIdentifyPoint, paddingBottom, chi
       };
     }
   }, [paddingBottom]);
+
+  useEffect(() => {
+    if (data && eezLayerRef.current) {
+      if (selectedCountry && selectedRegionIndex > 0) {
+        const feature = data.countryData.filter((feature) => {
+          return feature.country === selectedCountry;
+        })[0];
+        const field = regionNames[selectedRegionIndex].field;
+        const regions = regionNames.map((region) => feature[region.name]);
+        const value = regions[selectedRegionIndex];
+        eezLayerRef.current.renderer = getSelectionRenderer(field, value);
+      } else {
+        eezLayerRef.current.renderer = getSimpleRenderer();
+      }
+    }
+  }, [selectedRegionIndex, selectedCountry, data, eezLayerRef]);
 
   // initialize effect
   useEffect(() => {
@@ -118,7 +135,7 @@ const Map = ({ selectedCountry, setCountry, setIdentifyPoint, paddingBottom, chi
       view.when(() => {
         setMapView(view);
         const eezLayer = view.map.layers.filter((layer) => layer.title === 'EEZLayer').getItemAt(0);
-        eezLayer.outFields = ['CountryName'];
+        eezLayer.outFields = regionNames.map((region) => region.field);
         eezLayerRef.current = eezLayer;
         view.map.add(groupLayer);
 

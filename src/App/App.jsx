@@ -14,6 +14,7 @@ export const App = () => {
   const [paddingBottom, setPaddingBottom] = useState(80);
   const [isMobile, setIsMobile] = useState();
   const [isLegendOpen, setIsLegendOpen] = useState(false);
+  const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
 
   const { dataResponse, isLoading, isFailed } = useEutrophicationData();
 
@@ -56,6 +57,8 @@ export const App = () => {
           yearlyTimeSlice={yearlyTimeSlice}
           setYearlyTimeSlice={setYearlyTimeSlice}
           isMobile={isMobile}
+          selectedRegionIndex={selectedRegionIndex}
+          setSelectedRegionIndex={setSelectedRegionIndex}
         ></CountryDetails>
       );
     }
@@ -63,10 +66,12 @@ export const App = () => {
   return (
     <>
       <Map
+        data={dataResponse}
         setCountry={setSelectedCountry}
         selectedCountry={selectedCountry}
         setIdentifyPoint={setIdentifyPoint}
         paddingBottom={paddingBottom}
+        selectedRegionIndex={selectedRegionIndex}
       >
         <RasterLayer
           identifyPoint={identifyPoint}

@@ -27,9 +27,10 @@ const CountryDetails = ({
   setMonthlyTimeSlice,
   yearlyTimeSlice,
   setYearlyTimeSlice,
+  selectedRegionIndex,
+  setSelectedRegionIndex,
   isMobile
 }) => {
-  const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
   const [selectedFeature, setSelectedFeature] = useState();
   const toggleMode = (event) => {
     setMonthlyMode(event.target.checked);
@@ -51,7 +52,7 @@ const CountryDetails = ({
       return null;
     }
 
-    const regions = regionNames.map((name) => selectedFeature[name]);
+    const regions = regionNames.map((region) => selectedFeature[region.name]);
 
     return (
       <CalciteLabel>

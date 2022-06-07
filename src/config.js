@@ -30,4 +30,9 @@ export const queryLayersInfo = [
   }
 ];
 
-export const regionNames = ['country', 'level2', 'level1', 'region'];
+export const regionNames = [
+  { name: 'country', field: 'CountryName' },
+  { name: 'level2', field: 'M49_Level_2_Region' },
+  { name: 'level1', field: 'M49_Level_1_Region' },
+  { name: 'region', field: 'SDG_Regions' }
+];

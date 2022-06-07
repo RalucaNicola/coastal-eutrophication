@@ -226,7 +226,7 @@ const MonthlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTim
   // recalculate streamgraph data when region or selected country changes
   useEffect(() => {
     if (selectedFeature) {
-      const region = regionNames[regionIndex];
+      const region = regionNames[regionIndex].name;
       const countries = data.countryData.filter((c) => c[region] === selectedFeature[region]).map((c) => c.country);
       const selectedData = data.eutrophicationDataMonthly.map((dataSlice) => {
         let slice = {

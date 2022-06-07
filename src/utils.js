@@ -11,3 +11,44 @@ export const getTimeDefinition = async (url) => {
     }
   ];
 };
+
+const defaultSymbol = {
+  type: 'simple-fill',
+  color: [0, 217, 109, 0],
+  style: 'solid',
+  outline: {
+    width: 0.5,
+    color: [255, 255, 255, 1]
+  }
+};
+
+const highlightedSymbol = {
+  type: 'simple-fill',
+  color: [0, 217, 109, 0.3],
+  style: 'solid',
+  outline: {
+    width: 0,
+    color: [255, 255, 255, 1]
+  }
+};
+
+export const getSelectionRenderer = (field, value) => {
+  return {
+    type: 'unique-value',
+    field,
+    defaultSymbol,
+    uniqueValueInfos: [
+      {
+        value,
+        symbol: highlightedSymbol
+      }
+    ]
+  };
+};
+
+export const getSimpleRenderer = () => {
+  return {
+    type: 'simple',
+    symbol: defaultSymbol
+  };
+};
