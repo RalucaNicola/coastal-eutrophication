@@ -83,7 +83,7 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
         title: 'Monthly average eutrophication rates'
       });
       monthlyLayerRef.current = monthlyLayer;
-      mapView.map.addMany([yearlyLayer, monthlyLayer]);
+      mapView.map.addMany([yearlyLayer, monthlyLayer], 0);
 
       const queryLayers = queryLayersInfo.map((layerInfo) => {
         return initImageryTileLayer({

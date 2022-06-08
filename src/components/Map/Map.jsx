@@ -137,6 +137,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         const eezLayer = view.map.layers.filter((layer) => layer.title === 'EEZLayer').getItemAt(0);
         eezLayer.outFields = regionNames.map((region) => region.field);
         eezLayerRef.current = eezLayer;
+        groupLayer.add(eezLayer, 0);
         view.map.add(groupLayer);
 
         addEventHandler(view);
