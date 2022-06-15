@@ -190,7 +190,6 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
     highlightLayer.removeAll();
     greenShadowLayer.removeAll();
     lowlightLayer.opacity = 0;
-    mapView.goTo(mapView.map.initialViewProperties.viewpoint);
   };
 
   // highlight layer effect

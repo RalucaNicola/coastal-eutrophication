@@ -1,0 +1,86 @@
+.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.hide {
+  display: none;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.modalContainer {
+  width: min(60%, 1000px);
+  max-height: 80%;
+  box-shadow: var(--box-shadow);
+  position: relative;
+  color: white;
+  background-color: rgb(43, 43, 43);
+}
+
+.header {
+  background: url(./assets/header.jpg) no-repeat;
+  background-position: top left;
+}
+
+footer {
+  background: url(./assets/footer.jpg) no-repeat;
+  background-position: bottom left;
+  margin-top: -120px;
+}
+
+.header,
+footer {
+  z-index: 99;
+  min-height: 180px;
+  background-size: cover;
+}
+
+.header h1 {
+  color: var(--calcite-ui-brand);
+  text-transform: uppercase;
+  text-shadow: 1px 1px 10px black;
+  margin: 0;
+  text-align: center;
+  padding-top: 30px;
+  font-weight: normal;
+}
+
+.textInfo {
+  z-index: 100;
+  padding: 0 100px;
+  max-height: 55vh;
+  overflow: auto;
+  position: relative;
+  top: -60px;
+  background: linear-gradient(0deg, rgba(43, 45, 44, 0), rgb(43, 43, 43) 10%, rgb(43, 43, 43) 90%, rgba(43, 45, 44, 0));
+}
+
+.textInfo h2 {
+  font-size: 1.2rem;
+  color: var(--calcite-ui-brand);
+  margin: 0;
+  padding: 10px 0;
+  font-weight: normal;
+}
+
+.textInfo p {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .textInfo {
+    padding: 0 30px;
+  }
+}
