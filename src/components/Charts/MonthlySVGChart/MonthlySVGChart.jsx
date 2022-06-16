@@ -184,7 +184,7 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
         resetTooltip(data.selectedFeature.country);
       })
       .on('click', (event, d) => {
-        setCountry(d.key);
+        setCountry({ name: d.key, selectedFromMap: false });
       });
   }
 };
@@ -192,7 +192,7 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 const resetTooltip = (selectedCountry) => {
   let htmlText = `<span>Select a zone to see the evolution of eutrophication impacted areas.</span>`;
   if (selectedCountry) {
-    htmlText = `<span>This chart compares the <b>percentage</b> of ${selectedCountry}'s EEZ area impacted by eutrophication, through time. <br> Regional neighbors (also percent area impacted by eutrophication) are optionally shown, for comparison.</span>`;
+    htmlText = `<span>This chart compares the <b>percentage</b> of ${selectedCountry.name}'s EEZ area impacted by eutrophication, through time. <br> Regional neighbors (also percent area impacted by eutrophication) are optionally shown, for comparison.</span>`;
   }
   select('.tooltip').html(htmlText);
 };

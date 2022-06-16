@@ -41,7 +41,7 @@ const CountryDetails = ({
       setSelectedFeature(null);
     } else {
       const feature = data.countryData.filter((feature) => {
-        return feature.country === selectedCountry;
+        return feature.country === selectedCountry.name;
       })[0];
       setSelectedFeature(feature);
     }
@@ -94,12 +94,15 @@ const CountryDetails = ({
               if (country === 'None') {
                 setCountry(null);
               } else {
-                setCountry(country);
+                setCountry({ name: country, selectedFromMap: false });
               }
             }}
           >
             {data.countryData.map((feature, index) => (
-              <CalciteOption key={index} selected={selectedCountry === feature.country ? true : null}>
+              <CalciteOption
+                key={index}
+                selected={selectedCountry && selectedCountry.name === feature.country ? true : null}
+              >
                 {feature.country}
               </CalciteOption>
             ))}

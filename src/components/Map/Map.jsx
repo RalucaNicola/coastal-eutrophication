@@ -66,8 +66,8 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
       const result = await view.hitTest(event, { include: [eezLayerRef.current] });
       if (result.results && result.results[0] && result.results[0].graphic) {
         const newCountrySelection = result.results[0].graphic.attributes['CountryName'];
-        if (selectedCountryRef.current !== newCountrySelection) {
-          setCountry(newCountrySelection);
+        if (!selectedCountryRef.current || selectedCountryRef.current.name !== newCountrySelection) {
+          setCountry({ name: newCountrySelection, selectedFromMap: true });
           setIdentifyPoint(null);
         } else {
           setIdentifyPoint(event.mapPoint);
@@ -91,7 +91,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
     if (data && eezLayerRef.current) {
       if (selectedCountry && selectedRegionIndex > 0) {
         const feature = data.countryData.filter((feature) => {
-          return feature.country === selectedCountry;
+          return feature.country === selectedCountry.name;
         })[0];
         const field = regionNames[selectedRegionIndex].field;
         const regions = regionNames.map((region) => feature[region.name]);
@@ -163,7 +163,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
       const {
         features: [feature]
       } = await eezLayerRef.current.queryFeatures({
-        where: `CountryName ='${selectedCountry}'`,
+        where: `CountryName ='${selectedCountry.name}'`,
         returnGeometry: true
       });
       if (feature) {
@@ -175,12 +175,14 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         highlightLayer.add(feature);
         greenShadowLayer.add(greenShadowFeature);
         lowlightLayer.opacity = 1;
-        mapView.goTo(
-          {
-            target: feature.geometry
-          },
-          { animate: false }
-        );
+        if (!selectedCountry.selectedFromMap) {
+          mapView.goTo(
+            {
+              target: feature.geometry
+            },
+            { animate: false }
+          );
+        }
       } else {
         removeHighlight();
       }
