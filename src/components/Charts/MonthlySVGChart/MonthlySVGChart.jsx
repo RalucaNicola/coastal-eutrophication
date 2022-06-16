@@ -18,6 +18,7 @@ import {
 
 import { regionNames } from '../../../config';
 import { AppContext } from '../../../contexts/AppContextProvider';
+import { months } from '../../../utils';
 
 const margin = {
   top: 20,
@@ -25,20 +26,6 @@ const margin = {
   bottom: 30,
   left: 20
 };
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-];
 
 const setThumbText = ({ xThumb, month, width }) => {
   const text = `Show average value for ${months[month - 1]}`;
@@ -180,7 +167,6 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
       })
       .on('mouseleave', () => {
         mouseleave(data.selectedFeature.country);
-
         resetTooltip(data.selectedFeature.country);
       })
       .on('click', (event, d) => {
@@ -192,7 +178,7 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 const resetTooltip = (country) => {
   let htmlText = `<span>Select a zone to see the evolution of eutrophication impacted areas.</span>`;
   if (country) {
-    htmlText = `<span>This chart compares the <b>percentage</b> of ${country}'s EEZ area impacted by eutrophication, through time. <br> Regional neighbors (also percent area impacted by eutrophication) are optionally shown, for comparison.</span>`;
+    htmlText = `<span>This chart shows the <b>percentage</b> of ${country}'s EEZ area impacted by eutrophication, through time. <br> Regional neighbors (also percent area impacted by eutrophication) are optionally shown, for comparison.</span>`;
   }
   select('.tooltip').html(htmlText);
 };

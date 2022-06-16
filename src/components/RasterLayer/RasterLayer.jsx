@@ -5,7 +5,7 @@ import RasterStretchRenderer from '@arcgis/core/renderers/RasterStretchRenderer'
 import DimensionalDefinition from '@arcgis/core/layers/support/DimensionalDefinition';
 
 import { AppContext } from '../../contexts/AppContextProvider';
-import { getSelectionRenderer } from '../../utils';
+import { months } from '../../utils';
 
 const symbol = {
   type: 'simple-marker',
@@ -146,8 +146,11 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
 
       if (monthlyMode) {
         const pixelResult = await monthlyLayerRef.current.identify(identifyPoint);
-        content = pixelResult.value ? `${pixelResult.value[0].toFixed(2)}` : 'No value found.';
-        title = 'Monthly anomaly pixel frequency (%)';
+        title = pixelResult.value
+          ? `This pixel experienced an anomalously high chlorophyll-a concentration ${pixelResult.value[0].toFixed(
+              2
+            )}% of all ${months[monthlyTimeSlice]}s since 2005.`
+          : 'This pixel never experienced an anomalously high chlorophyll-a concentration.';
       } else {
         const queryLayerPromises = queryLayers.map((layer) => {
           return layer.identify(identifyPoint);
@@ -155,8 +158,8 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
         const results = await Promise.all(queryLayerPromises);
         results.forEach((result, index) => {
           content += `<p>${queryLayersInfo[index].title}: ${
-            result.value ? result.value[0].toFixed(2) : 'no value found.'
-          }</p>`;
+            result.value ? result.value[0].toFixed(2) : 'no value found'
+          }.</p>`;
         });
       }
       mapView.graphics.add({ symbol, geometry: identifyPoint });
