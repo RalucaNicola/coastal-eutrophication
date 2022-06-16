@@ -69,7 +69,11 @@ const CountryDetails = ({
             return (
               <CalciteLabel key={index} layout='inline' className={styles.label}>
                 <CalciteRadioButton value={index} {...checked}></CalciteRadioButton>
-                {index === 0 ? `None, show only ${region}` : region}
+                {index === 0
+                  ? `None, show only ${region}`
+                  : index > 1
+                  ? `Level ${index - 1}: ${region.replace(' (M49)', '').replace(' (MDG=M49)', '')}`
+                  : `${region.replace(' (M49)', '').replace(' (MDG=M49)', '')}`}
               </CalciteLabel>
             );
           })}

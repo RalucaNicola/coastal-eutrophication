@@ -10,7 +10,7 @@ export const App = () => {
   const [identifyPoint, setIdentifyPoint] = useState(null);
   const [monthlyMode, setMonthlyMode] = useState(false);
   const [monthlyTimeSlice, setMonthlyTimeSlice] = useState(0);
-  const [yearlyTimeSlice, setYearlyTimeSlice] = useState(0);
+  const [yearlyTimeSlice, setYearlyTimeSlice] = useState(203);
   const [paddingBottom, setPaddingBottom] = useState(80);
   const [isMobile, setIsMobile] = useState();
   const [isLegendOpen, setIsLegendOpen] = useState(false);

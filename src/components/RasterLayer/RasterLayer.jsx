@@ -5,6 +5,7 @@ import RasterStretchRenderer from '@arcgis/core/renderers/RasterStretchRenderer'
 import DimensionalDefinition from '@arcgis/core/layers/support/DimensionalDefinition';
 
 import { AppContext } from '../../contexts/AppContextProvider';
+import { getSelectionRenderer } from '../../utils';
 
 const symbol = {
   type: 'simple-marker',
@@ -17,24 +18,26 @@ const symbol = {
   }
 };
 
-const renderer = new RasterStretchRenderer({
-  stretchType: 'min-max',
-  gamma: 3,
-  useGamma: true,
-  colorRamp: {
-    type: 'multipart',
-    colorRamps: [
-      {
-        fromColor: [0, 89, 178, 1],
-        toColor: [96, 172, 89, 1]
-      },
-      {
-        fromColor: [96, 172, 89, 1],
-        toColor: [191, 255, 0, 1]
-      }
-    ]
-  }
-});
+const getRenderer = (statistics) => {
+  return new RasterStretchRenderer({
+    stretchType: 'min-max',
+    useGamma: false,
+    statistics,
+    colorRamp: {
+      type: 'multipart',
+      colorRamps: [
+        {
+          fromColor: [0, 89, 178, 1],
+          toColor: [96, 172, 89, 1]
+        },
+        {
+          fromColor: [96, 172, 89, 1],
+          toColor: [191, 255, 0, 1]
+        }
+      ]
+    }
+  });
+};
 
 const initImageryTileLayer = ({ url, visible, multidimensionalDefinition, title }) => {
   return new ImageryTileLayer({
@@ -43,7 +46,6 @@ const initImageryTileLayer = ({ url, visible, multidimensionalDefinition, title 
     visible,
     useViewTime: false,
     multidimensionalDefinition,
-    renderer,
     effect: 'saturate(300%)'
   });
 };
@@ -73,14 +75,22 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
         url: mapConfig['yearly-layer'],
         visible: true,
         multidimensionalDefinition: yearlyTimeDefinition,
-        title: 'Local eutrophication rates'
+        title: 'Chlorophyll-a Concentration (mg/m3)'
+      });
+      yearlyLayer.load().then(() => {
+        const statistics = yearlyLayer.rasterInfo.statistics;
+        statistics[0].max = 10;
+        yearlyLayer.renderer = getRenderer(statistics);
       });
       yearlyLayerRef.current = yearlyLayer;
       const monthlyLayer = initImageryTileLayer({
         url: mapConfig['monthly-layer'],
         visible: false,
         multidimensionalDefinition: monthlyTimeDefinition,
-        title: 'Monthly average eutrophication rates'
+        title: 'Monthly anomaly pixel frequency (%)'
+      });
+      monthlyLayer.load().then(() => {
+        monthlyLayer.renderer = getRenderer(monthlyLayer.rasterInfo.statistics);
       });
       monthlyLayerRef.current = monthlyLayer;
       mapView.map.addMany([yearlyLayer, monthlyLayer], 0);

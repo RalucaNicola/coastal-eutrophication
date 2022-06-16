@@ -9,6 +9,7 @@ body,
   width: 100%;
   font-family: var(--calcite-sans-family);
   color: var(--calcite-ui-text-1);
+  background: rgba(60, 60, 60);
 }
 
 .calcite-theme-dark,

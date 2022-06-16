@@ -24,11 +24,11 @@ const defaultSymbol = {
 
 const highlightedSymbol = {
   type: 'simple-fill',
-  color: [0, 217, 109, 0.3],
-  style: 'solid',
+  color: [0, 0, 0],
+  style: 'diagonal-cross',
   outline: {
-    width: 0.5,
-    color: [0, 217, 109, 1]
+    width: 0,
+    color: [0, 0, 0]
   }
 };
 

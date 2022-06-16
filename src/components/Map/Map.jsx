@@ -120,6 +120,9 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         ui: {
           components: []
         },
+        background: {
+          color: [60, 60, 60]
+        },
         popup: {
           dockEnabled: true,
           dockOptions: {
