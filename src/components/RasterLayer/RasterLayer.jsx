@@ -146,15 +146,17 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
 
       if (monthlyMode) {
         const pixelResult = await monthlyLayerRef.current.identify(identifyPoint);
-        content = pixelResult.value ? `${pixelResult.value[0]}` : 'No value found.';
-        title = 'Monthly average value';
+        content = pixelResult.value ? `${pixelResult.value[0].toFixed(2)}` : 'No value found.';
+        title = 'Monthly anomaly pixel frequency (%)';
       } else {
         const queryLayerPromises = queryLayers.map((layer) => {
           return layer.identify(identifyPoint);
         });
         const results = await Promise.all(queryLayerPromises);
         results.forEach((result, index) => {
-          content += `<p>${queryLayersInfo[index].title}: ${result.value ? result.value[0] : 'no value found.'}</p>`;
+          content += `<p>${queryLayersInfo[index].title}: ${
+            result.value ? result.value[0].toFixed(2) : 'no value found.'
+          }</p>`;
         });
       }
       mapView.graphics.add({ symbol, geometry: identifyPoint });

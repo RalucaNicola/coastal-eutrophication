@@ -11,7 +11,7 @@ export const queryLayersInfo = [
   {
     variableName: 'anomaly_chlor_a_value',
     url: 'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_chlor_a/ImageServer',
-    title: 'Chlorophill-a'
+    title: 'Chlorophyll-a Concentration (mg/m3)'
   },
   {
     variableName: 'p90',
