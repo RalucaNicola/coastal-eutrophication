@@ -98,14 +98,18 @@ const CountryDetails = ({
               }
             }}
           >
-            {data.countryData.map((feature, index) => (
-              <CalciteOption
-                key={index}
-                selected={selectedCountry && selectedCountry.name === feature.country ? true : null}
-              >
-                {feature.country}
-              </CalciteOption>
-            ))}
+            {data.countryData
+              .sort((a, b) => {
+                return a.country.localeCompare(b.country, 'en', { sensitivity: 'base' });
+              })
+              .map((feature, index) => (
+                <CalciteOption
+                  key={index}
+                  selected={selectedCountry && selectedCountry.name === feature.country ? true : null}
+                >
+                  {feature.country}
+                </CalciteOption>
+              ))}
             <CalciteOption selected={selectedCountry ? null : true}>None</CalciteOption>
           </CalciteSelect>
         </CalciteLabel>
