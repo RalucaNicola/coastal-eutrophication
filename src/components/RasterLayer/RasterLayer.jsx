@@ -141,29 +141,38 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
       mapView.graphics.removeAll();
       mapView.popup.close();
 
-      let content = '';
-      let title = 'Eutrophication values';
+      let content = '<b>This pixel never experienced an anomalously high chlorophyll-a concentration.</b>';
 
       if (monthlyMode) {
         const pixelResult = await monthlyLayerRef.current.identify(identifyPoint);
-        title = pixelResult.value
-          ? `This pixel experienced an anomalously high chlorophyll-a concentration ${pixelResult.value[0].toFixed(
-              2
-            )}% of all ${months[monthlyTimeSlice]}s since 2005.`
-          : 'This pixel never experienced an anomalously high chlorophyll-a concentration.';
+        console.log(pixelResult);
+        if (pixelResult.value) {
+          content = `<p style="color: white"><b>This pixel experienced an anomalously high chlorophyll-a concentration ${pixelResult.value[0].toFixed(
+            2
+          )}% of all ${months[monthlyTimeSlice]}s since 2005.</b></p>`;
+        }
       } else {
+        const date = new Date(yearlyTimeDefinition[0].values[yearlyTimeSlice]);
+        const month = new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(date);
+        const year = date.getUTCFullYear();
         const queryLayerPromises = queryLayers.map((layer) => {
           return layer.identify(identifyPoint);
         });
         const results = await Promise.all(queryLayerPromises);
-        results.forEach((result, index) => {
-          content += `<p>${queryLayersInfo[index].title}: ${
-            result.value ? result.value[0].toFixed(2) : 'no value found'
-          }.</p>`;
-        });
+        if (results[0].value) {
+          content = `<p style="color: white"><b>This pixel's measured chlorophyll value in ${month} ${year} was ${results[0].value[0].toFixed(
+            2
+          )} mg/m<sup>3</sup>. The expected value, for the month of ${month}, was ${results[2].value[0].toFixed(
+            2
+          )} mg/m<sup>3</sup>. This is ${Math.ceil(
+            results[3].value[0]
+          )}% higher* than expected.</b></p><p><b>*For ${month} ${year}, any pixels greater than ${Math.ceil(
+            results[1].value[0]
+          )}% (90<sup>th</sup> percentile) are flagged for eutrophication.</b></p>`;
+        }
       }
       mapView.graphics.add({ symbol, geometry: identifyPoint });
-      mapView.popup.open({ title, content, location: identifyPoint });
+      mapView.popup.open({ content, location: identifyPoint });
     };
 
     if (mapView) {
