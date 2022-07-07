@@ -27,8 +27,8 @@ const margin = {
 };
 
 const setThumbText = ({ xThumb, date, width }) => {
-  const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
-  const text = `Show ${month}, ${date.getFullYear()}`;
+  const month = new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(date);
+  const text = `Show ${month}, ${date.getUTCFullYear()}`;
   if (xThumb > width / 2) {
     select('.thumb-date')
       .attr('x', xThumb - 10)
@@ -63,6 +63,7 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 
   const country = selection ? data.selectedFeature.country : null;
   resetTooltip(country);
+  console.log(timeValues[timeSlice]);
   const date = new Date(timeValues[timeSlice]);
   const xThumb = xScale(date);
   const yThumb = size.height - margin.bottom;
@@ -187,9 +188,9 @@ const mousemove = function (event, d, size) {
   const x = pointer(event)[0];
   const timeSlice = Math.floor((x - margin.left) / ((size.width - margin.right - margin.left) / 204));
   const date = new Date(d[timeSlice].data.date);
-  const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+  const month = new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(date);
   const value = parseFloat(d[timeSlice].data[d.key]);
-  const htmlText = `<span class='country'>${d.key}</span> ${month}, ${date.getFullYear()}</br> ${value.toFixed(
+  const htmlText = `<span class='country'>${d.key}</span> ${month}, ${date.getUTCFullYear()}</br> ${value.toFixed(
     2
   )}% <span class='emphasized'> eutrophication-impacted</span> area `;
   select('.tooltip').html(htmlText);
