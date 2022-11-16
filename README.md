@@ -49,7 +49,7 @@ Copy the content of the `/dist` directory to the server where you want to deploy
 - [Yearly anomaly chloropleth value](https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_chlor_a/ImageServer)
 - [Monthly anomaly frequency](https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_monthly_frequency_v2/ImageServer)
 - [90th percentile](https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_p90/ImageServer)
-- [Baseline values](ttps://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_baseline/ImageServer)
+- [Baseline values](https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_baseline/ImageServer)
 - [Percent difference](https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_percent_difference/ImageServer)
 - [EEZ polygons with statistics](https://services.arcgis.com/bDAhvQYMG4WL8O5o/ArcGIS/rest/services/eez_v11_with_UN_code_and_EEZ_pixel_count_and_UN_regions_and_stats_UN_Country_Dissolve_v3/FeatureServer/0)
 
