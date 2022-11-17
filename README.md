@@ -1,6 +1,6 @@
 # Coastal eutrophication
 
-The [Coastal eutrophication](https://geoxc-apps4.bd.esri.com/coastal-eutrophication/) is a work of Esri’s Living Atlas of the World. To access this data directly, visit [this ArcGIS Online resource](https://www.arcgis.com/home/group.html?id=79d07e80275f4e20965d30a2123d1701#overview).
+A web application that visualizes global coastal eutrophication trends by country and region from 2005 until 2021. To access the data directly, visit [this ArcGIS Online resource](https://www.arcgis.com/home/group.html?id=79d07e80275f4e20965d30a2123d1701#overview).
 [![image](./public/screenshot.png)](https://geoxc-apps4.bd.esri.com/coastal-eutrophication/)
 [View it live](https://geoxc-apps4.bd.esri.com/coastal-eutrophication/)
 
@@ -43,7 +43,7 @@ Copy the content of the `/dist` directory to the server where you want to deploy
 
 - [ArcGIS API for JavaScript (version 4.25)](https://developers.arcgis.com/javascript/index.html)
 
-## Data
+## Data - Esri's Living Atlas of the World
 
 - [Basemap](https://www.arcgis.com/home/item.html?id=bea906821f874d24b6dcf2a794edefd9)
 - [Yearly anomaly chloropleth value](https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_chlor_a/ImageServer)
