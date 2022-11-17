@@ -160,15 +160,15 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
         });
         const results = await Promise.all(queryLayerPromises);
         if (results[0].value) {
-          content = `<p style="color: white"><b>This pixel's measured chlorophyll value in ${month} ${year} was ${results[0].value[0].toFixed(
+          content = `<p style="color: white">This pixel's measured chlorophyll value in ${month} ${year} was ${results[0].value[0].toFixed(
             2
           )} mg/m<sup>3</sup>. The expected value, for the month of ${month}, was ${results[2].value[0].toFixed(
             2
           )} mg/m<sup>3</sup>. This is ${Math.ceil(
             results[3].value[0]
-          )}% higher* than expected.</b></p><p><b>*For ${month} ${year}, any pixels greater than ${Math.ceil(
+          )}% higher* than expected.</p><p>*For ${month} ${year}, any pixels greater than ${Math.ceil(
             results[1].value[0]
-          )}% (90<sup>th</sup> percentile) are flagged for eutrophication.</b></p>`;
+          )}% (90<sup>th</sup> percentile) are flagged for eutrophication.</p>`;
         }
       }
       mapView.graphics.add({ symbol, geometry: identifyPoint });

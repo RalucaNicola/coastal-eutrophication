@@ -1,4 +1,4 @@
-@import 'https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/dark/main.css';
+@import 'https://js.arcgis.com/4.25/@arcgis/core/assets/esri/themes/dark/main.css';
 
 html,
 body,
@@ -42,6 +42,21 @@ body,
 
 a {
   color: white;
+}
+
+.esri-popup {
+  --calcite-ui-background: transparent !important;
+  --calcite-ui-foreground-1: transparent !important;
+  --calcite-ui-text-2: rgb(230, 230, 230);
+}
+
+.esri-popup__content {
+  line-height: 1.4rem;
+}
+
+sup {
+  line-height: 0;
+  vertical-align: super;
 }
 
 /* scrollbar styles */
