@@ -13,7 +13,7 @@ export const App = () => {
   const [yearlyTimeSlice, setYearlyTimeSlice] = useState(203);
   const [paddingBottom, setPaddingBottom] = useState(80);
   const [isMobile, setIsMobile] = useState();
-  const [isLegendOpen, setIsLegendOpen] = useState(false);
+  const [isLegendOpen, setIsLegendOpen] = useState(true);
   const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
 
   const { dataResponse, isLoading, isFailed } = useEutrophicationData();
