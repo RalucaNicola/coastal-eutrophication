@@ -1,7 +1,7 @@
 # Coastal eutrophication
 
 The [Coastal eutrophication](https://geoxc-apps4.bd.esri.com/coastal-eutrophication/) is a work of Esri’s Living Atlas of the World. To access this data directly, visit [this ArcGIS Online resource](https://www.arcgis.com/home/group.html?id=79d07e80275f4e20965d30a2123d1701#overview).
-
+[![image](./public/screenshot.png)](https://geoxc-apps4.bd.esri.com/coastal-eutrophication/)
 [View it live](https://geoxc-apps4.bd.esri.com/coastal-eutrophication/)
 
 ## Instructions:
