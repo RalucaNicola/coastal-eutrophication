@@ -13,7 +13,7 @@ import {
   select,
   selectAll,
   stack,
-  stackOffsetSilhouette
+  stackOffsetNone
 } from 'd3';
 
 import { regionNames } from '../../../config';
@@ -71,8 +71,6 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
   const month = timeValues[timeSlice];
   const xThumb = xScale(month);
   const yThumb = size.height - margin.bottom;
-  select('.thumb-date').attr('y', yThumb - 30);
-  select('.thumb-info').attr('y', yThumb - 10);
   setThumbText({ xThumb, month, width: size.width });
   select('.thumb-indicator').attr('x1', xThumb).attr('x2', xThumb).attr('y1', yThumb).attr('y2', 0);
   select('.thumb')
@@ -124,12 +122,9 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
       return sum;
     });
     let domainHeight = max(sumPercentages);
-    if (data.columns.length === 1) {
-      domainHeight = domainHeight * 4;
-    }
     const yScale = scaleLinear()
-      .domain([-domainHeight / 2, domainHeight / 2])
-      .range([size.height - margin.bottom - 20, 20]);
+      .domain([0, domainHeight])
+      .range([size.height - margin.bottom - 5, 0]);
 
     const keys = data.columns;
 
@@ -144,7 +139,7 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 
     const color = scaleOrdinal().domain(keys).range(colors);
 
-    const stackedData = stack().offset(stackOffsetSilhouette).keys(keys)(data);
+    const stackedData = stack().offset(stackOffsetNone).keys(keys)(data);
     svg
       .select('.chartArea')
       .selectAll('.countryArea')
@@ -287,8 +282,10 @@ const MonthlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTim
           <g className='indicator'>
             <line className='thumb-indicator'></line>
             <circle className='thumb' strokeWidth={2} r={7}></circle>
-            <text className='thumb-date'></text>
-            <text className='thumb-info'>Eutrophication rates on map</text>
+            <text className='thumb-date' y={10}></text>
+            <text className='thumb-info' y={30}>
+              eutrophication rates on map
+            </text>
           </g>
         </svg>
       </div>
