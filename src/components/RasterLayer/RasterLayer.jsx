@@ -13,7 +13,7 @@ const symbol = {
   color: [0, 0, 0, 0],
   size: 10,
   outline: {
-    color: '#00f79d',
+    color: [255, 115, 0],
     width: 2
   }
 };
