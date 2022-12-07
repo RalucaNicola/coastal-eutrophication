@@ -90,7 +90,9 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
         title: 'Monthly anomaly pixel frequency (%)'
       });
       monthlyLayer.load().then(() => {
-        monthlyLayer.renderer = getRenderer(monthlyLayer.rasterInfo.statistics);
+        const statistics = monthlyLayer.rasterInfo.statistics;
+        statistics[0].max = 50;
+        monthlyLayer.renderer = getRenderer(statistics);
       });
       monthlyLayerRef.current = monthlyLayer;
       mapView.map.addMany([yearlyLayer, monthlyLayer], 0);
