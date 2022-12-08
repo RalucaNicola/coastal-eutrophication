@@ -26,9 +26,9 @@ const world = new Graphic({
 const lowlightLayer = new GraphicsLayer({ opacity: 0 });
 lowlightLayer.graphics.add(world);
 
-const greenShadowLayer = new GraphicsLayer({
+const shadowLayer = new GraphicsLayer({
   effect:
-    'drop-shadow(0, 0, 10px, rgb(40, 40, 40)) drop-shadow(0, 0, 5px, rgb(40, 40, 40)) drop-shadow(0, 0, 5px, rgb(40, 40, 40))'
+    'drop-shadow(0, 0, 30px, rgb(40, 40, 40)) drop-shadow(0, 0, 10px, rgb(40, 40, 40)) drop-shadow(0, 0, 5px, rgb(40, 40, 40))'
 });
 
 const highlightLayer = new GraphicsLayer({
@@ -38,7 +38,7 @@ const highlightLayer = new GraphicsLayer({
 });
 
 const groupLayer = new GroupLayer({
-  layers: [lowlightLayer, greenShadowLayer, highlightLayer]
+  layers: [lowlightLayer, shadowLayer, highlightLayer]
 });
 const maskSymbol = {
   type: 'simple-fill',
@@ -120,9 +120,6 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         ui: {
           components: []
         },
-        background: {
-          color: [60, 60, 60]
-        },
         popup: {
           dockEnabled: true,
           dockOptions: {
@@ -171,12 +168,12 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
       });
       if (feature) {
         highlightLayer.removeAll();
-        greenShadowLayer.removeAll();
+        shadowLayer.removeAll();
         feature.symbol = maskSymbol;
         const greenShadowFeature = feature.clone();
         greenShadowFeature.symbol = symbol;
         highlightLayer.add(feature);
-        greenShadowLayer.add(greenShadowFeature);
+        shadowLayer.add(greenShadowFeature);
         lowlightLayer.opacity = 1;
         if (!selectedCountry.selectedFromMap) {
           mapView.goTo(
@@ -196,7 +193,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
 
   const removeHighlight = () => {
     highlightLayer.removeAll();
-    greenShadowLayer.removeAll();
+    shadowLayer.removeAll();
     lowlightLayer.opacity = 0;
   };
 
