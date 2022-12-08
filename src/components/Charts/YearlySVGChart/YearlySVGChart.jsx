@@ -61,14 +61,9 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
     .call(xAxis);
   svg.selectAll('.myArea').remove();
 
-  const country = selection ? data.selectedFeature.country : null;
-  resetTooltip(country);
-  console.log(timeValues[timeSlice]);
   const date = new Date(timeValues[timeSlice]);
   const xThumb = xScale(date);
   const yThumb = size.height - margin.bottom;
-  // select('.thumb-date').attr('y', yThumb - 30);
-  // select('.thumb-info').attr('y', yThumb - 10);
   setThumbText({ xThumb, date, width: size.width });
   select('.thumb-indicator').attr('x1', xThumb).attr('x2', xThumb).attr('y1', yThumb).attr('y2', 0);
   select('.thumb')
@@ -160,20 +155,11 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
       })
       .on('mouseleave', () => {
         mouseleave(data.selectedFeature.country);
-        resetTooltip(data.selectedFeature.country);
       })
       .on('click', (event, d) => {
         setCountry({ name: d.key, selectedFromMap: false });
       });
   }
-};
-
-const resetTooltip = (country) => {
-  let htmlText = `<span>Select a zone to see the evolution of eutrophication impacted areas.</span>`;
-  if (country) {
-    htmlText = `<span>This chart shows the <b>percentage</b> of ${country}'s EEZ area impacted by eutrophication, through time. <br> Regional neighbors (also percent area impacted by eutrophication) are optionally shown, for comparison.</span>`;
-  }
-  select('.tooltip').html(htmlText);
 };
 
 const mouseover = function () {
@@ -183,6 +169,7 @@ const mouseover = function () {
 
 const mousemove = function (event, d, size) {
   const x = pointer(event)[0];
+  const y = pointer(event)[1];
   const timeSlice = Math.floor((x - margin.left) / ((size.width - margin.right - margin.left) / 204));
   const date = new Date(d[timeSlice].data.date);
   const month = new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(date);
@@ -190,11 +177,20 @@ const mousemove = function (event, d, size) {
   const htmlText = `<span class='country'>${d.key}</span> ${month}, ${date.getUTCFullYear()}</br> ${value.toFixed(
     2
   )}% <span class='emphasized'> eutrophication-impacted</span> area `;
-  select('.tooltip').html(htmlText);
+  const tooltip = select('.tooltip').html(htmlText);
+  tooltip
+    .style('left', `${x + margin.left}px`)
+    .style('top', `${y + margin.top - 10}px`)
+    .style('display', 'revert')
+    .style('translate', () => {
+      const width = tooltip.node().getBoundingClientRect().width;
+      return `${x + margin.left > size.width / 2 ? -width : 0}px 0px`;
+    });
 };
 
 const mouseleave = function () {
   selectAll('.myArea').style('opacity', 1);
+  select('.tooltip').html('').style('display', 'none');
 };
 
 const YearlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice, setCountry }) => {
@@ -238,9 +234,6 @@ const YearlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTime
           timeDefinition,
           setCountry
         });
-        svg.current.on('mouseleave', () => {
-          resetTooltip(selectedData.selectedFeature.country);
-        });
       } else {
         drawChart({
           svg: svg.current,
@@ -250,9 +243,6 @@ const YearlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTime
           timeSlice,
           setTimeSlice,
           timeDefinition
-        });
-        svg.current.on('mouseleave', () => {
-          resetTooltip(null);
         });
       }
     }
@@ -278,12 +268,21 @@ const YearlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTime
 
   return (
     <>
-      <div className='tooltip'></div>
+      <div className='legend-info'>
+        {selectedFeature ? (
+          <span>
+            This chart shows the <b>percentage</b> of ${selectedFeature.country}'s EEZ area impacted by eutrophication,
+            through time. Regional neighbors values are optionally shown, for comparison.
+          </span>
+        ) : (
+          <span>Select a zone to see the evolution of eutrophication impacted areas.</span>
+        )}
+      </div>
+
       <div ref={chartRef} className={styles.chartContainer}>
         <svg>
           <g className='chartArea'></g>
           <g className='xAxis'></g>
-          <g className='tooltip' x={0} y={35}></g>
           <g className='indicator'>
             <line className='thumb-indicator'></line>
             <circle className='thumb' strokeWidth={2} r={7}></circle>
@@ -294,6 +293,7 @@ const YearlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTime
           </g>
         </svg>
       </div>
+      <div className='tooltip'></div>
     </>
   );
 };

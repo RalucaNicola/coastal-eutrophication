@@ -2,10 +2,19 @@
   flex: 1;
 }
 
-:global .tooltip {
+:global .tooltip,
+:global .legend-info {
   position: absolute;
   font-size: var(--chart-font-size);
   max-width: 70%;
+}
+
+:global .tooltip {
+  background: rgba(0 0 0 / 80%);
+  padding: 5px;
+  border-radius: var(--border-radius);
+  min-width: 250px;
+  pointer-events: none;
 }
 
 :global .country {
@@ -58,7 +67,8 @@ text {
   svg {
     font-size: var(--mobile-chart-font-size);
   }
-  :global .tooltip {
+  :global .tooltip,
+  :global .legend-info {
     font-size: var(--mobile-chart-font-size);
     display: none;
   }
