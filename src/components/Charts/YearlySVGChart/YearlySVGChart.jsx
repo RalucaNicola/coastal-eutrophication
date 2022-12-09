@@ -271,7 +271,7 @@ const YearlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTime
       <div className='legend-info'>
         {selectedFeature ? (
           <span>
-            This chart shows the <b>percentage</b> of ${selectedFeature.country}'s EEZ area impacted by eutrophication,
+            This chart shows the <b>percentage</b> of {selectedFeature.country}'s EEZ area impacted by eutrophication,
             through time. Regional neighbors values are optionally shown, for comparison.
           </span>
         ) : (

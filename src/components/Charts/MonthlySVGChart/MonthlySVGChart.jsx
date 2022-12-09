@@ -50,7 +50,7 @@ const setThumbText = ({ xThumb, month, width }) => {
 
 const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDefinition, setCountry }) => {
   const timeValues = timeDefinition[0].values;
-  // // build time scale
+  // build time scale
   const xRange = [margin.left, size.width - margin.right];
   const xExtent = [timeValues[0], timeValues[timeValues.length - 1]];
   const xScale = scaleLinear(xExtent, xRange);
@@ -66,8 +66,6 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
 
   svg.selectAll('.countryArea').remove();
 
-  const country = selection ? data.selectedFeature.country : null;
-  resetTooltip(country);
   const month = timeValues[timeSlice];
   const xThumb = xScale(month);
   const yThumb = size.height - margin.bottom;
@@ -162,20 +160,11 @@ const drawChart = ({ svg, size, data, selection, timeSlice, setTimeSlice, timeDe
       })
       .on('mouseleave', () => {
         mouseleave(data.selectedFeature.country);
-        resetTooltip(data.selectedFeature.country);
       })
       .on('click', (event, d) => {
         setCountry({ name: d.key, selectedFromMap: false });
       });
   }
-};
-
-const resetTooltip = (country) => {
-  let htmlText = `<span>Select a zone to see the evolution of eutrophication impacted areas.</span>`;
-  if (country) {
-    htmlText = `<span>This chart shows the <b>percentage</b> of ${country}'s EEZ area impacted by eutrophication, through time. <br> Regional neighbors (also percent area impacted by eutrophication) are optionally shown, for comparison.</span>`;
-  }
-  select('.tooltip').html(htmlText);
 };
 
 const mouseover = function () {
@@ -185,17 +174,27 @@ const mouseover = function () {
 
 const mousemove = function (event, d, size) {
   const x = pointer(event)[0];
+  const y = pointer(event)[1];
   const timeSlice = Math.round((x - margin.left) / ((size.width - margin.right - margin.left) / 11));
   const month = parseInt(d[timeSlice].data.date);
   const value = parseFloat(d[timeSlice].data[d.key]);
   const htmlText = `<span class='country'>${d.key}</span> ${months[month - 1]}</br> ${value.toFixed(
     2
   )}% <span class='emphasized'> eutrophication-impacted</span> area `;
-  select('.tooltip').html(htmlText);
+  const tooltip = select('.tooltip').html(htmlText);
+  tooltip
+    .style('left', `${x + margin.left}px`)
+    .style('top', `${y + margin.top - 10}px`)
+    .style('display', 'revert')
+    .style('translate', () => {
+      const width = tooltip.node().getBoundingClientRect().width;
+      return `${x + margin.left > size.width / 2 ? -width : 0}px 0px`;
+    });
 };
 
 const mouseleave = function () {
   selectAll('.countryArea').style('opacity', 1);
+  select('.tooltip').html('').style('display', 'none');
 };
 
 const MonthlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice, setCountry }) => {
@@ -225,7 +224,7 @@ const MonthlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTim
     }
   }, [selectedFeature, regionIndex]);
 
-  //redraw chart when size, container or selected data changes
+  // redraw chart when size, container or selected data changes
   useEffect(() => {
     if (size && svg.current && timeDefinition) {
       if (selectedData) {
@@ -273,12 +272,21 @@ const MonthlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTim
 
   return (
     <>
-      <div className='tooltip'></div>
+      <div className='legend-info'>
+        {selectedFeature ? (
+          <span>
+            This chart shows the <b>percentage</b> of {selectedFeature.country}'s EEZ area impacted by eutrophication,
+            through time. Regional neighbors values are optionally shown, for comparison.
+          </span>
+        ) : (
+          <span>Select a zone to see the evolution of eutrophication impacted areas.</span>
+        )}
+      </div>
+
       <div ref={chartRef} className={styles.chartContainer}>
         <svg>
           <g className='chartArea'></g>
           <g className='xAxis'></g>
-          <g className='tooltip' x={0} y={35}></g>
           <g className='indicator'>
             <line className='thumb-indicator'></line>
             <circle className='thumb' strokeWidth={2} r={7}></circle>
@@ -289,6 +297,7 @@ const MonthlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTim
           </g>
         </svg>
       </div>
+      <div className='tooltip'></div>
     </>
   );
 };
