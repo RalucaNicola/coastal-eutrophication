@@ -46,7 +46,7 @@ const initImageryTileLayer = ({ url, visible, multidimensionalDefinition, title 
     visible,
     useViewTime: false,
     multidimensionalDefinition,
-    effect: 'saturate(300%)'
+    effect: 'saturate(300%) drop-shadow(0 0 5px #000000) drop-shadow(0 0 15px #000000)'
   });
 };
 
