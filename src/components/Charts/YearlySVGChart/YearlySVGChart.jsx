@@ -1,9 +1,11 @@
 import * as styles from '../SVGChart.module.css';
-
+import '@esri/calcite-components/dist/components/calcite-icon';
+import { CalciteIcon } from '@esri/calcite-components-react';
 import { useEffect, useRef, useState, useContext } from 'react';
 import {
   area,
   axisBottom,
+  csvFormat,
   drag,
   max,
   pointer,
@@ -193,6 +195,17 @@ const mouseleave = function () {
   select('.tooltip').html('').style('display', 'none');
 };
 
+const downloadChartData = function (data, fileName) {
+  const blob = new Blob([csvFormat(data)], { type: 'text/csv' });
+  const blobUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 const YearlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice, setCountry }) => {
   const chartRef = useRef();
   const svg = useRef();
@@ -270,10 +283,24 @@ const YearlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTime
     <>
       <div className='legend-info'>
         {selectedFeature ? (
-          <span>
-            This chart shows the <b>percentage</b> of {selectedFeature.country}'s EEZ area impacted by eutrophication,
-            through time. Regional neighbors values are optionally shown, for comparison.
-          </span>
+          <>
+            <span>
+              This chart shows the <b>percentage</b> of {selectedFeature.country}'s EEZ area impacted by eutrophication,
+              through time. Regional neighbors values are optionally shown, for comparison.
+            </span>
+            {selectedData ? (
+              <button
+                onClick={() => {
+                  const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-yearly-eutrophication`;
+                  downloadChartData(selectedData, fileName);
+                }}
+              >
+                <CalciteIcon icon='downloadTo' scale='s'></CalciteIcon> Download chart data
+              </button>
+            ) : (
+              <></>
+            )}
+          </>
         ) : (
           <span>Select a zone to see the evolution of eutrophication impacted areas.</span>
         )}

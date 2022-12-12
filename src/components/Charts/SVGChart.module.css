@@ -65,6 +65,23 @@ text {
   filter: drop-shadow(0 0 12px black);
 }
 
+:global button {
+  display: inline-flex;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: var(--chart-font-size);
+  color: var(--calcite-ui-text-1);
+  font-family: var(--calcite-sans-family);
+  margin: 0;
+  padding: 0;
+}
+
+:global button:hover {
+  border-bottom: 1px solid white;
+}
+
 @media (max-width: 550px) {
   svg {
     font-size: var(--mobile-chart-font-size);
