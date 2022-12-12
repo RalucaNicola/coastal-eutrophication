@@ -29,9 +29,10 @@ export const queryLayersInfo = [
   }
 ];
 
+// the order of this is important for the selectedRegionIndex state
 export const regionNames = [
   { name: 'country', field: 'CountryName' },
-  { name: 'level2', field: 'M49_Level_2_Region' },
+  { name: 'region', field: 'SDG_Regions' },
   { name: 'level1', field: 'M49_Level_1_Region' },
-  { name: 'region', field: 'SDG_Regions' }
+  { name: 'level2', field: 'M49_Level_2_Region' }
 ];
