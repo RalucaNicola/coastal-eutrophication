@@ -2,14 +2,10 @@
   flex: 1;
 }
 
-:global .tooltip,
-:global .legend-info {
+:global .tooltip {
   position: absolute;
   font-size: var(--chart-font-size);
   max-width: 70%;
-}
-
-:global .tooltip {
   background: rgba(0 0 0 / 80%);
   padding: 5px;
   border-radius: var(--border-radius);
@@ -69,8 +65,7 @@ text {
   svg {
     font-size: var(--mobile-chart-font-size);
   }
-  :global .tooltip,
-  :global .legend-info {
+  :global .tooltip {
     font-size: var(--mobile-chart-font-size);
     display: none;
   }

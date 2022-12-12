@@ -117,6 +117,16 @@ const CountryDetails = ({
       </div>
       <div className={styles.countryChart}>
         <div className={styles.headerChart}>
+          <div className={styles.legendInfo}>
+            {selectedFeature ? (
+              <span>
+                This chart shows the <b>percentage</b> of {selectedFeature.country}'s EEZ area impacted by
+                eutrophication, through time. Regional neighbors values are optionally shown, for comparison.
+              </span>
+            ) : (
+              <span>Select a zone to see the evolution of eutrophication impacted areas.</span>
+            )}
+          </div>
           <CalciteLabel layout='inline' alignment='start'>
             <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
             Monthly average view

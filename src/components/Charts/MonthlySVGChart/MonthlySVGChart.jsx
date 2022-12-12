@@ -272,17 +272,6 @@ const MonthlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTim
 
   return (
     <>
-      <div className='legend-info'>
-        {selectedFeature ? (
-          <span>
-            This chart shows the <b>percentage</b> of {selectedFeature.country}'s EEZ area impacted by eutrophication,
-            through time. Regional neighbors values are optionally shown, for comparison.
-          </span>
-        ) : (
-          <span>Select a zone to see the evolution of eutrophication impacted areas.</span>
-        )}
-      </div>
-
       <div ref={chartRef} className={styles.chartContainer}>
         <svg>
           <g className='chartArea'></g>
