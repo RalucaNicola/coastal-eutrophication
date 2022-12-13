@@ -1,8 +1,11 @@
 import * as styles from './SVGChart.module.css';
 import { useEffect, useRef, useState, useContext } from 'react';
+import '@esri/calcite-components/dist/components/calcite-icon';
+import { CalciteIcon } from '@esri/calcite-components-react';
 import {
   area,
   axisBottom,
+  csvFormat,
   drag,
   max,
   pointer,
@@ -226,6 +229,17 @@ const mousemove = function (event, d, size, timeValues, monthlyMode) {
     });
 };
 
+const downloadChartData = function (data, fileName) {
+  const blob = new Blob([csvFormat(data)], { type: 'text/csv' });
+  const blobUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 const SVGChart = ({ monthlyMode, data, selectedFeature, regionIndex, timeSlice, setTimeSlice, setCountry }) => {
   const chartRef = useRef();
   const svg = useRef();
@@ -294,21 +308,36 @@ const SVGChart = ({ monthlyMode, data, selectedFeature, regionIndex, timeSlice, 
   }, [chartRef]);
 
   return (
-    <div ref={chartRef} className={styles.chartContainer}>
-      <svg width='100%' height='100%'>
-        <g className='chartArea'></g>
-        <g className='xAxis'></g>
-        <g className='indicator'>
-          <line className='thumb-indicator'></line>
-          <circle className='thumb' strokeWidth={2} r={7}></circle>
-          <text className='thumb-date' y={10}></text>
-          <text className='thumb-info' y={30}>
-            eutrophication rates on map
-          </text>
-        </g>
-      </svg>
-      <div className='tooltip'></div>
-    </div>
+    <>
+      <div ref={chartRef} className={styles.chartContainer}>
+        <svg width='100%' height='100%'>
+          <g className='chartArea'></g>
+          <g className='xAxis'></g>
+          <g className='indicator'>
+            <line className='thumb-indicator'></line>
+            <circle className='thumb' strokeWidth={2} r={7}></circle>
+            <text className='thumb-date' y={10}></text>
+            <text className='thumb-info' y={30}>
+              eutrophication rates on map
+            </text>
+          </g>
+        </svg>
+        <div className='tooltip'></div>
+      </div>
+      {selectedData ? (
+        <button
+          className={styles.downloadButton}
+          onClick={() => {
+            const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-yearly-eutrophication`;
+            downloadChartData(selectedData, fileName);
+          }}
+        >
+          <CalciteIcon icon='downloadTo' scale='s'></CalciteIcon> Download chart data
+        </button>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 

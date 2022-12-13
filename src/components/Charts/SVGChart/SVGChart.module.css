@@ -1,6 +1,21 @@
 .chartContainer {
   flex: 1;
 }
+.downloadButton {
+  display: flex;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--chart-font-size);
+  color: var(--calcite-ui-text-1);
+  font-family: var(--calcite-sans-family);
+  padding: 2px 2px 2px 0;
+  align-self: start;
+}
+
+.downloadButton:hover {
+  background-color: rgba(255 255 255 / 0.2);
+}
 
 :global .tooltip {
   position: absolute;
