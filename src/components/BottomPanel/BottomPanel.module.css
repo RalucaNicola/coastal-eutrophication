@@ -3,7 +3,7 @@
   bottom: var(--margin);
   left: var(--margin);
   right: var(--margin);
-  background: rgba(50 50 50 / 80%);
+  background: var(--background-color);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   padding: 15px;
@@ -12,7 +12,7 @@
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .container {
-    background: rgba(0 0 0 / 30%);
+    background: var(--background-color);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
   }

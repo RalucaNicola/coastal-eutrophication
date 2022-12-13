@@ -9,7 +9,7 @@ body,
   width: 100%;
   font-family: var(--calcite-sans-family);
   color: var(--calcite-ui-text-1);
-  background: rgba(60, 60, 60);
+  background: #bfbfbf;
 }
 
 .calcite-theme-dark,
@@ -19,7 +19,7 @@ body,
   --border-radius: 10px;
   --box-shadow: 0 0 12px rgb(0 0 0 / 100%);
   --margin: 15px;
-  --background-color: rgba(50 50 50 / 80%);
+  --background-color: rgba(50 50 50 / 60%);
 
   --mobile-chart-font-size: 12px;
   --chart-font-size: 14px;
@@ -27,7 +27,7 @@ body,
 }
 
 .esri-legend.esri-widget {
-  background: rgba(50 50 50 / 80%);
+  background: var(--background-color);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   border: 1px solid rgba(255 255 255 / 20%);
@@ -35,7 +35,7 @@ body,
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .esri-widget {
-    background: rgba(0 0 0 / 30%);
+    background: var(--background-color);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
   }
