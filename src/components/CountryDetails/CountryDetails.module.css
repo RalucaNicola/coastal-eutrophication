@@ -22,12 +22,16 @@
 
 .headerChart {
   display: flex;
-  justify-content: flex-end;
-  min-height: 60px;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .label {
   cursor: pointer;
+}
+
+.legendInfo {
+  font-size: var(--chart-font-size);
 }
 
 @media (max-width: 550px) {
@@ -38,5 +42,10 @@
   .countrySelection {
     border-right: none;
     max-width: revert;
+  }
+
+  .legendInfo {
+    font-size: var(--mobile-chart-font-size);
+    display: none;
   }
 }

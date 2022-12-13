@@ -13,7 +13,7 @@ import {
   CalciteRadioButton,
   CalciteSwitch
 } from '@esri/calcite-components-react';
-import { YearlySVGChart, MonthlySVGChart } from '../index';
+import { SVGChart } from '../index';
 import { useEffect, useState } from 'react';
 import { regionNames } from '../../config';
 
@@ -117,30 +117,30 @@ const CountryDetails = ({
       </div>
       <div className={styles.countryChart}>
         <div className={styles.headerChart}>
+          <div className={styles.legendInfo}>
+            {selectedFeature ? (
+              <span>
+                This chart shows the <b>percentage</b> of {selectedFeature.country}'s EEZ area impacted by
+                eutrophication, through time. Regional neighbors values are optionally shown, for comparison.
+              </span>
+            ) : (
+              <span>Select a zone to see the evolution of eutrophication impacted areas.</span>
+            )}
+          </div>
           <CalciteLabel layout='inline' alignment='start'>
             <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
             Monthly average view
           </CalciteLabel>
         </div>
-        {monthlyMode ? (
-          <MonthlySVGChart
-            data={data}
-            selectedFeature={selectedFeature}
-            regionIndex={selectedRegionIndex}
-            timeSlice={monthlyTimeSlice}
-            setTimeSlice={setMonthlyTimeSlice}
-            setCountry={setCountry}
-          ></MonthlySVGChart>
-        ) : (
-          <YearlySVGChart
-            data={data}
-            selectedFeature={selectedFeature}
-            regionIndex={selectedRegionIndex}
-            timeSlice={yearlyTimeSlice}
-            setTimeSlice={setYearlyTimeSlice}
-            setCountry={setCountry}
-          ></YearlySVGChart>
-        )}
+        <SVGChart
+          data={data}
+          selectedFeature={selectedFeature}
+          regionIndex={selectedRegionIndex}
+          timeSlice={monthlyMode ? monthlyTimeSlice : yearlyTimeSlice}
+          setTimeSlice={monthlyMode ? setMonthlyTimeSlice : setYearlyTimeSlice}
+          setCountry={setCountry}
+          monthlyMode={monthlyMode}
+        ></SVGChart>
       </div>
     </div>
   );
