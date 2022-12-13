@@ -18,9 +18,9 @@ import {
   stackOffsetNone
 } from 'd3';
 
-import { months } from '../../../utils';
-import { regionNames } from '../../../config';
-import { AppContext } from '../../../contexts/AppContextProvider';
+import { months } from '../../utils';
+import { regionNames } from '../../config';
+import { AppContext } from '../../contexts/AppContextProvider';
 
 const margin = {
   top: 20,
