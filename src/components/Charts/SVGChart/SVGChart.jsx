@@ -144,14 +144,7 @@ const drawChart = ({
         'd',
         area()
           .x((d) => {
-            let x = null;
-            if (monthlyMode) {
-              x = xScale(parseInt(d.data.date));
-            } else {
-              x = xScale(new Date(d.data.date));
-            }
-            console.log(d.data);
-            return x;
+            return monthlyMode ? xScale(parseInt(d.data.date)) : xScale(new Date(d.data.date));
           })
           .y0((d) => yScale(d[0]))
           .y1((d) => yScale(d[1]))
@@ -207,7 +200,9 @@ const mouseleave = function () {
 const mousemove = function (event, d, size, timeValues, monthlyMode) {
   const x = pointer(event)[0];
   const y = pointer(event)[1];
-  const timeSlice = Math.round((x - margin.left) / ((size.width - margin.right - margin.left) / timeValues.length));
+  const timeSlice = Math.round(
+    (x - margin.left) / ((size.width - margin.right - margin.left) / (timeValues.length - 1))
+  );
   const date = d[timeSlice].data.date;
   const month = monthlyMode
     ? parseInt(date)
@@ -263,9 +258,10 @@ const SVGChart = ({ monthlyMode, data, selectedFeature, regionIndex, timeSlice, 
     if (selectedFeature) {
       const region = regionNames[regionIndex].name;
       const countries = data.countryData.filter((c) => c[region] === selectedFeature[region]).map((c) => c.country);
-      const selectedData = data.eutrophicationDataYearly.map((dataSlice) => {
+      const dataByType = monthlyMode ? data.eutrophicationDataMonthly : data.eutrophicationDataYearly;
+      const selectedData = dataByType.map((dataSlice) => {
         let slice = {
-          date: dataSlice.date
+          date: monthlyMode ? dataSlice.month : dataSlice.date
         };
         countries.forEach((country) => (slice[country] = dataSlice[country]));
 
@@ -277,7 +273,7 @@ const SVGChart = ({ monthlyMode, data, selectedFeature, regionIndex, timeSlice, 
     } else {
       setSelectedData(null);
     }
-  }, [selectedFeature, regionIndex]);
+  }, [selectedFeature, regionIndex, monthlyMode]);
 
   // when chart container is loaded:
   // set event listener for chart resizing and get reference to svg parent
