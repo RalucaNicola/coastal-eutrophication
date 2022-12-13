@@ -120,7 +120,7 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
 
   useEffect(() => {
     setTimeDefinition(monthlyLayerRef.current, monthlyTimeDefinition, monthlyTimeSlice);
-  }, [monthlyTimeSlice, monthlyTimeDefinition, monthlyLayerRef]);
+  }, [monthlyTimeSlice, monthlyTimeDefinition, monthlyLayerRef.current]);
 
   useEffect(() => {
     setTimeDefinition(yearlyLayerRef.current, yearlyTimeDefinition, yearlyTimeSlice);
@@ -147,7 +147,6 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
 
       if (monthlyMode) {
         const pixelResult = await monthlyLayerRef.current.identify(identifyPoint);
-        console.log(pixelResult);
         if (pixelResult.value) {
           content = `<p style="color: white"><b>This pixel experienced an anomalously high chlorophyll-a concentration ${pixelResult.value[0].toFixed(
             2
