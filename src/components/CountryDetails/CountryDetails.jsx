@@ -55,11 +55,12 @@ const CountryDetails = ({
     const regions = regionNames.map((region) => selectedFeature[region.name]);
 
     return (
-      <CalciteLabel>
-        Group with:
+      <>
+        <CalciteLabel>Group with:</CalciteLabel>
         <CalciteRadioButtonGroup
           name='region-group'
           layout='vertical'
+          style={{ paddingLeft: '4px' }}
           onCalciteRadioButtonChange={(event) => {
             setSelectedRegionIndex(event.target.value);
           }}
@@ -78,7 +79,7 @@ const CountryDetails = ({
             );
           })}
         </CalciteRadioButtonGroup>
-      </CalciteLabel>
+      </>
     );
   };
   return (
@@ -89,6 +90,7 @@ const CountryDetails = ({
           Select a zone:
           <CalciteSelect
             scale={isMobile ? 's' : 'm'}
+            style={{ paddingLeft: '4px' }}
             onCalciteSelectChange={(event) => {
               const country = event.target.selectedOption.value;
               if (country === 'None') {
@@ -127,9 +129,10 @@ const CountryDetails = ({
               <span>Select a zone to see the evolution of eutrophication impacted areas.</span>
             )}
           </div>
-          <CalciteLabel layout='inline' alignment='start'>
+
+          <CalciteLabel layout='inline' alignment={isMobile ? 'start' : 'end'}>
             <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
-            Monthly average view
+            Monthly average
           </CalciteLabel>
         </div>
         <SVGChart

@@ -18,7 +18,7 @@ const world = new Graphic({
   },
   symbol: {
     type: 'simple-fill',
-    color: 'rgba(0, 0, 0, 0.4)',
+    color: 'rgba(0, 0, 0, 0.2)',
     outline: null
   }
 });
@@ -120,9 +120,6 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         ui: {
           components: []
         },
-        // background: {
-        //   color: [60, 60, 60]
-        // },
         popup: {
           dockEnabled: true,
           dockOptions: {
@@ -173,10 +170,10 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         highlightLayer.removeAll();
         shadowLayer.removeAll();
         feature.symbol = maskSymbol;
-        const greenShadowFeature = feature.clone();
-        greenShadowFeature.symbol = symbol;
+        const shadowFeature = feature.clone();
+        shadowFeature.symbol = symbol;
         highlightLayer.add(feature);
-        shadowLayer.add(greenShadowFeature);
+        shadowLayer.add(shadowFeature);
         lowlightLayer.opacity = 1;
         if (!selectedCountry.selectedFromMap) {
           mapView.goTo(

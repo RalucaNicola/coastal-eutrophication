@@ -9,7 +9,7 @@ body,
   width: 100%;
   font-family: var(--calcite-sans-family);
   color: var(--calcite-ui-text-1);
-  background: #bfbfbf;
+  background: #a8a8a8;
 }
 
 .calcite-theme-dark,
@@ -20,9 +20,7 @@ body,
   --box-shadow: 0 0 12px rgb(0 0 0 / 100%);
   --margin: 15px;
   --background-color: rgba(50 50 50 / 60%);
-
-  --mobile-chart-font-size: 12px;
-  --chart-font-size: 14px;
+  --calcite-font-size--1: 0.75rem;
   --calcite-ui-text-3: rgb(230, 230, 230);
 }
 

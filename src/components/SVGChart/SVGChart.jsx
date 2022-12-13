@@ -24,7 +24,7 @@ import { AppContext } from '../../contexts/AppContextProvider';
 
 const margin = {
   top: 20,
-  right: 30,
+  right: 20,
   bottom: 30,
   left: 20
 };
@@ -142,6 +142,7 @@ const drawChart = ({
       .attr('class', 'countryArea')
       .style('fill', (d) => color(d.key))
       .style('stroke', '#eee')
+      .style('stroke-opacity', 0.5)
       .style('stroke-width', 0.25)
       .attr(
         'd',
@@ -168,7 +169,7 @@ const drawChart = ({
 const setThumbText = ({ xThumb, time, width, monthlyMode }) => {
   const text = monthlyMode
     ? `pixel frequency for ${months[time - 1]}`
-    : `Show on map ${new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(
+    : `Map ${new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(
         time
       )}, ${time.getUTCFullYear()}`;
   if (xThumb > width / 2) {
@@ -220,8 +221,8 @@ const mousemove = function (event, d, size, timeValues, monthlyMode) {
       )}% <span class='emphasized'> eutrophication-impacted</span> area`;
   const tooltip = select('.tooltip').html(htmlText);
   tooltip
-    .style('left', `${x + margin.left}px`)
-    .style('top', `${y + margin.top - 40}px`)
+    .style('left', `${x}px`)
+    .style('top', `${y - 45}px`)
     .style('display', 'revert')
     .style('translate', () => {
       const width = tooltip.node().getBoundingClientRect().width;
@@ -319,14 +320,14 @@ const SVGChart = ({ monthlyMode, data, selectedFeature, regionIndex, timeSlice, 
             {monthlyMode ? (
               <>
                 <text className='thumb-info' y={10}>
-                  Show on map monthly anomaly
+                  Map monthly anomaly
                 </text>
-                <text className='thumb-date' y={30}></text>
+                <text className='thumb-date' y={25}></text>
               </>
             ) : (
               <>
                 <text className='thumb-date' y={10}></text>
-                <text className='thumb-info' y={30}>
+                <text className='thumb-info' y={25}>
                   eutrophication rates
                 </text>
               </>

@@ -24,7 +24,7 @@ const defaultSymbol = {
 
 const highlightedSymbol = {
   type: 'simple-fill',
-  color: [0, 0, 0],
+  color: [255, 255, 255],
   style: 'diagonal-cross',
   outline: {
     width: 0,
