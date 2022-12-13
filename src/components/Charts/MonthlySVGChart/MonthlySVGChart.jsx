@@ -198,6 +198,10 @@ const mouseleave = function () {
 };
 
 const MonthlySVGChart = ({ data, selectedFeature, regionIndex, timeSlice, setTimeSlice, setCountry }) => {
+  console.log('Data', data);
+  console.log('selected Feature', selectedFeature);
+  console.log('region index', regionIndex);
+  console.log('time slice', timeSlice);
   const chartRef = useRef();
   const svg = useRef();
   const [size, setSize] = useState();

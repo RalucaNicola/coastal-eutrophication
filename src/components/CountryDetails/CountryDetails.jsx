@@ -13,7 +13,7 @@ import {
   CalciteRadioButton,
   CalciteSwitch
 } from '@esri/calcite-components-react';
-import { YearlySVGChart, MonthlySVGChart } from '../index';
+import { SVGChart } from '../index';
 import { useEffect, useState } from 'react';
 import { regionNames } from '../../config';
 
@@ -132,25 +132,15 @@ const CountryDetails = ({
             Monthly average view
           </CalciteLabel>
         </div>
-        {monthlyMode ? (
-          <MonthlySVGChart
-            data={data}
-            selectedFeature={selectedFeature}
-            regionIndex={selectedRegionIndex}
-            timeSlice={monthlyTimeSlice}
-            setTimeSlice={setMonthlyTimeSlice}
-            setCountry={setCountry}
-          ></MonthlySVGChart>
-        ) : (
-          <YearlySVGChart
-            data={data}
-            selectedFeature={selectedFeature}
-            regionIndex={selectedRegionIndex}
-            timeSlice={yearlyTimeSlice}
-            setTimeSlice={setYearlyTimeSlice}
-            setCountry={setCountry}
-          ></YearlySVGChart>
-        )}
+        <SVGChart
+          data={data}
+          selectedFeature={selectedFeature}
+          regionIndex={selectedRegionIndex}
+          timeSlice={monthlyMode ? monthlyTimeSlice : yearlyTimeSlice}
+          setTimeSlice={monthlyMode ? setMonthlyTimeSlice : setYearlyTimeSlice}
+          setCountry={setCountry}
+          monthlyMode={monthlyMode}
+        ></SVGChart>
       </div>
     </div>
   );
