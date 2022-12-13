@@ -167,8 +167,8 @@ const drawChart = ({
 
 const setThumbText = ({ xThumb, time, width, monthlyMode }) => {
   const text = monthlyMode
-    ? `Show average value for ${months[time - 1]}`
-    : `Show ${new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(
+    ? `pixel frequency for ${months[time - 1]}`
+    : `Show on map ${new Intl.DateTimeFormat('en-US', { month: 'long', timeZone: 'UTC' }).format(
         time
       )}, ${time.getUTCFullYear()}`;
   if (xThumb > width / 2) {
@@ -221,7 +221,7 @@ const mousemove = function (event, d, size, timeValues, monthlyMode) {
   const tooltip = select('.tooltip').html(htmlText);
   tooltip
     .style('left', `${x + margin.left}px`)
-    .style('top', `${y + margin.top - 10}px`)
+    .style('top', `${y + margin.top - 40}px`)
     .style('display', 'revert')
     .style('translate', () => {
       const width = tooltip.node().getBoundingClientRect().width;
@@ -316,10 +316,21 @@ const SVGChart = ({ monthlyMode, data, selectedFeature, regionIndex, timeSlice, 
           <g className='indicator'>
             <line className='thumb-indicator'></line>
             <circle className='thumb' strokeWidth={2} r={7}></circle>
-            <text className='thumb-date' y={10}></text>
-            <text className='thumb-info' y={30}>
-              eutrophication rates on map
-            </text>
+            {monthlyMode ? (
+              <>
+                <text className='thumb-info' y={10}>
+                  Show on map monthly anomaly
+                </text>
+                <text className='thumb-date' y={30}></text>
+              </>
+            ) : (
+              <>
+                <text className='thumb-date' y={10}></text>
+                <text className='thumb-info' y={30}>
+                  eutrophication rates
+                </text>
+              </>
+            )}
           </g>
         </svg>
         <div className='tooltip'></div>
