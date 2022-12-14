@@ -39,15 +39,21 @@
 }
 
 :global .thumb-indicator {
-  stroke: rgba(255 255 255 / 70%);
-  stroke-dasharray: 6 2;
+  stroke: rgba(255 255 255);
+  filter: drop-shadow(2px 2px 5px black);
   pointer-events: none;
 }
 
 :global .thumb {
-  fill: white;
-  stroke: var(--calcite-ui-text-2);
+  fill: rgba(255, 255, 255, 1);
+  stroke: rgba(255, 255, 255, 0.5);
   cursor: pointer;
+  filter: drop-shadow(2px 2px 5px black);
+  transition: stroke-width 300ms;
+}
+
+:global .thumb:hover {
+  stroke-width: 15px;
 }
 
 svg {

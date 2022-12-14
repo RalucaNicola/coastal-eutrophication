@@ -24,7 +24,7 @@ import { AppContext } from '../../contexts/AppContextProvider';
 
 const margin = {
   top: 20,
-  right: 20,
+  right: 30,
   bottom: 30,
   left: 20
 };
@@ -74,7 +74,7 @@ const drawChart = ({
     .call(
       drag()
         .on('start', function () {
-          select(this).raise().attr('stroke-width', 4);
+          select(this).raise().attr('stroke-width', 15);
         })
         .on('drag', function (event) {
           const x = Math.min(Math.max(event.x, margin.left), size.width - margin.right);
@@ -89,7 +89,7 @@ const drawChart = ({
           setThumbText({ xThumb: x, time, width: size.width, monthlyMode });
         })
         .on('end', function (event) {
-          select(this).attr('stroke-width', 2);
+          select(this).attr('stroke-width', 10);
           const x = Math.min(Math.max(event.x, margin.left), size.width - margin.right);
           const timeSlice = Math.round(
             (x - margin.left) / ((size.width - margin.right - margin.left) / (timeValues.length - 1))
@@ -118,7 +118,7 @@ const drawChart = ({
     let domainHeight = max(sumPercentages);
     const yScale = scaleLinear()
       .domain([0, domainHeight])
-      .range([size.height - margin.bottom - 5, 0]);
+      .range([size.height - margin.bottom - 5, margin.top]);
 
     const keys = data.columns;
 
@@ -316,7 +316,7 @@ const SVGChart = ({ monthlyMode, data, selectedFeature, regionIndex, timeSlice, 
           <g className='xAxis'></g>
           <g className='indicator'>
             <line className='thumb-indicator'></line>
-            <circle className='thumb' strokeWidth={2} r={7}></circle>
+            <circle className='thumb' strokeWidth={10} r={5}></circle>
             {monthlyMode ? (
               <>
                 <text className='thumb-info' y={10}>
