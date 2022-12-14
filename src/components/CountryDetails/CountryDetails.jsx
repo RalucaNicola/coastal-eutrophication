@@ -56,7 +56,7 @@ const CountryDetails = ({
 
     return (
       <>
-        <CalciteLabel>Group with:</CalciteLabel>
+        <CalciteLabel>Group with regional neighbors:</CalciteLabel>
         <CalciteRadioButtonGroup
           name='region-group'
           layout='vertical'
@@ -71,7 +71,7 @@ const CountryDetails = ({
               <CalciteLabel key={index} layout='inline' className={styles.label}>
                 <CalciteRadioButton value={index} {...checked}></CalciteRadioButton>
                 {index === 0
-                  ? `None, show only ${region}`
+                  ? `Show only ${region}`
                   : index > 1
                   ? `Level ${index - 1}: ${region.replace(' (M49)', '').replace(' (MDG=M49)', '')}`
                   : `${region.replace(' (M49)', '').replace(' (MDG=M49)', '')}`}
@@ -122,7 +122,8 @@ const CountryDetails = ({
           <div className={styles.legendInfo}>
             {selectedFeature ? (
               <span>
-                This chart shows the <b>percentage</b> of {selectedFeature.country}'s EEZ area impacted by
+                This chart shows the <b>percentage</b> of{' '}
+                <span className={styles.selectedCountry}>{selectedFeature.country}'s EEZ area </span> impacted by
                 eutrophication, through time. Regional neighbors values are optionally shown, for comparison.
               </span>
             ) : (
