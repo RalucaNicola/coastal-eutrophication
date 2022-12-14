@@ -60,7 +60,13 @@ const InfoModal = ({ isOpen, onClose }) => {
             .
           </p>
         </div>
-        <footer></footer>
+        <footer>
+          <p>
+            <a href='https://www.esri.com' target='_blank'>
+              <img src='./assets/esri_science_of_where_white.png' className={styles.logoEsri}></img>
+            </a>
+          </p>
+        </footer>
       </div>
     </div>
   );

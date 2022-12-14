@@ -30,12 +30,12 @@
 }
 
 .header {
-  background: url(./header.jpg) no-repeat;
+  background: url(./assets/header.jpg) no-repeat;
   background-position: top left;
 }
 
 footer {
-  background: url(./footer.jpg) no-repeat;
+  background: url(./assets/footer.jpg) no-repeat;
   background-position: bottom left;
   margin-top: -120px;
 }
@@ -45,6 +45,16 @@ footer {
   z-index: 99;
   min-height: 180px;
   background-size: cover;
+}
+
+footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+footer p {
+  filter: drop-shadow(0 0 10px black);
 }
 
 .header h1 {
