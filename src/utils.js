@@ -27,8 +27,8 @@ const highlightedSymbol = {
   color: [255, 255, 255],
   style: 'diagonal-cross',
   outline: {
-    width: 0,
-    color: [0, 0, 0]
+    width: 1,
+    color: [255, 255, 255]
   }
 };
 
