@@ -81,9 +81,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
 
   useEffect(() => {
     if (mapView) {
-      mapView.padding = {
-        bottom: paddingBottom
-      };
+      mapView.padding.bottom = paddingBottom;
     }
   }, [paddingBottom]);
 
@@ -115,6 +113,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
           }
         }),
         padding: {
+          top: 50,
           bottom: paddingBottom || 0
         },
         ui: {
