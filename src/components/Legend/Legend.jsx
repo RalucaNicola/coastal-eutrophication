@@ -1,25 +1,36 @@
-import { useEffect, useRef } from 'react';
-import Legend from '@arcgis/core/widgets/Legend';
-const LegendComponent = ({ isLegendOpen, mapView = null }) => {
-  const legendRef = useRef();
+import { style } from 'd3';
+import * as styles from './Legend.module.css';
 
-  useEffect(() => {
-    if (legendRef.current) {
-      legendRef.current.visible = isLegendOpen;
-    }
-  }, [isLegendOpen, legendRef]);
-  useEffect(() => {
-    if (mapView) {
-      const legend = new Legend({
-        view: mapView,
-        visible: isLegendOpen
-      });
-      legendRef.current = legend;
-
-      mapView.ui.add(legend, 'bottom-right');
-    }
-  }, [mapView]);
-
-  return null;
+const GradientLegend = ({ title, values }) => {
+  return (
+    <div className={styles.legendContainer}>
+      <div className={styles.legendValues}>
+        <div>Low: {values.min}</div>
+        <div>High: {values.max}</div>
+      </div>
+      <div className={styles.gradientContainer}></div>
+      <div className={styles.legendTitle}>{title}</div>
+    </div>
+  );
 };
-export default LegendComponent;
+
+const Legend = ({ selectedCountry, selectedRegionIndex, monthlyMode }) => {
+  return (
+    <div className={styles.legend}>
+      {selectedCountry && selectedRegionIndex > 0 ? (
+        <div>
+          <img className={styles.legendHatch} src='./assets/legend-neighbors.png'></img>
+          <div className={styles.legendTitle}>Regional neighbors</div>
+        </div>
+      ) : (
+        <></>
+      )}
+      {monthlyMode ? (
+        <GradientLegend title='Monthly anomalous pixel frequency(%)' values={{ min: 5.9, max: 50 }}></GradientLegend>
+      ) : (
+        <GradientLegend title='Chlorophyll-a concentration (mg/m3)' values={{ min: 0.002, max: 10 }}></GradientLegend>
+      )}
+    </div>
+  );
+};
+export default Legend;

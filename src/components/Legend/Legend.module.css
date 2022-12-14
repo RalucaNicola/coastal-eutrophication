@@ -1,0 +1,33 @@
+.legend {
+  position: absolute;
+  right: 0;
+  top: -55px;
+  filter: drop-shadow(0 0 10px black) drop-shadow(0 0 5px black) drop-shadow(0 0 20px black);
+  font-size: var(--calcite-font-size--1);
+  display: flex;
+  gap: 10px;
+}
+
+.legendContainer {
+  display: inline-block;
+}
+
+.legendValues {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gradientContainer {
+  background: linear-gradient(90deg, rgb(0, 89, 178), rgb(96, 172, 89), rgb(191, 255, 0));
+  height: 12px;
+}
+
+.legendTitle {
+  text-align: center;
+  padding-top: 4px;
+}
+
+.legendHatch {
+  margin-top: 10px;
+  margin-bottom: -7px;
+}
