@@ -120,6 +120,9 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         ui: {
           components: []
         },
+        constraints: {
+          minZoom: 1
+        },
         popup: {
           dockEnabled: true,
           dockOptions: {
@@ -176,9 +179,11 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         shadowLayer.add(shadowFeature);
         lowlightLayer.opacity = 1;
         if (!selectedCountry.selectedFromMap) {
+          const extent = feature.geometry.extent;
+          const expand = extent.width < 15000000 && extent.height < 15000000;
           mapView.goTo(
             {
-              target: feature.geometry
+              target: expand ? extent.expand(1.7) : extent
             },
             { animate: false }
           );
