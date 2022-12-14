@@ -1,0 +1,54 @@
+.header {
+  position: absolute;
+  top: var(--margin);
+  left: var(--margin);
+  right: var(--margin);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.title {
+  filter: drop-shadow(0 0 10px black) drop-shadow(0 0 5px black) drop-shadow(0 0 20px black);
+  font-size: var(--calcite-font-size--1);
+}
+
+.mainTitle {
+  color: var(--calcite-ui-brand);
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-weight: bold;
+  color: white;
+}
+
+.header h1 {
+  padding: 0;
+  margin: 0;
+  font-size: 1.7em;
+}
+
+.about {
+  text-transform: uppercase;
+  font-size: var(--calcite-font-size--1);
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 300ms;
+  pointer-events: all;
+}
+
+.about:hover {
+  opacity: 1;
+}
+
+@media (max-width: 700px) {
+  .header h1 {
+    font-size: 1.3em;
+  }
+}

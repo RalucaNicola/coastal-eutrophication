@@ -1,5 +1,5 @@
 import { useEffect, useState, useLayoutEffect } from 'react';
-import { Map, BottomPanel, InfoModal, CountryDetails, RasterLayer, LegendComponent } from '../components';
+import { Map, BottomPanel, Header, InfoModal, CountryDetails, RasterLayer, LegendComponent } from '../components';
 
 import useEutrophicationData from '../hooks/useEutrophicationData';
 import { CalciteLoader } from '@esri/calcite-components-react';
@@ -90,6 +90,7 @@ export const App = () => {
       >
         {showCountryDetails()}
       </BottomPanel>
+      <Header setModal={() => setIsInfoModalOpen(true)} isMobile={isMobile}></Header>
       <InfoModal isOpen={isInfoModalOpen} onClose={() => setIsInfoModalOpen(false)} />
     </>
   );

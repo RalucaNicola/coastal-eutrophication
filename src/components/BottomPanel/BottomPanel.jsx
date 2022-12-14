@@ -3,7 +3,7 @@ import '@esri/calcite-components/dist/components/calcite-action';
 import { CalciteAction } from '@esri/calcite-components-react';
 import { useState, useRef, useEffect } from 'react';
 
-const BottomPanel = ({ setPaddingBottom, children, setModal, setLegend, isMobile, selectedCountry }) => {
+const BottomPanel = ({ setPaddingBottom, children, setLegend, selectedCountry }) => {
   const containerRef = useRef();
   const [visible, setVisible] = useState(false);
   const togglePanel = () => {
@@ -32,12 +32,7 @@ const BottomPanel = ({ setPaddingBottom, children, setModal, setLegend, isMobile
   return (
     <div className={styles.container} ref={containerRef}>
       <header>
-        <h1>
-          <span className={styles.mainTitle}>Coastal eutrophication</span>{' '}
-          {isMobile ? null : `Potential eutrophication, through time, within Exclusive Economic Zones`}
-        </h1>
         <div className={styles.actionsContainer}>
-          <CalciteAction icon='information' scale='s' appearance='clear' onClick={setModal}></CalciteAction>
           <CalciteAction icon='legend' scale='s' appearance='clear' onClick={setLegend}></CalciteAction>
           <div className={styles.borderLeft}>
             <CalciteAction
