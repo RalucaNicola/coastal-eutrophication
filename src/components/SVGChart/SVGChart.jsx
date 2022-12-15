@@ -345,7 +345,7 @@ const SVGChart = ({
         </svg>
         <div className='tooltip'></div>
       </div>
-      {selectedData ? (
+      {selectedFeature ? (
         <div className={styles.chartFooter}>
           <span>
             This chart shows the <b>percentage</b> of{' '}
