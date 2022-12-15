@@ -83,8 +83,23 @@ text {
   filter: drop-shadow(0 0 12px black);
 }
 
-@media (max-width: 550px) {
+.chartFooter {
+  font-size: var(--calcite-font-size--1);
+  display: flex;
+  justify-content: space-between;
+}
+
+.selectedCountry {
+  color: var(--calcite-ui-brand);
+  font-weight: bold;
+}
+
+@media (max-width: 700px) {
   :global .tooltip {
+    display: none;
+  }
+
+  .downloadButton {
     display: none;
   }
 }

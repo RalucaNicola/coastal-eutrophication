@@ -19,7 +19,7 @@ export const App = () => {
 
   useLayoutEffect(() => {
     const updateMobile = () => {
-      if (window.innerWidth < 551) {
+      if (window.innerWidth < 701) {
         setIsMobile(true);
       } else {
         setIsMobile(false);
@@ -50,7 +50,6 @@ export const App = () => {
           setCountry={setSelectedCountry}
           selectedCountry={selectedCountry}
           monthlyMode={monthlyMode}
-          setMonthlyMode={setMonthlyMode}
           monthlyTimeSlice={monthlyTimeSlice}
           setMonthlyTimeSlice={setMonthlyTimeSlice}
           yearlyTimeSlice={yearlyTimeSlice}
@@ -86,6 +85,7 @@ export const App = () => {
         selectedCountry={selectedCountry}
         selectedRegionIndex={selectedRegionIndex}
         monthlyMode={monthlyMode}
+        setMonthlyMode={setMonthlyMode}
       >
         {showCountryDetails()}
       </BottomPanel>

@@ -22,7 +22,6 @@ const CountryDetails = ({
   setCountry,
   selectedCountry,
   monthlyMode,
-  setMonthlyMode,
   monthlyTimeSlice,
   setMonthlyTimeSlice,
   yearlyTimeSlice,
@@ -32,9 +31,6 @@ const CountryDetails = ({
   isMobile
 }) => {
   const [selectedFeature, setSelectedFeature] = useState();
-  const toggleMode = (event) => {
-    setMonthlyMode(event.target.checked);
-  };
 
   useEffect(() => {
     if (!selectedCountry) {
@@ -55,8 +51,7 @@ const CountryDetails = ({
     const regions = regionNames.map((region) => selectedFeature[region.name]);
 
     return (
-      <>
-        <CalciteLabel>Group with regional neighbors:</CalciteLabel>
+      <div style={{ paddingTop: '20px' }}>
         <CalciteRadioButtonGroup
           name='region-group'
           layout='vertical'
@@ -68,74 +63,61 @@ const CountryDetails = ({
           {regions.map((region, index) => {
             const checked = selectedRegionIndex === index ? { checked: true } : undefined;
             return (
-              <CalciteLabel key={index} layout='inline' className={styles.label}>
+              <CalciteLabel key={index} layout='inline' className={styles.label} style={{ marginBottom: '10px' }}>
                 <CalciteRadioButton value={index} {...checked}></CalciteRadioButton>
                 {index === 0
                   ? `Show only ${region}`
                   : index > 1
-                  ? `Level ${index - 1}: ${region.replace(' (M49)', '').replace(' (MDG=M49)', '')}`
-                  : `${region.replace(' (M49)', '').replace(' (MDG=M49)', '')}`}
+                  ? `Group with level ${index - 1}: ${region.replaceAll(' (M49)', '').replaceAll(' (MDG=M49)', '')}`
+                  : `Group with ${region.replaceAll(' (M49)', '').replaceAll(' (MDG=M49)', '')}`}
               </CalciteLabel>
             );
           })}
         </CalciteRadioButtonGroup>
-      </>
+      </div>
     );
   };
   return (
     <div className={styles.container}>
       <div className={styles.countrySelection}>
-        <CalciteLabel scale={isMobile ? 's' : 'm'}>
-          {' '}
-          Select a zone:
-          <CalciteSelect
-            scale={isMobile ? 's' : 'm'}
-            style={{ paddingLeft: '4px' }}
-            onCalciteSelectChange={(event) => {
-              const country = event.target.selectedOption.value;
-              if (country === 'None') {
-                setCountry(null);
-              } else {
-                setCountry({ name: country, selectedFromMap: false });
-              }
-            }}
-          >
-            {data.countryData
-              .sort((a, b) => {
-                return a.country.localeCompare(b.country, 'en', { sensitivity: 'base' });
-              })
-              .map((feature, index) => (
-                <CalciteOption
-                  key={index}
-                  selected={selectedCountry && selectedCountry.name === feature.country ? true : null}
-                >
-                  {feature.country}
-                </CalciteOption>
-              ))}
-            <CalciteOption selected={selectedCountry ? null : true}>None</CalciteOption>
-          </CalciteSelect>
-        </CalciteLabel>
+        <CalciteSelect
+          scale={isMobile ? 's' : 'm'}
+          style={{ paddingLeft: '4px' }}
+          onCalciteSelectChange={(event) => {
+            const country = event.target.selectedOption.value;
+            if (country === 'None') {
+              setCountry(null);
+            } else {
+              setCountry({ name: country, selectedFromMap: false });
+            }
+          }}
+        >
+          {data.countryData
+            .sort((a, b) => {
+              return a.country.localeCompare(b.country, 'en', { sensitivity: 'base' });
+            })
+            .map((feature, index) => (
+              <CalciteOption
+                key={index}
+                selected={selectedCountry && selectedCountry.name === feature.country ? true : null}
+              >
+                {feature.country}
+              </CalciteOption>
+            ))}
+          <CalciteOption selected={selectedCountry ? null : true}>None</CalciteOption>
+        </CalciteSelect>
         {isMobile ? null : showRegionSelection()}
       </div>
       <div className={styles.countryChart}>
-        <div className={styles.headerChart}>
-          <div className={styles.legendInfo}>
-            {selectedFeature ? (
-              <span>
-                This chart shows the <b>percentage</b> of{' '}
-                <span className={styles.selectedCountry}>{selectedFeature.country}'s EEZ area </span> impacted by
-                eutrophication, through time. Regional neighbors values are optionally shown, for comparison.
-              </span>
-            ) : (
-              <span>Select a zone to see the evolution of eutrophication impacted areas.</span>
-            )}
+        {!selectedFeature ? (
+          <div className={styles.headerChart}>
+            <div className={styles.legendInfo}>
+              <span> Change the time period for eutrophication rates displayed on the map by dragging the slider.</span>
+            </div>
           </div>
-
-          <CalciteLabel layout='inline' alignment={isMobile ? 'start' : 'end'}>
-            <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
-            Monthly average
-          </CalciteLabel>
-        </div>
+        ) : (
+          <></>
+        )}
         <SVGChart
           data={data}
           selectedFeature={selectedFeature}
@@ -144,6 +126,7 @@ const CountryDetails = ({
           setTimeSlice={monthlyMode ? setMonthlyTimeSlice : setYearlyTimeSlice}
           setCountry={setCountry}
           monthlyMode={monthlyMode}
+          isMobile={isMobile}
         ></SVGChart>
       </div>
     </div>

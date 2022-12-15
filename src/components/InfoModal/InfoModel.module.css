@@ -30,12 +30,12 @@
 }
 
 .header {
-  background: url(./header.jpg) no-repeat;
+  background: url(./assets/header.jpg) no-repeat;
   background-position: top left;
 }
 
 footer {
-  background: url(./footer.jpg) no-repeat;
+  background: url(./assets/footer.jpg) no-repeat;
   background-position: bottom left;
   margin-top: -120px;
 }
@@ -63,7 +63,7 @@ footer p {
   text-shadow: 1px 1px 10px black;
   margin: 0;
   text-align: center;
-  padding-top: 30px;
+  padding-top: 60px;
   font-weight: normal;
 }
 
@@ -89,8 +89,26 @@ footer p {
   margin: 0;
 }
 
+@media (max-width: 900px) {
+  .header h1 {
+    font-size: 1.4em;
+  }
+}
+
 @media (max-width: 700px) {
   .textInfo {
     padding: 0 30px;
+  }
+
+  .header h1 {
+    font-size: 1.2em;
+  }
+
+  .textInfo h2 {
+    font-size: 1em;
+  }
+
+  .modalContainer {
+    width: 100%;
   }
 }

@@ -31,14 +31,10 @@
 
 .legendInfo {
   font-size: var(--calcite-font-size--1);
+  padding-bottom: 5px;
 }
 
-.selectedCountry {
-  color: var(--calcite-ui-brand);
-  font-weight: bold;
-}
-
-@media (max-width: 550px) {
+@media (max-width: 700px) {
   .container {
     flex-direction: column;
   }
@@ -46,6 +42,7 @@
   .countrySelection {
     border-right: none;
     max-width: revert;
+    padding: 0 0 20px 0;
   }
 
   .countryChart {

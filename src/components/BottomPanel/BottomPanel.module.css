@@ -20,5 +20,27 @@
 
 .actionsContainer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  font-size: var(--calcite-font-size--1);
+  align-items: center;
+}
+
+.leftActionsContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.selectedCountry {
+  color: var(--calcite-ui-brand);
+  font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .leftActionsContainer {
+    justify-content: space-between;
+  }
+  .labelContainer {
+    display: none;
+  }
 }

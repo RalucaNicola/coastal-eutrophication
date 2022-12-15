@@ -24,9 +24,9 @@ import { AppContext } from '../../contexts/AppContextProvider';
 
 const margin = {
   top: 20,
-  right: 30,
+  right: 35,
   bottom: 30,
-  left: 20
+  left: 25
 };
 
 const drawChart = ({
@@ -241,7 +241,16 @@ const downloadChartData = function (data, fileName) {
   document.body.removeChild(link);
 };
 
-const SVGChart = ({ monthlyMode, data, selectedFeature, regionIndex, timeSlice, setTimeSlice, setCountry }) => {
+const SVGChart = ({
+  monthlyMode,
+  data,
+  selectedFeature,
+  regionIndex,
+  timeSlice,
+  setTimeSlice,
+  setCountry,
+  isMobile
+}) => {
   const chartRef = useRef();
   const svg = useRef();
   // every time the size of the chart changes, we redraw the graphic
@@ -337,15 +346,23 @@ const SVGChart = ({ monthlyMode, data, selectedFeature, regionIndex, timeSlice, 
         <div className='tooltip'></div>
       </div>
       {selectedData ? (
-        <button
-          className={styles.downloadButton}
-          onClick={() => {
-            const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-yearly-eutrophication`;
-            downloadChartData(selectedData, fileName);
-          }}
-        >
-          <CalciteIcon icon='downloadTo' scale='s'></CalciteIcon> Download chart data
-        </button>
+        <div className={styles.chartFooter}>
+          <span>
+            This chart shows the <b>percentage</b> of{' '}
+            <span className={styles.selectedCountry}>{selectedFeature.country}'s EEZ area </span>
+            impacted by eutrophication, through time.{' '}
+            {regionIndex > 0 ? `Regional neighbors shown for comparison.` : <></>}
+          </span>
+          <button
+            className={styles.downloadButton}
+            onClick={() => {
+              const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-yearly-eutrophication`;
+              downloadChartData(selectedData, fileName);
+            }}
+          >
+            <CalciteIcon icon='downloadTo' scale='s'></CalciteIcon> Download chart data
+          </button>
+        </div>
       ) : (
         <></>
       )}

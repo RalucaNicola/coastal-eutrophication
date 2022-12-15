@@ -20,8 +20,9 @@ body,
   --box-shadow: 0 0 12px rgb(0 0 0 / 100%);
   --margin: 15px;
   --background-color: rgba(50 50 50 / 60%);
-  --calcite-font-size--1: 0.75rem;
+  --calcite-font-size--1: 0.85rem;
   --calcite-ui-text-3: rgb(230, 230, 230);
+  --calcite-label-margin-bottom: 0;
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {

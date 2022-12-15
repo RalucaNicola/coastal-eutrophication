@@ -18,7 +18,7 @@ const world = new Graphic({
   },
   symbol: {
     type: 'simple-fill',
-    color: 'rgba(0, 0, 0, 0.2)',
+    color: 'rgba(0, 0, 0, 0.3)',
     outline: null
   }
 });
