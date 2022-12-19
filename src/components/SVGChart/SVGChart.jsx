@@ -49,11 +49,13 @@ const drawChart = ({
   const xScale = monthlyMode ? scaleLinear(xExtent, xRange) : scaleUtc(xExtent, xRange);
   const xAxis = axisBottom(xScale);
   if (monthlyMode) {
-    xAxis.ticks(Math.min(Math.round(size.width / 80), timeValues.length)).tickFormat(function (d) {
+    xAxis.ticks(Math.min(Math.floor(size.width / 100), timeValues.length)).tickFormat(function (d) {
       return months[d - 1];
     });
   } else {
-    xAxis.ticks(Math.round(size.width / 50));
+    xAxis.ticks(Math.min(Math.floor(size.width / 60), timeValues.length)).tickFormat((d) => {
+      return d.getFullYear();
+    });
   }
 
   svg
