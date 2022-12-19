@@ -40,13 +40,16 @@
 
 :global .thumb-indicator {
   stroke: rgba(255 255 255);
+  stroke-dasharray: 10 6;
+  stroke-dashoffset: 5;
+  stroke-width: 1.8;
   filter: drop-shadow(2px 2px 5px black);
   pointer-events: none;
 }
 
 :global .thumb {
-  fill: rgba(255, 255, 255, 1);
-  stroke: rgba(255, 255, 255, 0.5);
+  fill: rgb(0, 217, 109);
+  stroke: rgba(0, 217, 109, 0.5);
   cursor: pointer;
   filter: drop-shadow(2px 2px 5px black);
   transition: stroke-width 300ms;

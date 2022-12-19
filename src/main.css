@@ -14,7 +14,7 @@ body,
 
 .calcite-theme-dark,
 :root {
-  --calcite-ui-brand: #00d96d;
+  --calcite-ui-brand: rgb(0, 217, 109);
   --calcite-ui-brand-hover: #04532c;
   --border-radius: 10px;
   --box-shadow: 0 0 12px rgb(0 0 0 / 100%);
