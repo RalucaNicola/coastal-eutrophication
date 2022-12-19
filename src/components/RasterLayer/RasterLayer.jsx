@@ -63,7 +63,14 @@ const setTimeDefinition = (layer, timeDef, timeSlice) => {
   }
 };
 
-const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeSlice, mapView = null }) => {
+const RasterLayer = ({
+  identifyPoint,
+  monthlyMode,
+  monthlyTimeSlice,
+  yearlyTimeSlice,
+  mapView = null,
+  setIdentifyInfo
+}) => {
   const yearlyLayerRef = useRef();
   const monthlyLayerRef = useRef();
   const [queryLayers, setQueryLayers] = useState(null);
@@ -135,22 +142,27 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
       yearlyLayerRef.current.visible = !monthlyMode;
       monthlyLayerRef.current.visible = monthlyMode;
     }
+    setIdentifyInfo(null);
   }, [monthlyMode]);
 
   // on click
   useEffect(() => {
     const showPixelValue = async () => {
       mapView.graphics.removeAll();
-      mapView.popup.close();
 
-      let content = '<b>This pixel never experienced an anomalously high chlorophyll-a concentration.</b>';
+      let identifyInfo = {
+        type: 'no-info',
+        content: 'This pixel never experienced an anomalously high chlorophyll-a concentration.'
+      };
 
       if (monthlyMode) {
         const pixelResult = await monthlyLayerRef.current.identify(identifyPoint);
         if (pixelResult.value) {
-          content = `<p style="color: white"><b>This pixel experienced an anomalously high chlorophyll-a concentration ${pixelResult.value[0].toFixed(
-            2
-          )}% of all ${months[monthlyTimeSlice]}s since 2005.</b></p>`;
+          identifyInfo = {
+            type: 'monthly',
+            chlorophyllValue: pixelResult.value[0].toFixed(2),
+            month: months[monthlyTimeSlice]
+          };
         }
       } else {
         const date = new Date(yearlyTimeDefinition[0].values[yearlyTimeSlice]);
@@ -161,26 +173,26 @@ const RasterLayer = ({ identifyPoint, monthlyMode, monthlyTimeSlice, yearlyTimeS
         });
         const results = await Promise.all(queryLayerPromises);
         if (results[0].value) {
-          content = `<p style="color: white">This pixel's measured chlorophyll value in ${month} ${year} was ${results[0].value[0].toFixed(
-            2
-          )} mg/m<sup>3</sup>. The expected value, for the month of ${month}, was ${results[2].value[0].toFixed(
-            2
-          )} mg/m<sup>3</sup>. This is ${Math.ceil(
-            results[3].value[0]
-          )}% higher* than expected.</p><p>*For ${month} ${year}, any pixels greater than ${Math.ceil(
-            results[1].value[0]
-          )}% (90<sup>th</sup> percentile) are flagged for eutrophication.</p>`;
+          identifyInfo = {
+            type: 'yearly',
+            month,
+            year,
+            chlorophyllValue: results[0].value[0].toFixed(2),
+            monthlyValue: results[2].value[0].toFixed(2),
+            higherValue: Math.ceil(results[3].value[0]),
+            ninetiethPercentile: Math.ceil(results[1].value[0])
+          };
         }
       }
       mapView.graphics.add({ symbol, geometry: identifyPoint });
-      mapView.popup.open({ content, location: identifyPoint });
+      setIdentifyInfo(identifyInfo);
     };
 
     if (mapView) {
       if (identifyPoint) {
         showPixelValue();
       } else {
-        mapView.popup.close();
+        setIdentifyInfo(null);
         mapView.graphics.removeAll();
       }
     }

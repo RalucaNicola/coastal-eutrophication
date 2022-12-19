@@ -347,14 +347,10 @@ const SVGChart = ({
         </svg>
         <div className='tooltip'></div>
       </div>
-      {selectedFeature ? (
-        <div className={styles.chartFooter}>
-          <span>
-            This chart shows the <b>percentage</b> of{' '}
-            <span className={styles.selectedCountry}>{selectedFeature.country}'s EEZ area </span>
-            impacted by eutrophication, through time.{' '}
-            {regionIndex > 0 ? `Regional neighbors shown for comparison.` : <></>}
-          </span>
+
+      <div className={styles.chartFooter}>
+        <span> Change the time period for eutrophication rates displayed on the map by dragging the slider.</span>
+        {selectedFeature ? (
           <button
             className={styles.downloadButton}
             onClick={() => {
@@ -364,10 +360,10 @@ const SVGChart = ({
           >
             <CalciteIcon icon='downloadTo' scale='s'></CalciteIcon> Download chart data
           </button>
-        </div>
-      ) : (
-        <></>
-      )}
+        ) : (
+          <></>
+        )}
+      </div>
     </>
   );
 };

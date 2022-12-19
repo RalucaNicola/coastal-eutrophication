@@ -4,8 +4,9 @@
   left: var(--margin);
   right: var(--margin);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 10px;
   pointer-events: none;
 }
 
@@ -38,7 +39,7 @@
   font-size: var(--calcite-font-size--1);
   font-weight: bold;
   cursor: pointer;
-  opacity: 0.5;
+  opacity: 0.7;
   transition: opacity 300ms;
   pointer-events: all;
 }

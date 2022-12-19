@@ -50,9 +50,12 @@ const BottomPanel = ({
         <div className={styles.leftActionsContainer}>
           {selectedCountry ? (
             <div>
-              Explore <span className={styles.selectedCountry}>{selectedCountry.name}</span>'s{' '}
-              {monthlyMode ? `monthly anomalous pixel frequency` : `chlorophyll-a concentration`} by clicking the
-              highlighted area on the map.{' '}
+              <span>
+                This chart shows the <b>percentage</b> of{' '}
+                <span className={styles.selectedCountry}>{selectedCountry.name}'s EEZ area </span>
+                impacted by eutrophication, through time.{' '}
+                {selectedRegionIndex > 0 ? `Regional neighbors shown for comparison.` : <></>}
+              </span>
             </div>
           ) : (
             <div>Select a zone to explore eutrophication rates.</div>

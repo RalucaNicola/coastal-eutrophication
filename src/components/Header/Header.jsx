@@ -1,4 +1,6 @@
 import * as styles from './Header.module.css';
+import '@esri/calcite-components/dist/components/calcite-action';
+import { CalciteAction } from '@esri/calcite-components-react';
 
 const Header = ({ setModal, isMobile }) => {
   return (
@@ -12,9 +14,14 @@ const Header = ({ setModal, isMobile }) => {
           <div className={styles.subtitle}>Potential eutrophication within Exclusive Economic Zones</div>
         )}
       </div>
-      <div onClick={setModal} className={styles.about}>
-        About the map
-      </div>
+      <CalciteAction
+        icon='information'
+        scale='m'
+        onClick={setModal}
+        appearance='clear'
+        className={styles.about}
+        compact
+      ></CalciteAction>
     </header>
   );
 };

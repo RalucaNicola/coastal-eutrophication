@@ -40,9 +40,9 @@
 
 :global .thumb-indicator {
   stroke: rgba(255 255 255);
-  stroke-dasharray: 10 6;
-  stroke-dashoffset: 5;
-  stroke-width: 1.8;
+  stroke-dasharray: 10 7;
+  stroke-dashoffset: 4;
+  stroke-width: 1.5;
   filter: drop-shadow(2px 2px 5px black);
   pointer-events: none;
 }
@@ -90,11 +90,6 @@ text {
   font-size: var(--calcite-font-size--1);
   display: flex;
   justify-content: space-between;
-}
-
-.selectedCountry {
-  color: var(--calcite-ui-brand);
-  font-weight: bold;
 }
 
 @media (max-width: 700px) {

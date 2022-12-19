@@ -109,15 +109,6 @@ const CountryDetails = ({
         {isMobile ? null : showRegionSelection()}
       </div>
       <div className={styles.countryChart}>
-        {!selectedFeature ? (
-          <div className={styles.headerChart}>
-            <div className={styles.legendInfo}>
-              <span> Change the time period for eutrophication rates displayed on the map by dragging the slider.</span>
-            </div>
-          </div>
-        ) : (
-          <></>
-        )}
         <SVGChart
           data={data}
           selectedFeature={selectedFeature}

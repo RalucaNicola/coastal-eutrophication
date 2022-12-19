@@ -1,5 +1,5 @@
 import { useEffect, useState, useLayoutEffect } from 'react';
-import { Map, BottomPanel, Header, InfoModal, CountryDetails, RasterLayer } from '../components';
+import { Map, BottomPanel, Header, InfoModal, CountryDetails, RasterLayer, PopupInfo } from '../components';
 
 import useEutrophicationData from '../hooks/useEutrophicationData';
 import { CalciteLoader } from '@esri/calcite-components-react';
@@ -14,6 +14,7 @@ export const App = () => {
   const [paddingBottom, setPaddingBottom] = useState(80);
   const [isMobile, setIsMobile] = useState();
   const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
+  const [identifyInfo, setIdentifyInfo] = useState(null);
 
   const { dataResponse, isLoading, isFailed } = useEutrophicationData();
 
@@ -76,8 +77,15 @@ export const App = () => {
           monthlyMode={monthlyMode}
           monthlyTimeSlice={monthlyTimeSlice}
           yearlyTimeSlice={yearlyTimeSlice}
+          setIdentifyInfo={setIdentifyInfo}
         ></RasterLayer>
       </Map>
+      <PopupInfo
+        identifyInfo={identifyInfo}
+        selectedCountry={selectedCountry}
+        setIdentifyPoint={setIdentifyPoint}
+        identifyPoint={identifyPoint}
+      ></PopupInfo>
       <BottomPanel
         setPaddingBottom={setPaddingBottom}
         setModal={() => setIsInfoModalOpen(true)}
