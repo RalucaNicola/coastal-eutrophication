@@ -60,7 +60,7 @@ const drawChart = ({
     });
   } else {
     xAxis.ticks(Math.min(Math.floor(size.width / 60), timeValues.length)).tickFormat((d) => {
-      return d.getFullYear();
+      return d.getUTCFullYear();
     });
   }
   xAxis.tickSize(0).tickPadding(10);
