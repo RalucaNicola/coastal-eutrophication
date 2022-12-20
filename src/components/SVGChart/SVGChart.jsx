@@ -48,6 +48,12 @@ const drawChart = ({
   const xExtent = [startXExtent, endXExtent];
   const xScale = monthlyMode ? scaleLinear(xExtent, xRange) : scaleUtc(xExtent, xRange);
   const xAxis = axisBottom(xScale);
+  svg.selectAll('.countryArea').remove();
+
+  const time = monthlyMode ? timeValues[timeSlice] : new Date(timeValues[timeSlice]);
+  const xThumb = xScale(time);
+  const yThumb = size.height - margin.bottom;
+
   if (monthlyMode) {
     xAxis.ticks(Math.min(Math.floor(size.width / 100), timeValues.length)).tickFormat(function (d) {
       return months[d - 1];
@@ -57,17 +63,19 @@ const drawChart = ({
       return d.getFullYear();
     });
   }
+  xAxis.tickSize(0).tickPadding(10);
 
   svg
     .select('.xAxis')
     .attr('transform', `translate(0,${size.height - margin.bottom})`)
-    .call(xAxis);
+    .call(xAxis)
+    .on('click', (event) => {
+      setThumb(event, size, timeValues, monthlyMode, xScale, setTimeSlice);
+    });
+  const path = svg.select('.xAxis>path');
+  const d = path.attr('d').replace(/V[0-9]/gm, '');
+  path.attr('d', d);
 
-  svg.selectAll('.countryArea').remove();
-
-  const time = monthlyMode ? timeValues[timeSlice] : new Date(timeValues[timeSlice]);
-  const xThumb = xScale(time);
-  const yThumb = size.height - margin.bottom;
   setThumbText({ xThumb, time, width: size.width, monthlyMode });
   select('.thumb-indicator').attr('x1', xThumb).attr('x2', xThumb).attr('y1', yThumb).attr('y2', 0);
   select('.thumb')
@@ -80,7 +88,6 @@ const drawChart = ({
         })
         .on('drag', function (event) {
           const x = Math.min(Math.max(event.x, margin.left), size.width - margin.right);
-
           const timeSlice = Math.round(
             (x - margin.left) / ((size.width - margin.right - margin.left) / (timeValues.length - 1))
           );
@@ -164,8 +171,23 @@ const drawChart = ({
       })
       .on('click', (event, d) => {
         setCountry({ name: d.key, selectedFromMap: false });
+        setThumb(event, size, timeValues, monthlyMode, xScale, setTimeSlice);
       });
   }
+};
+
+const setThumb = (event, size, timeValues, monthlyMode, xScale, setTimeSlice) => {
+  const x = pointer(event)[0];
+  const timeSlice = Math.round(
+    (x - margin.left) / ((size.width - margin.right - margin.left) / (timeValues.length - 1))
+  );
+  const time = monthlyMode ? timeValues[timeSlice] : new Date(timeValues[timeSlice]);
+  const xThumb = xScale(time);
+
+  select('.thumb').attr('cx', xThumb);
+  select('.thumb-indicator').attr('x1', xThumb).attr('x2', xThumb);
+  setThumbText({ xThumb, time, width: size.width, monthlyMode });
+  setTimeSlice(timeSlice);
 };
 
 const setThumbText = ({ xThumb, time, width, monthlyMode }) => {
