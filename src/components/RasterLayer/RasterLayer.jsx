@@ -5,7 +5,7 @@ import RasterStretchRenderer from '@arcgis/core/renderers/RasterStretchRenderer'
 import DimensionalDefinition from '@arcgis/core/layers/support/DimensionalDefinition';
 
 import { AppContext } from '../../contexts/AppContextProvider';
-import { months } from '../../utils';
+import { months } from '../../utils/utils';
 
 const symbol = {
   type: 'simple-marker',

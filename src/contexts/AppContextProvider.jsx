@@ -1,5 +1,5 @@
 import { mapConfig } from '../config';
-import { getTimeDefinition } from '../utils';
+import { getTimeDefinition } from '../utils/utils';
 import { createContext, useEffect, useState } from 'react';
 
 export const AppContext = createContext(null);

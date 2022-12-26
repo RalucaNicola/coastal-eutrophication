@@ -18,7 +18,7 @@ import {
   stackOffsetNone
 } from 'd3';
 
-import { months } from '../../utils';
+import { months } from '../../utils/utils';
 import { regionNames } from '../../config';
 import { AppContext } from '../../contexts/AppContextProvider';
 

@@ -3,7 +3,7 @@ import { useRef, useEffect, useState, Children, cloneElement } from 'react';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import { mapConfig, regionNames } from '../../config';
-import { getSelectionRenderer, getSimpleRenderer } from '../../utils';
+import { getSelectionRenderer, getSimpleRenderer } from '../../utils/utils';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Graphic from '@arcgis/core/Graphic';
