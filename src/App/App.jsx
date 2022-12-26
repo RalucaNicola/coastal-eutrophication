@@ -11,8 +11,8 @@ export const App = () => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [identifyPoint, setIdentifyPoint] = useState(null);
   const [monthlyMode, setMonthlyMode] = useState(preloadedState.monthlyMode);
-  const [monthlyTimeSlice, setMonthlyTimeSlice] = useState(0);
-  const [yearlyTimeSlice, setYearlyTimeSlice] = useState(203);
+  const [monthlyTimeSlice, setMonthlyTimeSlice] = useState(preloadedState.monthlyTimeSlice);
+  const [yearlyTimeSlice, setYearlyTimeSlice] = useState(preloadedState.yearlyTimeSlice);
   const [paddingBottom, setPaddingBottom] = useState(80);
   const [isMobile, setIsMobile] = useState();
   const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);

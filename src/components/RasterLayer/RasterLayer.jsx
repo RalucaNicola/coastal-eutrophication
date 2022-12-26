@@ -6,6 +6,7 @@ import DimensionalDefinition from '@arcgis/core/layers/support/DimensionalDefini
 
 import { AppContext } from '../../contexts/AppContextProvider';
 import { months } from '../../utils/utils';
+import { setTimeSliceToHashParameters } from '../../utils/URLHashParams';
 
 const symbol = {
   type: 'simple-marker',
@@ -135,6 +136,11 @@ const RasterLayer = ({
       queryLayers.forEach((layer) => setTimeDefinition(layer, yearlyTimeDefinition, yearlyTimeSlice));
     }
   }, [yearlyTimeSlice, yearlyLayerRef, yearlyTimeDefinition, queryLayers]);
+
+  useEffect(() => {
+    const timeSlice = monthlyMode ? monthlyTimeSlice : yearlyTimeSlice;
+    setTimeSliceToHashParameters(timeSlice);
+  }, [monthlyMode, monthlyTimeSlice, yearlyTimeSlice]);
 
   // on mode change
   useEffect(() => {

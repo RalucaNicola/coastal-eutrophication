@@ -78,3 +78,19 @@ export const getModeFromHashParameters = () => {
   }
   return value === 'monthly';
 };
+
+export const setTimeSliceToHashParameters = (value) => {
+  if (value) {
+    updateHashParams(keys.time, value);
+  } else {
+    updateHashParams(keys.time, null);
+  }
+};
+
+export const getTimeSliceFromHashParameters = () => {
+  const value = getHashParamValueByKey(keys.time);
+  if (!value) {
+    return null;
+  }
+  return value;
+};
