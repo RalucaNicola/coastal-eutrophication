@@ -62,3 +62,19 @@ export const getMapCenterFromHashParams = () => {
     zoom
   };
 };
+
+export const setModeToHashParameters = (value) => {
+  if (value) {
+    updateHashParams(keys.mode, 'monthly');
+  } else {
+    updateHashParams(keys.mode, null);
+  }
+};
+
+export const getModeFromHashParameters = () => {
+  const value = getHashParamValueByKey(keys.mode);
+  if (!value) {
+    return false;
+  }
+  return value === 'monthly';
+};

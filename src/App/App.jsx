@@ -1,14 +1,16 @@
 import { useEffect, useState, useLayoutEffect } from 'react';
 import { Map, BottomPanel, Header, InfoModal, CountryDetails, RasterLayer, PopupInfo } from '../components';
-
+import { getPreloadedState } from '../utils/preloadedState';
 import useEutrophicationData from '../hooks/useEutrophicationData';
 import { CalciteLoader } from '@esri/calcite-components-react';
 
+const preloadedState = getPreloadedState();
+
 export const App = () => {
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(preloadedState.isInfoModelOpen);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [identifyPoint, setIdentifyPoint] = useState(null);
-  const [monthlyMode, setMonthlyMode] = useState(false);
+  const [monthlyMode, setMonthlyMode] = useState(preloadedState.monthlyMode);
   const [monthlyTimeSlice, setMonthlyTimeSlice] = useState(0);
   const [yearlyTimeSlice, setYearlyTimeSlice] = useState(203);
   const [paddingBottom, setPaddingBottom] = useState(80);
