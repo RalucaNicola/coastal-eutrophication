@@ -7,6 +7,8 @@ import { getSelectionRenderer, getSimpleRenderer } from '../../utils/utils';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Graphic from '@arcgis/core/Graphic';
+import { setMapCenterToHashParams, getMapCenterFromHashParams } from '../../utils/URLHashParams';
+import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 
 const world = new Graphic({
   geometry: {
@@ -61,7 +63,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
   const selectedCountryRef = useRef(selectedCountry);
   const eezLayerRef = useRef();
 
-  const addEventHandler = async (view) => {
+  const addEventHandlers = async (view) => {
     view.on('click', async (event) => {
       const result = await view.hitTest(event, { include: [eezLayerRef.current] });
       if (result.results && result.results[0] && result.results[0].graphic) {
@@ -77,6 +79,16 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         setIdentifyPoint(null);
       }
     });
+
+    reactiveUtils.when(
+      () => view.stationary === true,
+      () => {
+        const lon = +view.center.longitude.toFixed(3);
+        const lat = +view.center.latitude.toFixed(3);
+        const zoom = view.zoom;
+        setMapCenterToHashParams({ lon, lat }, zoom);
+      }
+    );
   };
 
   useEffect(() => {
@@ -136,6 +148,12 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
 
       view.when(() => {
         setMapView(view);
+        const mapCenter = getMapCenterFromHashParams();
+        if (mapCenter) {
+          view.map.loadAll().then(() => {
+            view.goTo({ zoom: mapCenter.zoom, center: [mapCenter.center.lon, mapCenter.center.lat] });
+          });
+        }
         const eezLayer = view.map.layers
           .filter((layer) => layer.title === 'Exclusive Economic Zone boundaries')
           .getItemAt(0);
@@ -144,8 +162,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         eezLayerRef.current = eezLayer;
         groupLayer.add(eezLayer, 0);
         view.map.add(groupLayer);
-
-        addEventHandler(view);
+        addEventHandlers(view);
         window.view = view;
       });
     } catch (err) {
