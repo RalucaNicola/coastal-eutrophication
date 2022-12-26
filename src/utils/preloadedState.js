@@ -1,4 +1,8 @@
-import { getModeFromHashParameters, getTimeSliceFromHashParameters } from './URLHashParams';
+import {
+  getModeFromHashParameters,
+  getTimeSliceFromHashParameters,
+  getCountryFromHashParameters
+} from './URLHashParams';
 const monthlyMode = getModeFromHashParameters();
 const timeSlice = getTimeSliceFromHashParameters();
 const DEFAULT_YEARLY_TIMESLICE = 203;
@@ -12,6 +16,7 @@ export const getPreloadedState = () => {
     isInfoModalOpen: false,
     monthlyMode,
     yearlyTimeSlice,
-    monthlyTimeSlice
+    monthlyTimeSlice,
+    country: getCountryFromHashParameters()
   };
 };

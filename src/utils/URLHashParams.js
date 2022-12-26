@@ -94,3 +94,18 @@ export const getTimeSliceFromHashParameters = () => {
   }
   return value;
 };
+
+export const setCountryToHashParameters = (value) => {
+  updateHashParams(keys.country, value);
+};
+
+export const getCountryFromHashParameters = () => {
+  const value = getHashParamValueByKey(keys.country);
+  if (!value) {
+    return null;
+  }
+  return {
+    name: value,
+    selectedFromMap: false
+  };
+};

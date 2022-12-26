@@ -61,6 +61,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
   const mapDivRef = useRef();
   const [mapView, setMapView] = useState(null);
   const selectedCountryRef = useRef(selectedCountry);
+  const [eezLayer, setEezLayer] = useState(null);
   const eezLayerRef = useRef();
 
   const addEventHandlers = async (view) => {
@@ -98,20 +99,24 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
   }, [paddingBottom]);
 
   useEffect(() => {
-    if (data && eezLayerRef.current) {
-      if (selectedCountry && selectedRegionIndex > 0) {
-        const feature = data.countryData.filter((feature) => {
-          return feature.country === selectedCountry.name;
-        })[0];
-        const field = regionNames[selectedRegionIndex].field;
-        const regions = regionNames.map((region) => feature[region.name]);
-        const value = regions[selectedRegionIndex];
-        eezLayerRef.current.renderer = getSelectionRenderer(field, value);
-      } else {
-        eezLayerRef.current.renderer = getSimpleRenderer();
+    if (data && eezLayer) {
+      if (selectedCountry) {
+        highlightCountry();
+        selectedCountryRef.current = selectedCountry;
+        if (selectedRegionIndex > 0) {
+          const feature = data.countryData.filter((feature) => {
+            return feature.country === selectedCountry.name;
+          })[0];
+          const field = regionNames[selectedRegionIndex].field;
+          const regions = regionNames.map((region) => feature[region.name]);
+          const value = regions[selectedRegionIndex];
+          eezLayer.renderer = getSelectionRenderer(field, value);
+        } else {
+          eezLayer.renderer = getSimpleRenderer();
+        }
       }
     }
-  }, [selectedRegionIndex, selectedCountry, data, eezLayerRef]);
+  }, [selectedRegionIndex, selectedCountry, data, eezLayer]);
 
   // initialize effect
   useEffect(() => {
@@ -159,6 +164,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
           .getItemAt(0);
         eezLayer.outFields = regionNames.map((region) => region.field);
         eezLayer.renderer = getSimpleRenderer();
+        setEezLayer(eezLayer);
         eezLayerRef.current = eezLayer;
         groupLayer.add(eezLayer, 0);
         view.map.add(groupLayer);
@@ -178,10 +184,10 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
   }, []);
 
   const highlightCountry = async () => {
-    if (selectedCountry) {
+    if (selectedCountry && eezLayer) {
       const {
         features: [feature]
-      } = await eezLayerRef.current.queryFeatures({
+      } = await eezLayer.queryFeatures({
         where: `CountryName ='${selectedCountry.name}'`,
         returnGeometry: true
       });
@@ -217,15 +223,6 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
     shadowLayer.removeAll();
     lowlightLayer.opacity = 0;
   };
-
-  // highlight layer effect
-  useEffect(() => {
-    if (!eezLayerRef.current) {
-      return;
-    }
-    highlightCountry();
-    selectedCountryRef.current = selectedCountry;
-  }, [selectedCountry]);
 
   return (
     <>

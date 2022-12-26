@@ -2,13 +2,14 @@ import { useEffect, useState, useLayoutEffect } from 'react';
 import { Map, BottomPanel, Header, InfoModal, CountryDetails, RasterLayer, PopupInfo } from '../components';
 import { getPreloadedState } from '../utils/preloadedState';
 import useEutrophicationData from '../hooks/useEutrophicationData';
+import { setTimeSliceToHashParameters, setCountryToHashParameters } from '../utils/URLHashParams';
 import { CalciteLoader } from '@esri/calcite-components-react';
 
 const preloadedState = getPreloadedState();
 
 export const App = () => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(preloadedState.isInfoModelOpen);
-  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState(preloadedState.country);
   const [identifyPoint, setIdentifyPoint] = useState(null);
   const [monthlyMode, setMonthlyMode] = useState(preloadedState.monthlyMode);
   const [monthlyTimeSlice, setMonthlyTimeSlice] = useState(preloadedState.monthlyTimeSlice);
@@ -35,6 +36,13 @@ export const App = () => {
 
   useEffect(() => {
     setIdentifyPoint(null);
+    const timeSlice = monthlyMode ? monthlyTimeSlice : yearlyTimeSlice;
+    setTimeSliceToHashParameters(timeSlice);
+    if (selectedCountry) {
+      setCountryToHashParameters(selectedCountry.name);
+    } else {
+      setCountryToHashParameters(null);
+    }
   }, [selectedCountry, monthlyTimeSlice, yearlyTimeSlice, monthlyMode]);
 
   const showCountryDetails = () => {
