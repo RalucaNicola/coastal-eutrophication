@@ -16,7 +16,7 @@ export const App = () => {
   const [yearlyTimeSlice, setYearlyTimeSlice] = useState(preloadedState.yearlyTimeSlice);
   const [paddingBottom, setPaddingBottom] = useState(80);
   const [isMobile, setIsMobile] = useState();
-  const [selectedRegionIndex, setSelectedRegionIndex] = useState(0);
+  const [selectedRegionIndex, setSelectedRegionIndex] = useState(preloadedState.regionIndex);
   const [identifyInfo, setIdentifyInfo] = useState(null);
 
   const { dataResponse, isLoading, isFailed } = useEutrophicationData();

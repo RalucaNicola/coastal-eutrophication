@@ -1,7 +1,8 @@
 import {
   getModeFromHashParameters,
   getTimeSliceFromHashParameters,
-  getCountryFromHashParameters
+  getCountryFromHashParameters,
+  getRegionFromHashParameters
 } from './URLHashParams';
 const monthlyMode = getModeFromHashParameters();
 const timeSlice = getTimeSliceFromHashParameters();
@@ -17,6 +18,7 @@ export const getPreloadedState = () => {
     monthlyMode,
     yearlyTimeSlice,
     monthlyTimeSlice,
-    country: getCountryFromHashParameters()
+    country: getCountryFromHashParameters(),
+    regionIndex: getRegionFromHashParameters()
   };
 };
