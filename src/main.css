@@ -54,6 +54,11 @@ sup {
   vertical-align: super;
 }
 
+/* this was John Nelson's idea */
+.esri-view .esri-view-surface--inset-outline:focus::after {
+  outline: none !important;
+}
+
 /* scrollbar styles */
 
 ::-webkit-scrollbar {

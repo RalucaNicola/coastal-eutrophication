@@ -16,6 +16,7 @@ import {
 import { SVGChart } from '../index';
 import { useEffect, useState } from 'react';
 import { regionNames } from '../../config';
+import { setRegionToHashParameters } from '../../utils/URLHashParams';
 
 const CountryDetails = ({
   data,
@@ -57,7 +58,9 @@ const CountryDetails = ({
           layout='vertical'
           style={{ paddingLeft: '4px' }}
           onCalciteRadioButtonChange={(event) => {
-            setSelectedRegionIndex(event.target.value);
+            const regionIndex = event.target.value;
+            setSelectedRegionIndex(regionIndex);
+            setRegionToHashParameters(regionIndex);
           }}
         >
           {regions.map((region, index) => {

@@ -5,7 +5,7 @@ import RasterStretchRenderer from '@arcgis/core/renderers/RasterStretchRenderer'
 import DimensionalDefinition from '@arcgis/core/layers/support/DimensionalDefinition';
 
 import { AppContext } from '../../contexts/AppContextProvider';
-import { months } from '../../utils';
+import { months } from '../../utils/utils';
 
 const symbol = {
   type: 'simple-marker',
@@ -80,7 +80,7 @@ const RasterLayer = ({
     const initLayers = async () => {
       const yearlyLayer = initImageryTileLayer({
         url: mapConfig['yearly-layer'],
-        visible: true,
+        visible: !monthlyMode,
         multidimensionalDefinition: yearlyTimeDefinition,
         title: 'Chlorophyll-a Concentration (mg/m3)'
       });
@@ -92,7 +92,7 @@ const RasterLayer = ({
       yearlyLayerRef.current = yearlyLayer;
       const monthlyLayer = initImageryTileLayer({
         url: mapConfig['monthly-layer'],
-        visible: false,
+        visible: monthlyMode,
         multidimensionalDefinition: monthlyTimeDefinition,
         title: 'Monthly anomaly pixel frequency (%)'
       });

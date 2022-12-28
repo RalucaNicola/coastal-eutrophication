@@ -6,6 +6,7 @@ import { CalciteLabel, CalciteSwitch } from '@esri/calcite-components-react';
 import { CalciteAction } from '@esri/calcite-components-react';
 import { useState, useRef, useEffect } from 'react';
 import { Legend } from '../index';
+import { setModeToHashParameters } from '../../utils/URLHashParams';
 
 const BottomPanel = ({
   setPaddingBottom,
@@ -22,7 +23,9 @@ const BottomPanel = ({
   };
 
   const toggleMode = (event) => {
+    const monthlyMode = event.target.checked;
     setMonthlyMode(event.target.checked);
+    setModeToHashParameters(monthlyMode);
   };
 
   useEffect(() => {
@@ -69,7 +72,7 @@ const BottomPanel = ({
         </div>
         <div className={styles.labelContainer}>
           <CalciteLabel layout='inline' alignment='start'>
-            <CalciteSwitch onCalciteSwitchChange={toggleMode}></CalciteSwitch>
+            <CalciteSwitch checked={monthlyMode ? true : undefined} onCalciteSwitchChange={toggleMode}></CalciteSwitch>
             Monthly average
           </CalciteLabel>
         </div>

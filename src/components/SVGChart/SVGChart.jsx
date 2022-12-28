@@ -18,7 +18,7 @@ import {
   stackOffsetNone
 } from 'd3';
 
-import { months } from '../../utils';
+import { months } from '../../utils/utils';
 import { regionNames } from '../../config';
 import { AppContext } from '../../contexts/AppContextProvider';
 
@@ -376,7 +376,9 @@ const SVGChart = ({
           <button
             className={styles.downloadButton}
             onClick={() => {
-              const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-yearly-eutrophication`;
+              const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-${
+                monthlyMode ? 'monthly-average' : 'yearly-eutrophication'
+              }`;
               downloadChartData(selectedData, fileName);
             }}
           >

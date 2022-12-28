@@ -3,10 +3,12 @@ import { useRef, useEffect, useState, Children, cloneElement } from 'react';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import { mapConfig, regionNames } from '../../config';
-import { getSelectionRenderer, getSimpleRenderer } from '../../utils';
+import { getSelectionRenderer, getSimpleRenderer } from '../../utils/utils';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Graphic from '@arcgis/core/Graphic';
+import { setMapCenterToHashParams, getMapCenterFromHashParams } from '../../utils/URLHashParams';
+import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 
 const world = new Graphic({
   geometry: {
@@ -59,9 +61,10 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
   const mapDivRef = useRef();
   const [mapView, setMapView] = useState(null);
   const selectedCountryRef = useRef(selectedCountry);
+  const [eezLayer, setEezLayer] = useState(null);
   const eezLayerRef = useRef();
 
-  const addEventHandler = async (view) => {
+  const addEventHandlers = async (view) => {
     view.on('click', async (event) => {
       const result = await view.hitTest(event, { include: [eezLayerRef.current] });
       if (result.results && result.results[0] && result.results[0].graphic) {
@@ -77,6 +80,16 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         setIdentifyPoint(null);
       }
     });
+
+    reactiveUtils.when(
+      () => view.stationary === true,
+      () => {
+        const lon = +view.center.longitude.toFixed(3);
+        const lat = +view.center.latitude.toFixed(3);
+        const zoom = view.zoom;
+        setMapCenterToHashParams({ lon, lat }, zoom);
+      }
+    );
   };
 
   useEffect(() => {
@@ -86,20 +99,24 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
   }, [paddingBottom]);
 
   useEffect(() => {
-    if (data && eezLayerRef.current) {
-      if (selectedCountry && selectedRegionIndex > 0) {
-        const feature = data.countryData.filter((feature) => {
-          return feature.country === selectedCountry.name;
-        })[0];
-        const field = regionNames[selectedRegionIndex].field;
-        const regions = regionNames.map((region) => feature[region.name]);
-        const value = regions[selectedRegionIndex];
-        eezLayerRef.current.renderer = getSelectionRenderer(field, value);
-      } else {
-        eezLayerRef.current.renderer = getSimpleRenderer();
+    if (data && eezLayer) {
+      highlightCountry();
+      selectedCountryRef.current = selectedCountry;
+      if (selectedCountry) {
+        if (selectedRegionIndex > 0) {
+          const feature = data.countryData.filter((feature) => {
+            return feature.country === selectedCountry.name;
+          })[0];
+          const field = regionNames[selectedRegionIndex].field;
+          const regions = regionNames.map((region) => feature[region.name]);
+          const value = regions[selectedRegionIndex];
+          eezLayer.renderer = getSelectionRenderer(field, value);
+        } else {
+          eezLayer.renderer = getSimpleRenderer();
+        }
       }
     }
-  }, [selectedRegionIndex, selectedCountry, data, eezLayerRef]);
+  }, [selectedRegionIndex, selectedCountry, data, eezLayer]);
 
   // initialize effect
   useEffect(() => {
@@ -136,16 +153,22 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
 
       view.when(() => {
         setMapView(view);
+        const mapCenter = getMapCenterFromHashParams();
+        if (mapCenter) {
+          view.map.loadAll().then(() => {
+            view.goTo({ zoom: mapCenter.zoom, center: [mapCenter.center.lon, mapCenter.center.lat] });
+          });
+        }
         const eezLayer = view.map.layers
           .filter((layer) => layer.title === 'Exclusive Economic Zone boundaries')
           .getItemAt(0);
         eezLayer.outFields = regionNames.map((region) => region.field);
         eezLayer.renderer = getSimpleRenderer();
+        setEezLayer(eezLayer);
         eezLayerRef.current = eezLayer;
         groupLayer.add(eezLayer, 0);
         view.map.add(groupLayer);
-
-        addEventHandler(view);
+        addEventHandlers(view);
         window.view = view;
       });
     } catch (err) {
@@ -161,10 +184,10 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
   }, []);
 
   const highlightCountry = async () => {
-    if (selectedCountry) {
+    if (selectedCountry && eezLayer) {
       const {
         features: [feature]
-      } = await eezLayerRef.current.queryFeatures({
+      } = await eezLayer.queryFeatures({
         where: `CountryName ='${selectedCountry.name}'`,
         returnGeometry: true
       });
@@ -200,15 +223,6 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
     shadowLayer.removeAll();
     lowlightLayer.opacity = 0;
   };
-
-  // highlight layer effect
-  useEffect(() => {
-    if (!eezLayerRef.current) {
-      return;
-    }
-    highlightCountry();
-    selectedCountryRef.current = selectedCountry;
-  }, [selectedCountry]);
 
   return (
     <>
