@@ -376,7 +376,9 @@ const SVGChart = ({
           <button
             className={styles.downloadButton}
             onClick={() => {
-              const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-yearly-eutrophication`;
+              const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-${
+                monthlyMode ? 'monthly-average' : 'yearly-eutrophication'
+              }`;
               downloadChartData(selectedData, fileName);
             }}
           >
