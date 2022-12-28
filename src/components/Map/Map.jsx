@@ -100,9 +100,9 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
 
   useEffect(() => {
     if (data && eezLayer) {
+      highlightCountry();
+      selectedCountryRef.current = selectedCountry;
       if (selectedCountry) {
-        highlightCountry();
-        selectedCountryRef.current = selectedCountry;
         if (selectedRegionIndex > 0) {
           const feature = data.countryData.filter((feature) => {
             return feature.country === selectedCountry.name;
