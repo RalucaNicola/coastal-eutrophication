@@ -170,7 +170,9 @@ const drawChart = ({
         mouseleave(data.selectedFeature.country);
       })
       .on('click', (event, d) => {
-        setCountry({ name: d.key, selectedFromMap: false });
+        if (d.key !== data.selectedFeature.country) {
+          setCountry({ name: d.key, selectedFromMap: false });
+        }
         setThumb(event, size, timeValues, monthlyMode, xScale, setTimeSlice);
       });
   }
