@@ -122,6 +122,7 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
   useEffect(() => {
     let view = null;
     try {
+      const mapCenter = getMapCenterFromHashParams();
       view = new MapView({
         container: mapDivRef.current,
         map: new WebMap({
@@ -151,14 +152,18 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
         }
       });
 
+      if (mapCenter) {
+        view.goTo({ zoom: mapCenter.zoom, center: [mapCenter.center.lon, mapCenter.center.lat] });
+      }
+
       view.when(() => {
         setMapView(view);
-        const mapCenter = getMapCenterFromHashParams();
-        if (mapCenter) {
-          view.map.loadAll().then(() => {
-            view.goTo({ zoom: mapCenter.zoom, center: [mapCenter.center.lon, mapCenter.center.lat] });
-          });
-        }
+
+        // if (mapCenter) {
+        //   view.map.loadAll().then(() => {
+        //     view.goTo({ zoom: mapCenter.zoom, center: [mapCenter.center.lon, mapCenter.center.lat] });
+        //   });
+        // }
         const eezLayer = view.map.layers
           .filter((layer) => layer.title === 'Exclusive Economic Zone boundaries')
           .getItemAt(0);
