@@ -15,7 +15,7 @@ Additionally, for the popup, we query the following services:
 - [Baseline values](https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_baseline/ImageServer)
 - [Percent difference](https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_percent_difference/ImageServer)
 
-For the charts we generate [csv files](../data/) with data from the following table:
+For the charts we generate [csv files](../public/data/) with data from the following table:
 
 - [https://services.arcgis.com/bDAhvQYMG4WL8O5o/ArcGIS/rest/services/eez_v11_with_UN_code_and_EEZ_pixel_count_and_UN_regions_and_stats_UN_Country_Dissolve_v3/]
 
