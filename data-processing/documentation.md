@@ -1,6 +1,6 @@
 The data used for this application:
 
-Basemap created by John Nelson (currently using [my copy of it](https://zurich.maps.arcgis.com/home/item.html?id=87885b8822704d92a962f09cb00ea259), because I added the ocean currents):
+Webmap created by John Nelson (currently using [my copy of it](https://zurich.maps.arcgis.com/home/item.html?id=87885b8822704d92a962f09cb00ea259), because I added the ocean currents):
 
 -> https://zurich.maps.arcgis.com/home/item.html?id=4ffbe9fd001f4da0b755d9eaeb2c763c
 
