@@ -3,16 +3,13 @@ import csv
 import datetime
 
 base_url = "https://services.arcgis.com/bDAhvQYMG4WL8O5o/ArcGIS/rest/services/eez_v11_with_UN_code_and_EEZ_pixel_count_and_UN_regions_and_stats_UN_Country_Dissolve_v3/FeatureServer/0/query"
-parameters = {
-    "where": 'M49_Region',
-}
 
 def fix_region_name(name):
     if name is not None:
         return name.replace(" ", " ")
     return "no name"
 
-
+# builds arrays with the dates, the countries, the values for each country and date and the country regions for each country
 def get_axes_info(features):
     values = {}
     formatted_dates = []
@@ -40,6 +37,7 @@ def get_axes_info(features):
 
 def load_data():
     totalFeatures = []
+    # hard coded for 40k records
     for i in range(0, 41):
         response = requests.get(base_url + "?where=1%3D1&objectIds=&time=&resultType=none&outFields=CountryName%2C+Date%2C+Impact_Percent%2C+SDG_Regions%2C+M49_Level_1_Region%2C+M49_Level_2_Region&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=Date%2CCountryName&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=" + str(i * 1000) + "&resultRecordCount=&sqlFormat=none&f=json&token=")
         features = response.json()["features"]
