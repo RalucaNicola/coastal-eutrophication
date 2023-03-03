@@ -1,7 +1,9 @@
 import * as styles from './SVGChart.module.css';
 import { useEffect, useRef, useState, useContext } from 'react';
 import '@esri/calcite-components/dist/components/calcite-icon';
-import { CalciteIcon } from '@esri/calcite-components-react';
+import '@esri/calcite-components/dist/components/calcite-switch';
+import '@esri/calcite-components/dist/components/calcite-label';
+import { CalciteIcon, CalciteSwitch, CalciteLabel } from '@esri/calcite-components-react';
 import {
   area,
   axisBottom,
@@ -275,7 +277,8 @@ const SVGChart = ({
   timeSlice,
   setTimeSlice,
   setCountry,
-  isMobile
+  showOceanCurrents,
+  setShowOceanCurrents
 }) => {
   const chartRef = useRef();
   const svg = useRef();
@@ -374,21 +377,36 @@ const SVGChart = ({
 
       <div className={styles.chartFooter}>
         <span> Change the time period for eutrophication rates displayed on the map by dragging the slider.</span>
-        {selectedFeature ? (
-          <button
-            className={styles.downloadButton}
-            onClick={() => {
-              const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-${
-                monthlyMode ? 'monthly-average' : 'yearly-eutrophication'
-              }`;
-              downloadChartData(selectedData, fileName);
-            }}
-          >
-            <CalciteIcon icon='downloadTo' scale='s'></CalciteIcon> Download chart data
-          </button>
-        ) : (
-          <></>
-        )}
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          {!monthlyMode ? (
+            <CalciteLabel layout='inline' alignment='start'>
+              <CalciteSwitch
+                checked={showOceanCurrents ? true : undefined}
+                onCalciteSwitchChange={(evt) => {
+                  setShowOceanCurrents(evt.target.checked);
+                }}
+              ></CalciteSwitch>{' '}
+              Show ocean currents
+            </CalciteLabel>
+          ) : (
+            <></>
+          )}
+          {selectedFeature ? (
+            <button
+              className={styles.downloadButton}
+              onClick={() => {
+                const fileName = `${selectedFeature.country}-${regionNames[regionIndex].name}-${
+                  monthlyMode ? 'monthly-average' : 'yearly-eutrophication'
+                }`;
+                downloadChartData(selectedData, fileName);
+              }}
+            >
+              <CalciteIcon icon='downloadTo' scale='s'></CalciteIcon> Download chart data
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     </>
   );

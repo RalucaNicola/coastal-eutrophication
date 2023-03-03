@@ -4,14 +4,12 @@ import '@esri/calcite-components/dist/components/calcite-option';
 import '@esri/calcite-components/dist/components/calcite-label';
 import '@esri/calcite-components/dist/components/calcite-radio-button-group';
 import '@esri/calcite-components/dist/components/calcite-radio-button';
-import '@esri/calcite-components/dist/components/calcite-switch';
 import {
   CalciteSelect,
   CalciteOption,
   CalciteLabel,
   CalciteRadioButtonGroup,
-  CalciteRadioButton,
-  CalciteSwitch
+  CalciteRadioButton
 } from '@esri/calcite-components-react';
 import { SVGChart } from '../index';
 import { useEffect, useState } from 'react';
@@ -29,7 +27,9 @@ const CountryDetails = ({
   setYearlyTimeSlice,
   selectedRegionIndex,
   setSelectedRegionIndex,
-  isMobile
+  isMobile,
+  showOceanCurrents,
+  setShowOceanCurrents
 }) => {
   const [selectedFeature, setSelectedFeature] = useState();
 
@@ -121,6 +121,8 @@ const CountryDetails = ({
           setCountry={setCountry}
           monthlyMode={monthlyMode}
           isMobile={isMobile}
+          showOceanCurrents={showOceanCurrents}
+          setShowOceanCurrents={setShowOceanCurrents}
         ></SVGChart>
       </div>
     </div>

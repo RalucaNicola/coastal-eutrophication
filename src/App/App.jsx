@@ -4,6 +4,7 @@ import { getPreloadedState } from '../utils/preloadedState';
 import useEutrophicationData from '../hooks/useEutrophicationData';
 import { setTimeSliceToHashParameters, setCountryToHashParameters } from '../utils/URLHashParams';
 import { CalciteLoader } from '@esri/calcite-components-react';
+import OceanCurrentsLayer from '../components/OceanCurrentsLayer/OceanCurrentsLayer';
 
 const preloadedState = getPreloadedState();
 
@@ -18,6 +19,7 @@ export const App = () => {
   const [isMobile, setIsMobile] = useState();
   const [selectedRegionIndex, setSelectedRegionIndex] = useState(preloadedState.regionIndex);
   const [identifyInfo, setIdentifyInfo] = useState(null);
+  const [showOceanCurrents, setShowOceanCurrents] = useState(true);
 
   const { dataResponse, isLoading, isFailed } = useEutrophicationData();
 
@@ -68,6 +70,8 @@ export const App = () => {
           isMobile={isMobile}
           selectedRegionIndex={selectedRegionIndex}
           setSelectedRegionIndex={setSelectedRegionIndex}
+          showOceanCurrents={showOceanCurrents}
+          setShowOceanCurrents={setShowOceanCurrents}
         ></CountryDetails>
       );
     }
@@ -89,6 +93,11 @@ export const App = () => {
           yearlyTimeSlice={yearlyTimeSlice}
           setIdentifyInfo={setIdentifyInfo}
         ></RasterLayer>
+        <OceanCurrentsLayer
+          showOceanCurrents={showOceanCurrents}
+          monthlyMode={monthlyMode}
+          yearlyTimeSlice={yearlyTimeSlice}
+        ></OceanCurrentsLayer>
       </Map>
       <PopupInfo
         identifyInfo={identifyInfo}

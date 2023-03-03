@@ -1,5 +1,6 @@
 export const mapConfig = {
-  'web-map-id': '4ffbe9fd001f4da0b755d9eaeb2c763c', // John's basemap
+  // 'web-map-id': '4ffbe9fd001f4da0b755d9eaeb2c763c', // John's basemap
+  'web-map-id': '87885b8822704d92a962f09cb00ea259',
   'yearly-layer':
     'https://tiledimageservices.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/SDG_Reporting_202202_anomaly_chlor_a/ImageServer',
   'monthly-layer':
