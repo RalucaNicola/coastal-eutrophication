@@ -158,12 +158,6 @@ const Map = ({ data, selectedCountry, setCountry, setIdentifyPoint, paddingBotto
 
       view.when(() => {
         setMapView(view);
-
-        // if (mapCenter) {
-        //   view.map.loadAll().then(() => {
-        //     view.goTo({ zoom: mapCenter.zoom, center: [mapCenter.center.lon, mapCenter.center.lat] });
-        //   });
-        // }
         const eezLayer = view.map.layers
           .filter((layer) => layer.title === 'Exclusive Economic Zone boundaries')
           .getItemAt(0);
