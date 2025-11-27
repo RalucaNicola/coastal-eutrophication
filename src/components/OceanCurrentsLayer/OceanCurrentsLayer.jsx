@@ -17,18 +17,18 @@ const OceanCurrentsLayer = ({ monthlyMode, yearlyTimeSlice, showOceanCurrents, m
     }
   }, [monthlyMode, showOceanCurrents]);
 
-  useEffect(() => {
-    if (yearlyTimeDefinition && layer) {
-      layer.multidimensionalDefinition = [
-        new DimensionalDefinition({
-          dimensionName: layer.multidimensionalDefinition[0].dimensionName,
-          variableName: layer.multidimensionalDefinition[0].variableName,
-          values: [yearlyTimeDefinition[0].values[yearlyTimeSlice]],
-          isSlice: true
-        })
-      ];
-    }
-  }, [yearlyTimeSlice, layer, yearlyTimeDefinition]);
+  // useEffect(() => {
+  //   if (yearlyTimeDefinition && layer) {
+  //     layer.multidimensionalDefinition = [
+  //       new DimensionalDefinition({
+  //         dimensionName: layer.multidimensionalDefinition[0].dimensionName,
+  //         variableName: layer.multidimensionalDefinition[0].variableName,
+  //         values: [yearlyTimeDefinition[0].values[yearlyTimeSlice]],
+  //         isSlice: true
+  //       })
+  //     ];
+  //   }
+  // }, [yearlyTimeSlice, layer, yearlyTimeDefinition]);
 
   useEffect(() => {
     if (mapView) {
